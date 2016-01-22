@@ -1,0 +1,37 @@
+{
+    "name": "markdown-table-formatter",
+    "displayName": "Markdown Table Formatter",
+    "description": "Markdown Table Formatter",
+    "version": "0.0.1",
+    "publisher": "fcrespo82",
+    "engines": {
+        "vscode": "^0.10.1"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:markdown-table-formatter.format"
+    ],
+    "main": "./out/src/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "markdown-table-formatter.format",
+                "title": "Markdown Table Formatter: Format"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./"
+    },
+    "dependencies": {
+        "wcwidth": "1.*",
+        "gfm-table": "*"
+    },
+    "devDependencies": {
+        "typescript": "^1.6.2",
+        "vscode": "0.10.x"
+    }
+}

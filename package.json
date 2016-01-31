@@ -20,7 +20,13 @@
                 "command": "markdown-table-formatter.format",
                 "title": "Markdown Table Formatter: Format"
             }
-        ]
+        ],
+        "keybindings": [{
+			"command": "markdown-table-formatter.format",
+			"key": "alt+shift+t",
+			"mac": "alt+shift+t",
+			"when": "editorTextFocus"
+		}]
     },
     "scripts": {
         "vscode:prepublish": "node ./node_modules/vscode/bin/compile",

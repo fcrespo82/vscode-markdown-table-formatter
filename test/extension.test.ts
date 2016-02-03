@@ -11,17 +11,22 @@ import * as assert from 'assert';
 import * as vscode from 'vscode';
 import * as myExtension from '../src/extension';
 
-
-
 // Defines a Mocha test suite to group tests of similar kind together
 suite("Extension Tests", () => {
 
-    var editor = vscode.window.open;
-    
-    
 	// Defines a Mocha unit test
 	test("Something 1", () => {
-		assert.equal(-1, [1, 2, 3].indexOf(5));
-		assert.equal(-1, [1, 2, 3].indexOf(0));
-	});
+		
+        var tableTest = `| Header 1 | Header 2 | Header 3 |
+|----|---|-|
+| data1a | Data is longer than header | 1 |
+| d1b | add a cell|
+|lorem|ipsum|3|
+| | empty outside cells
+| skip| | 5 |
+| six | Morbi purus | 6 |`;
+        
+        console.log(myExtension.format(tableTest));
+        
+    });
 });

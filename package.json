@@ -26,7 +26,18 @@
 			"key": "alt+shift+t",
 			"mac": "alt+shift+t",
 			"when": "editorTextFocus"
-		}]
+		}],
+        "configuration": {
+            "title": "Markdown Table Formatter configurations",
+            "properties": {
+                "markdown-table-formatter.padding": {
+                    "title": "How many whitespaces between text and pipes",
+                    "description": "How many whitespaces between text and pipes",
+                    "default": 1,
+                    "type": "number"
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
@@ -34,7 +45,8 @@
     },
     "dependencies": {
         "wcwidth": "1.*",
-        "gfm-table": "*"
+        "gfm-table": "*",
+        "utils-pad-string": "*"
     },
     "devDependencies": {
         "typescript": "^1.6.2",

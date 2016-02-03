@@ -1,8 +1,11 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import * as assert from 'assert';
 
 var gfmtable = require('gfm-table')
+var util_pad = require('utils-pad-string')
+
 
 //var wcwidth = require('wcwidth');
 
@@ -36,11 +39,12 @@ code|描述|详细解释
 
             var table: string = editor.document.getText(range)
 
-            edit.replace(range, formatTable(table));
+            console.log(table)
 
+            edit.replace(range, format(table));
         }
 
-        vscode.window.showInformationMessage('Tables formatted!');
+        //vscode.window.showInformationMessage('Tables formatted!');
     });
 
     context.subscriptions.push(commandFormat);
@@ -50,118 +54,148 @@ code|描述|详细解释
 export function deactivate() {
 }
 
-
-function formatTable(myTable: string) {
-
-    var table = [];
-    var lines = myTable.trim().split("\n");
-    lines.forEach(function(value) {
-        var line = removePipes(value).split("|");
-        line = line.map(function(value) {
-            return value.trim();
-        });
-        table.push(line);
-    });
-
-    var header = table.splice(1, 1);
-    
-    var newHeader = header[0].map(function(value: string) {
-        value = value.replace(/\s/g, "");
-        value = value.replace(/-+/g, "-");
-
-        switch (value) {
-            case ":-":
-                return "l";
-            case ":-:":
-                return "c";
-            case "-:":
-                return "r";
-            default:
-                return "l";
-        }
-    });
-    
-    normalizeColumns(table);
-    
-    return format(table, newHeader);
-
-}
-
-function normalizeColumns(table) {
-    var max;
-    
-    var tableLen = table.map(function(line) {
-        return line.length;
-    });
-    
-    max = tableLen.reduce(function(prev, cur) {
-        return Math.max(prev, cur);
-    });
-    
-    table.forEach(function(value) {
-        if (value.length < max) {
-            value.push("");
-        }
-    });
-}
-
-function removePipes(line: string): string {
+function _removePipes(line: string): string {
     return line.replace(/^\||\|$/g, "");
 }
 
-function format(rows, align) {
-    align = align || [];
-    var outputs = [];
-    var header = rows.shift();
-    var maxLengths = rows.reduce(function(res, row) {
-        var sliced = row.slice(0, res.length);
-        return sliced.map(function(val, i) {
-            return Math.max(res[i], val.toString().length);
+function _columnsLengths(table: any): number[] {
+    var columnsLengths = []
+    for (var i = 0; i < table.header.length; i++) {
+        var headerLength = table.header[i].length;
+        var lineLengths = []
+        table.body.forEach(element => {
+            if (element[i]) {
+                lineLengths.push(element[i].length)
+            }
         });
-    }, header.map(function(val) { return val.toString().length; }));
+        // console.log(headerLength)
+        // console.log(lineLengths)
+        var lengths = lineLengths
+        lengths.push(headerLength)
 
-    outputs.push(header.map(function(val, i) { return ' ' + pad(val.toString(), maxLengths[i], align[i]) + ' '; }));
-    outputs.push(maxLengths.map(function(n, i) {
-        return (!!~'lc'.indexOf(align[i]) ? ':' : ' ') + repeat('-', n) + (!!~'rc'.indexOf(align[i]) ? ':' : ' ');
-    }));
-    rows.forEach(function(row) {
-        var sliced = row.slice(0, header.length);
-        outputs.push(sliced.map(function(val, i) { return ' ' + pad(val.toString(), maxLengths[i], align[i]) + ' '; }));
-    });
-
-    return outputs.map(column).join("\n");
-};
-
-function column(col) {
-    return '|' + col.join('|') + '|';
-}
-
-function pad(str, n, align) {
-    if (align === 'r') return lPad(str, n);
-    if (align === 'c') {
-        return rPad(lPad(str, str.length + Math.floor((n - str.length) / 2)), n);
+        columnsLengths.push(Math.max.apply(null, lengths))
     }
-    return rPad(str, n);
+    return columnsLengths
 }
 
-function lPad(str, n) {
-    for (var i = 0, len = n - str.length; i < len; i++) {
-        str = ' ' + str;
-    }
-    return str;
-}
-
-function rPad(str, n) {
-    for (var i = 0, len = n - str.length; i < len; i++) {
-        str += ' ';
-    }
-    return str;
-}
-
-function repeat(chr, n) {
+function _repeat(chr, n) {
     var out = '';
     for (var i = 0; i < n; i++) {
         out += chr;
     }
     return out;
+}
+
+function _trimLine(line) {
+    line.forEach((value, index) => {
+        line[index] = value.trim()
+    });
+    return line
+}
+
+function _tableToArray(table: string): any {
+    table = table.trim()
+    var lines = table.split("\n");
+    var header = _removePipes(lines[0]).split("|");
+    header = _trimLine(header)
+    var formatting = _removePipes(lines[1]).trim().split("|");
+    formatting = _trimLine(formatting)
+    
+    formatting.forEach((value, index) => {
+        formatting[index] = value.replace(/(:)*(-)+(:)*/g, "$1$2$3");
+    });
+    formatting = _trimLine(formatting)
+
+    lines.splice(0, 2);
+    var body = lines
+    var newBody = [];
+
+    body.forEach(lineArray => {
+        var line = _removePipes(lineArray).split("|")
+        _trimLine(line)
+        _fixColumns(line, header.length)
+        newBody.push(line);
+    });
+
+    console.log(header);
+    console.log(formatting);
+    console.log(newBody);
+    return { "header": header, "formatting": formatting, "body": newBody, "lengths": function() { return _columnsLengths(this) } }
+}
+
+function _fixColumns(line, length) {
+    if (line.length < length) {
+        line.push("")
+        _fixColumns(line, length)
+    }
+    return line
+}
+
+function _column(col) {
+    return '|' + col.join('|') + '|';
+}
+
+function _normalize(tableArray) {
+    var padding = vscode.workspace.getConfiguration("markdown-table-formatter").get<number>("padding")
+    padding = 2
+    var opts = { "lpad": " ", "rpad": " " }
+    tableArray.formatting.forEach((value, index, formatting) => {
+        tableArray.header[index] = util_pad(tableArray.header[index], tableArray.lengths()[index] + padding, opts);
+        //tableArray.formatting[index] = util_pad(tableArray.formatting[index], tableArray.lengths()[index] + padding), opts;
+        tableArray.body.forEach((line, row, body) => {
+            body[row][index] = util_pad(body[row][index], tableArray.lengths()[index] + padding, opts);
+        });
+    });
+    return tableArray
+}
+
+function _pad(tableArray: any) {
+    tableArray.formatting.forEach((value, index, formatting) => {
+        console.log(value);
+        switch (value) {
+            case ":-":
+            case "-":
+                tableArray.header[index] = util_pad(tableArray.header[index], tableArray.lengths()[index]);
+                tableArray.formatting[index] = util_pad(":-", tableArray.lengths()[index], { "rpad": "-" });
+                tableArray.body.forEach((line, row, body) => {
+                    body[row][index] = util_pad(body[row][index], tableArray.lengths()[index]);
+                });
+                break;
+            case "-:":
+                tableArray.header[index] = util_pad(tableArray.header[index], tableArray.lengths()[index], { "lpad": " " });
+                tableArray.formatting[index] = util_pad("-:", tableArray.lengths()[index], { "lpad": "-" });
+                tableArray.body.forEach((line, row, body) => {
+                    body[row][index] = util_pad(body[row][index], tableArray.lengths()[index], { "lpad": " " });
+                });
+                break;
+            case ":-:":
+                tableArray.header[index] = util_pad(tableArray.header[index], tableArray.lengths()[index], { "lpad": " ", "rpad": " " });
+                tableArray.formatting[index] = ":" + _repeat("-", tableArray.lengths()[index] - 2) + ":";
+                tableArray.body.forEach((line, row, body) => {
+                    body[row][index] = util_pad(body[row][index], tableArray.lengths()[index], { "lpad": " ", "rpad": " " });
+                });
+                break;
+            default:
+                tableArray.header[index] = util_pad(tableArray.header[index], tableArray.lengths()[index]);
+                tableArray.formatting[index] = util_pad(":-", tableArray.lengths()[index], { "rpad": "-" });
+                tableArray.body.forEach((line, row, body) => {
+                    body[row][index] = util_pad(body[row][index], tableArray.lengths()[index]);
+                });
+                break;
+        }
+    });
+
+    tableArray.header = _column(tableArray.header)
+    tableArray.formatting = _column(tableArray.formatting)
+
+    tableArray.body.forEach((line, index) => {
+        tableArray.body[index] = _column(line)
+    })
+    tableArray.body = tableArray.body.join("\n")
+
+    return tableArray.header + "\n" + tableArray.formatting + "\n" + tableArray.body
+}
+
+export function format(table: string) {
+    return _pad(_tableToArray(table)) + "\n"
 }

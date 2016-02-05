@@ -26,7 +26,9 @@ code|描述|详细解释
 
     var commandFormat = vscode.commands.registerTextEditorCommand("markdown-table-formatter.format", (editor, edit) => {
 
-        var regex = /((?:(?:[^\n]*?\|[^\n]*) *)?(?:\r?\n|^))((?:\| *(?::?-+:?|::) *|\|?(?: *(?::?-+:?|::) *\|)+)(?: *(?::?-+:?|::) *)? *\r?\n)((?:(?:[^\n]*?\|[^\n]*) *(?:\r?\n|$))+)/g;
+        //var regex = /((?:(?:[^\n]*?\|[^\n]*) *)?(?:\r?\n|^))((?:\| *(?::?-+:?|::) *|\|?(?: *(?::?-+:?|::) *\|)+)(?: *(?::?-+:?|::) *)? *\r?\n)((?:(?:[^\n]*?\|[^\n]*) *(?:\r?\n|$))+)/g;
+        // Do not allow empty header
+        var regex = /((?:(?:[^\n]*?\|[^\n]*) *)(?:\r?\n|^))((?:\| *(?::?-+:?|::) *|\|?(?: *(?::?-+:?|::) *\|)+)(?: *(?::?-+:?|::) *)? *\r?\n)((?:(?:[^\n]*?\|[^\n]*) *(?:\r?\n|$))+)/g;
 
         var text = editor.document.getText();
 
@@ -100,7 +102,7 @@ function _tableToArray(table: string): any {
     header = _trimLine(header)
     var formatting = _removePipes(lines[1]).trim().split("|");
     formatting = _trimLine(formatting)
-    
+
     formatting.forEach((value, index) => {
         formatting[index] = value.replace(/(:)*(-)+(:)*/g, "$1$2$3");
     });
@@ -110,23 +112,34 @@ function _tableToArray(table: string): any {
     var body = lines
     var newBody = [];
 
-    body.forEach(lineArray => {
-        var line = _removePipes(lineArray).split("|")
+    var maxLength = 0
+    table.split("\n").forEach((line) => {
+        var length = _removePipes(line).split("|").length
+        if (length > maxLength) {
+            maxLength = length
+        }
+    })
+    _fixColumns(header, maxLength, "")
+    _fixColumns(formatting, maxLength,":-")
+    
+    body.forEach(lineString => {
+        var line = _removePipes(lineString).split("|")
         _trimLine(line)
-        _fixColumns(line, header.length)
+        _fixColumns(line, maxLength, "")
         newBody.push(line);
     });
 
     console.log(header);
     console.log(formatting);
     console.log(newBody);
+    console.log("end this table")
     return { "header": header, "formatting": formatting, "body": newBody, "lengths": function() { return _columnsLengths(this) } }
 }
 
-function _fixColumns(line, length) {
+function _fixColumns(line, length, column) {
     if (line.length < length) {
-        line.push("")
-        _fixColumns(line, length)
+        line.push(column)
+        _fixColumns(line, length, column)
     }
     return line
 }

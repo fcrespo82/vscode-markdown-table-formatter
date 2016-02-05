@@ -29,4 +29,12 @@ suite("Extension Tests", () => {
         console.log(myExtension.format(tableTest));
         
     });
+    
+    test("Arquivo tables.txt", () => {
+        var editor = vscode.window.activeTextEditor
+        console.log(editor.document.getText())
+        vscode.commands.executeCommand("markdown-table-formatter.format").then(() => {
+            console.log(editor.document.getText())            
+        });
+    });
 });

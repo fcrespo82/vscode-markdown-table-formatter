@@ -5,51 +5,114 @@
     "version": "0.0.1",
     "publisher": "fcrespo82",
     "engines": {
-        "vscode": "^0.10.1"
+        "vscode": "^1.20.0"
     },
     "categories": [
         "Other"
     ],
     "activationEvents": [
-        "onCommand:markdown-table-formatter.format"
+        "onCommand:markdown-table-formatter.format",
+        "onCommand:markdown-table-formatter.enableForCurrentScope"
     ],
-    "main": "./out/src/extension",
+    "main": "./out/extension",
     "contributes": {
         "commands": [
             {
                 "command": "markdown-table-formatter.format",
-                "title": "Markdown Table Formatter: Format"
+                "category": "Markdown Table Formatter",
+                "title": "Format"
+            },
+            {
+                "command": "markdown-table-formatter.enableForCurrentScope",
+                "category": "Markdown Table Formatter",
+                "title": "Enable for current scope"
             }
         ],
-        "keybindings": [{
-			"command": "markdown-table-formatter.format",
-			"key": "alt+shift+t",
-			"mac": "alt+shift+t",
-			"when": "editorTextFocus"
-		}],
+        "keybindings": [
+            {
+                "command": "markdown-table-formatter.format",
+                "key": "alt+shift+t",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "markdown-table-formatter.enableForCurrentScope",
+                "key": "alt+shift+e",
+                "when": "editorTextFocus"
+            }
+        ],
         "configuration": {
+            "type": "object",
             "title": "Markdown Table Formatter configurations",
             "properties": {
-                "markdown-table-formatter.padding": {
-                    "title": "How many whitespaces between text and pipes",
-                    "description": "How many whitespaces between text and pipes",
-                    "default": 1,
-                    "type": "number"
+                "markdown-table-formatter.formatOnSave": {
+                    "title": "Format on save",
+                    "description": "Format tables when document is saved?",
+                    "type": "boolean",
+                    "default": true
+                }, 
+                "markdown-table-formatter.autoSelectEntireDocument": {
+                    "title": "Auto select entire document",
+                    "description": "Select entire document if selection is empty",
+                    "type": "boolean",
+                    "default": true
+                }, 
+                "markdown-table-formatter.spacePadding": {
+                    "title": "Space padding",
+                    "description": "How many spaces between left and right of each column content",
+                    "type": "integer",
+                    "default": 1
+                }, 
+                "markdown-table-formatter.keepFirstAndLastPipes": {
+                    "title": "Keep first and last pipes",
+                    "description": "Keep first and last pipes \"|\" in table formatting. Tables are easier to format when pipes are kept",
+                    "type": "boolean",
+                    "default": true
+                }, 
+                "markdown-table-formatter.defaultTableJustification": {
+                    "title": "defaultTableJustification",
+                    "description": "Defines the default justification for tables that have only a \"-\" on the formatting line",
+                    "type": "string",
+                    "enum": [
+                        "Left",
+                        "Center",
+                        "Rigth"
+                    ],
+                    "default": "Left"
+                }, 
+                "markdown-table-formatter.markdownGrammarScopes": {
+                    "title": "markdownGrammarScopes",
+                    "description": "File grammar scopes that will be considered Markdown by this package (comma-separated). \nRun \"Markdown Table Formatter: Enable For Current Scope\" command to add current editor grammar to this setting.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": ["markdown"]
+                }, 
+                "markdown-table-formatter.limitLastColumnPadding": {
+                    "title": "limitLastColumnPadding",
+                    "description": "Do not pad the last column to more than your editor's preferredLineLength setting.",
+                    "type": "boolean",
+                    "default": false
                 }
             }
         }
     },
     "scripts": {
-        "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
-        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./"
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
     "dependencies": {
         "wcwidth": "1.*",
-        "gfm-table": "*",
-        "utils-pad-string": "*"
+        "xregexp": "^3.2.0"
     },
     "devDependencies": {
-        "typescript": "^1.6.2",
-        "vscode": "0.10.x"
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.6",
+        "tslint": "^5.8.0",
+        "@types/node": "^7.0.43",
+        "@types/mocha": "^2.2.42"
     }
 }

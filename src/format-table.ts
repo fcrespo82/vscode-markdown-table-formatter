@@ -1,5 +1,6 @@
 import { getAllSettings } from './table-formatter'
 import wcswidth = require('wcwidth')
+import * as vscode from 'vscode';
 
 function swidth(str: string) {
   // zero-width Unicode characters that we should ignore for
@@ -17,10 +18,10 @@ const splitCells = (str: string) => str.split('|')
 const addTailPipes = (str: string) => `|${str}|`
 const joinCells = (arr: string[]) => arr.join('|')
 
-const tableJustMap = {
+const tableJustMap : { [key: string]: string } = {
   Left: ':-',
   Center: '::',
-  Right: '-:',
+  Right: '-:'
 }
 
 export function formatTable(
@@ -50,6 +51,7 @@ export function formatTable(
     const first = trimmed[0]
     const last = trimmed[trimmed.length - 1]
     const ends = (first || ':') + (last || '-')
+    
     if (ends === '--') return tableJustMap[settings.defaultTableJustification]
     else return ends
   })
@@ -76,7 +78,7 @@ export function formatTable(
   )
 
   if (settings.limitLastColumnPadding) {
-    const preferredLineLength = atom.config.get('editor.preferredLineLength')
+    const preferredLineLength = <number>vscode.workspace.getConfiguration('editor').get('wordWrapColumn');
     const sum = (arr: number[]) => arr.reduce((x, y) => x + y, 0)
     const wsum = sum(widths)
     if (wsum > preferredLineLength) {

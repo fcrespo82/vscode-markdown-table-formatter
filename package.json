@@ -1,7 +1,9 @@
 {
     "name": "markdown-table-formatter",
     "displayName": "Markdown Table Formatter",
-    "description": "Markdown Table Formatter",
+    "description": "A simple markdown plugin to format tables.",
+    "repository": "https://github.com/fcrespo82/vscode-markdown-table-formatter",
+    "license": "MIT",
     "version": "0.0.1",
     "publisher": "fcrespo82",
     "engines": {
@@ -14,7 +16,7 @@
         "onCommand:markdown-table-formatter.format",
         "onCommand:markdown-table-formatter.enableForCurrentScope"
     ],
-    "main": "./out/extension",
+    "main": "./out/table-formatter",
     "contributes": {
         "commands": [
             {
@@ -77,6 +79,9 @@
                         "Center",
                         "Rigth"
                     ],
+                    "items": {
+                        "type": "string"
+                    },
                     "default": "Left"
                 },
                 "markdown-table-formatter.markdownGrammarScopes": {
@@ -111,10 +116,12 @@
         "xregexp": "^3.2.0"
     },
     "devDependencies": {
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.6",
-        "tslint": "^5.8.0",
+        "@types/mocha": "^2.2.42",
         "@types/node": "^7.0.43",
-        "@types/mocha": "^2.2.42"
+        "@types/wcwidth": "^1.0.0",
+        "@types/xregexp": "^3.0.29",
+        "tslint": "^5.8.0",
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.6"
     }
 }

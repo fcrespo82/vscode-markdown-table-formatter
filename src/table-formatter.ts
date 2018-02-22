@@ -12,9 +12,9 @@ export function activate(context: vscode.ExtensionContext) {
 
     var commandEnable = vscode.commands.registerTextEditorCommand("markdown-table-formatter.enableForCurrentScope", (editor, edit) => {
         var config = vscode.workspace.getConfiguration('markdown-table-formatter');
-        var array : [String] = config.markdownGrammarScopes;
-        array.push(editor.document.languageId);
-        config.update("markdownGrammarScopes", array, true);
+        var scopes : [String] = config.markdownGrammarScopes;
+        scopes.push(editor.document.languageId);
+        config.update("markdownGrammarScopes", scopes, true);
         vscode.window.showInformationMessage(`Markdown table formatter enabled for '${editor.document.languageId}' language scope!`);
     });
 
@@ -26,3 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate() {
 }
 
+export function getAllSettings() {
+    return vscode.workspace.getConfiguration('markdown-table-formatter');
+  }
+  

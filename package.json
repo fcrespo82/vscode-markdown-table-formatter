@@ -49,25 +49,25 @@
                     "description": "Format tables when document is saved?",
                     "type": "boolean",
                     "default": true
-                }, 
+                },
                 "markdown-table-formatter.autoSelectEntireDocument": {
                     "title": "Auto select entire document",
                     "description": "Select entire document if selection is empty",
                     "type": "boolean",
                     "default": true
-                }, 
+                },
                 "markdown-table-formatter.spacePadding": {
                     "title": "Space padding",
                     "description": "How many spaces between left and right of each column content",
                     "type": "integer",
                     "default": 1
-                }, 
+                },
                 "markdown-table-formatter.keepFirstAndLastPipes": {
                     "title": "Keep first and last pipes",
                     "description": "Keep first and last pipes \"|\" in table formatting. Tables are easier to format when pipes are kept",
                     "type": "boolean",
                     "default": true
-                }, 
+                },
                 "markdown-table-formatter.defaultTableJustification": {
                     "title": "defaultTableJustification",
                     "description": "Defines the default justification for tables that have only a \"-\" on the formatting line",
@@ -78,7 +78,7 @@
                         "Rigth"
                     ],
                     "default": "Left"
-                }, 
+                },
                 "markdown-table-formatter.markdownGrammarScopes": {
                     "title": "markdownGrammarScopes",
                     "description": "File grammar scopes that will be considered Markdown by this package (comma-separated). \nRun \"Markdown Table Formatter: Enable For Current Scope\" command to add current editor grammar to this setting.",
@@ -86,8 +86,10 @@
                     "items": {
                         "type": "string"
                     },
-                    "default": ["markdown"]
-                }, 
+                    "default": [
+                        "markdown"
+                    ]
+                },
                 "markdown-table-formatter.limitLastColumnPadding": {
                     "title": "limitLastColumnPadding",
                     "description": "Do not pad the last column to more than your editor's preferredLineLength setting.",

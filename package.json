@@ -14,9 +14,10 @@
     ],
     "activationEvents": [
         "onCommand:markdown-table-formatter.format",
-        "onCommand:markdown-table-formatter.enableForCurrentScope"
+        "onCommand:markdown-table-formatter.enableForCurrentScope",
+        "*"
     ],
-    "main": "./out/table-formatter",
+    "main": "./out/markdown-table-formatter",
     "contributes": {
         "commands": [
             {

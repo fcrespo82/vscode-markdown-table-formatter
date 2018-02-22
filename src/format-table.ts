@@ -1,4 +1,4 @@
-import { getAllSettings } from './table-formatter'
+import { getAllSettings } from './markdown-table-formatter';
 import wcswidth = require('wcwidth')
 import * as vscode from 'vscode';
 

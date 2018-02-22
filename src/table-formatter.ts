@@ -1,31 +1,25 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
-    var commandFormat = vscode.commands.registerTextEditorCommand("markdown-table-formatter.format", (editor, edit) => {
-        vscode.window.showInformationMessage('Tables formatted!');
-    });
-
-    var commandEnable = vscode.commands.registerTextEditorCommand("markdown-table-formatter.enableForCurrentScope", (editor, edit) => {
-        var config = vscode.workspace.getConfiguration('markdown-table-formatter');
-        var scopes : [String] = config.markdownGrammarScopes;
-        scopes.push(editor.document.languageId);
-        config.update("markdownGrammarScopes", scopes, true);
-        vscode.window.showInformationMessage(`Markdown table formatter enabled for '${editor.document.languageId}' language scope!`);
-    });
-
-    context.subscriptions.push(commandFormat);
-    context.subscriptions.push(commandEnable);
-}
-
-// this method is called when your extension is deactivated
-export function deactivate() {
-}
+import { regex } from './regex';
+import { formatTable } from './format-table';
+import XRegExp = require('xregexp');
 
 export function getAllSettings() {
-    return vscode.workspace.getConfiguration('markdown-table-formatter');
+  return vscode.workspace.getConfiguration('markdown-table-formatter');
+}
+
+export class TableFormatter {
+  public format(editor: vscode.TextEditor, force: boolean = false) {
+    
+    // let matches = XRegExp.match(editor.document.getText(), regex);
+
+    var matches = [];
+    var match = regex.exec(editor.document.getText());
+    while (match !== null) {
+      matches.push(match);
+      match = regex.exec(editor.document.getText());
+    }
+
+    console.log(matches);
+    
   }
-  
+}

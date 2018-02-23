@@ -4,7 +4,7 @@
     "description": "A simple markdown plugin to format tables.",
     "repository": "https://github.com/fcrespo82/vscode-markdown-table-formatter",
     "license": "MIT",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "publisher": "fcrespo82",
     "engines": {
         "vscode": "^1.20.0"

@@ -6,57 +6,37 @@ import { TableFormatter } from './table-formatter';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-    let tableFormatter = new TableFormatter();
+    const tableFormatter = new TableFormatter();
 
-    let commandFormat = vscode.commands.registerTextEditorCommand("markdown-table-formatter.format", (editor, edit) => {
-        tableFormatter.format(editor);
-        // vscode.window.showInformationMessage('Tables formatted!');
+    const commandFormat = vscode.commands.registerTextEditorCommand("markdown-table-formatter.format", (editor, edit) => {
+        const languageId = editor.document.languageId;
+        const config = vscode.workspace.getConfiguration('markdown-table-formatter');
+        const scopes = config.get<string[]>('markdownGrammarScopes');
+        if (scopes && scopes.includes(languageId)) {
+            tableFormatter.format(editor, false);
+        }
     });
 
-    let commandEnable = vscode.commands.registerTextEditorCommand("markdown-table-formatter.enableForCurrentScope", (editor, edit) => {
-        var config = vscode.workspace.getConfiguration('markdown-table-formatter');
-        var scopes : [String] = config.markdownGrammarScopes;
-        scopes.push(editor.document.languageId);
+    const commandEnable = vscode.commands.registerTextEditorCommand("markdown-table-formatter.enableForCurrentScope", (editor, edit) => {
+        const config = vscode.workspace.getConfiguration('markdown-table-formatter');
+        const scopes = config.get<string[]>('markdownGrammarScopes');
+        if (scopes && !scopes.includes(editor.document.languageId)) {
+            scopes.push(editor.document.languageId);
+        }
         config.update("markdownGrammarScopes", scopes, true);
-        vscode.window.showInformationMessage(`Markdown table formatter enabled for '${editor.document.languageId}' language scope!`);
+        vscode.window.showInformationMessage(`Markdown table formatter enabled for '${editor.document.languageId}' language!`);
     });
 
-    let formatOnSave = vscode.workspace.onWillSaveTextDocument((event) => {
+    const formatOnSave = vscode.workspace.onWillSaveTextDocument((event) => {
         console.log(event.document.fileName);
-        let edits: vscode.TextEdit[] = []
-        
+        const edits: vscode.TextEdit[] = [];
+
         event.waitUntil(new Promise<vscode.TextEdit[]>((resolve, reject) => {
-            
-            edits.push(vscode.TextEdit.insert(new vscode.Position(0,0), `${event.document.uri}`));
+
+            edits.push(vscode.TextEdit.insert(new vscode.Position(0, 0), `${event.document.uri}`));
 
             resolve(edits);
         }));
-
-        // event.waitUntil(new Promise<vscode.TextEdit[]>((resolve, reject) => {
-        //     resolve(() => {
-        //         vscode.window.activeTextEditor.edit((b)=>{
-        //             b.insert(new vscode.Position(0,0), "Formatei");
-        //     });
-        // }));            
-        
-        // if (vscode.workspace.getConfiguration('markdown-table-formatter').get('formatOnSave')) {
-            
-            // let textEditors = vscode.window.visibleTextEditors.filter(te =>  {
-            //     return te.document.uri === event.document.uri;
-            // });
-
-        //     textEditors.map
-        //     textEditors.forEach(textEditor => {
-        //         console.log(`${textEditor.document.uri}`);
-        //         tableFormatter.format(textEditor, true);
-        //         return textEditor.edit((b)=>{
-        //             b.insert(new vscode.Position(0,0), "Formatei");
-        //         });
-        //     });
-            
-
-        // }
-        // });
     });
 
     context.subscriptions.push(commandFormat);
@@ -67,8 +47,3 @@ export function activate(context: vscode.ExtensionContext) {
 // this method is called when your extension is deactivated
 export function deactivate() {
 }
-
-export function getAllSettings() {
-    return vscode.workspace.getConfiguration('markdown-table-formatter');
-  }
-  

@@ -1,7 +1,6 @@
-import XRegExp = require('xregexp')
+import XRegExp = require('xregexp');
 
-export const regex = XRegExp(
-  `\
+export const tableRegex = XRegExp(`\
 ( # header capture
   (?:
     (?:[^\\r\\n]*?\\|[^\\r\\n]*)       # line w/ at least one pipe
@@ -26,5 +25,5 @@ export const regex = XRegExp(
   )+ # at least one
 )
 `,
-  'gx',
+    'gx',
 );

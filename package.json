@@ -13,8 +13,6 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:markdown-table-formatter.format",
-        "onCommand:markdown-table-formatter.enableForCurrentScope",
         "*"
     ],
     "main": "./out/markdown-table-formatter",
@@ -28,7 +26,7 @@
             {
                 "command": "markdown-table-formatter.enableForCurrentScope",
                 "category": "Markdown Table Formatter",
-                "title": "Enable for current scope"
+                "title": "Enable for current language"
             }
         ],
         "keybindings": [
@@ -87,7 +85,7 @@
                 },
                 "markdown-table-formatter.markdownGrammarScopes": {
                     "title": "markdownGrammarScopes",
-                    "description": "File grammar scopes that will be considered Markdown by this package (comma-separated). \nRun \"Markdown Table Formatter: Enable For Current Scope\" command to add current editor grammar to this setting.",
+                    "description": "File language grammar that will be considered Markdown by this package (comma-separated). \nRun \"Markdown Table Formatter: Enable For Current Scope\" command to add current editor grammar to this setting.",
                     "type": "array",
                     "items": {
                         "type": "string"

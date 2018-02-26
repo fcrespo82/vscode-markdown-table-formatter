@@ -27,21 +27,27 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.showInformationMessage(`Markdown table formatter enabled for '${editor.document.languageId}' language!`);
     });
 
-    const formatOnSave = vscode.workspace.onWillSaveTextDocument((event) => {
-        console.log(event.document.fileName);
-        const edits: vscode.TextEdit[] = [];
+    // const formatOnSave = vscode.workspace.onWillSaveTextDocument((event) => {
+    //     const config = vscode.workspace.getConfiguration('markdown-table-formatter');
 
-        event.waitUntil(new Promise<vscode.TextEdit[]>((resolve, reject) => {
+    //     if (config.get<boolean>("formatOnSave")) {
+    //         const edits: vscode.TextEdit[] = [];
 
-            edits.push(vscode.TextEdit.insert(new vscode.Position(0, 0), `${event.document.uri}`));
+    //         event.waitUntil(new Promise<vscode.TextEdit[]>((resolve, reject) => {
+    
+    //             tableFormatter.format(editor, false);
 
-            resolve(edits);
-        }));
-    });
+    //             edits.push(vscode.TextEdit.insert(new vscode.Position(0, 0), `${event.document.uri}`));
+    
+    //             resolve(edits);
+    //         }));
+    //     }
+
+    // });
 
     context.subscriptions.push(commandFormat);
     context.subscriptions.push(commandEnable);
-    context.subscriptions.push(formatOnSave);
+    // context.subscriptions.push(formatOnSave);
 }
 
 // this method is called when your extension is deactivated

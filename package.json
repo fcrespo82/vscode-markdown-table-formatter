@@ -49,7 +49,7 @@
                     "title": "Format on save",
                     "description": "Format tables when document is saved?",
                     "type": "boolean",
-                    "default": true
+                    "default": false
                 },
                 "markdown-table-formatter.autoSelectEntireDocument": {
                     "title": "Auto select entire document",

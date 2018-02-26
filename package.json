@@ -4,7 +4,7 @@
     "description": "A simple markdown plugin to format tables.",
     "repository": "https://github.com/fcrespo82/vscode-markdown-table-formatter",
     "license": "MIT",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "publisher": "fcrespo82",
     "engines": {
         "vscode": "^1.20.0"
@@ -49,7 +49,7 @@
                     "title": "Format on save",
                     "description": "Format tables when document is saved?",
                     "type": "boolean",
-                    "default": false
+                    "default": true
                 },
                 "markdown-table-formatter.autoSelectEntireDocument": {
                     "title": "Auto select entire document",

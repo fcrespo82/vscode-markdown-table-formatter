@@ -20,9 +20,7 @@ function getSettings(): MarkdownTableFormatterSettings {
 
 export class TableFormatter {
     public format(editor: vscode.TextEditor, force: boolean = false) {
-
         const emptySelection = editor.selections.every(s => s.isEmpty);
-
         if (!getSettings().markdownGrammarScopes.includes(editor.document.languageId)) {
             return undefined;
         }
@@ -43,9 +41,20 @@ export class TableFormatter {
         }
     }
 
-    public tablesIn(document: vscode.TextDocument, forRanges: vscode.Range[] = []) {
-        var items: any = [];
+    public formatDocument(documento: vscode.TextDocument): vscode.TextEdit[] {
+        let edits: vscode.TextEdit[] = [];
+        if (!getSettings().markdownGrammarScopes.includes(documento.languageId)) {
+            return edits;
+        }
+        let tables: any[] = this.tablesIn(documento);
+        tables.forEach(table => {
+            edits.push(new vscode.TextEdit(table.range, formatTable(table.match, getSettings())));
+        });
+        return edits;
+    }
 
+    private tablesIn(document: vscode.TextDocument, forRanges: vscode.Range[] = []) {
+        var items: any = [];
         // Think in a way to optimize this
         if (forRanges.length === 0) {
             const firstLine = document.lineAt(0);
@@ -72,7 +81,6 @@ export class TableFormatter {
                 match = tableRegex.exec(text);
             }
         });
-
         return items;
     }
 }

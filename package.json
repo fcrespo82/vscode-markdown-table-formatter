@@ -2,10 +2,18 @@
     "name": "markdown-table-formatter",
     "displayName": "Markdown Table Formatter",
     "description": "A simple markdown plugin to format tables.",
-    "repository": "https://github.com/fcrespo82/vscode-markdown-table-formatter",
+    "homepage": "https://github.com/fcrespo82/vscode-markdown-table-formatter",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/fcrespo82/vscode-markdown-table-formatter"
+    },
+    "bugs": {
+        "url": "https://github.com/fcrespo82/vscode-markdown-table-formatter/issues"
+    },
     "license": "MIT",
     "version": "1.2.0",
     "publisher": "fcrespo82",
+    "icon": "resources/icon.png",
     "engines": {
         "vscode": "^1.20.0"
     },
@@ -116,11 +124,11 @@
     },
     "devDependencies": {
         "@types/mocha": "^2.2.42",
-        "@types/node": "^7.0.43",
+        "@types/node": "^7.0.62",
         "@types/wcwidth": "^1.0.0",
         "@types/xregexp": "^3.0.29",
         "tslint": "^5.8.0",
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.6"
+        "typescript": "^2.8.3",
+        "vscode": "^1.1.17"
     }
 }

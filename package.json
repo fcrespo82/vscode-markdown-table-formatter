@@ -14,11 +14,16 @@
     "version": "1.2.1",
     "publisher": "fcrespo82",
     "icon": "resources/icon.png",
+    "keywords": [
+        "markdown",
+        "table",
+        "formatter"
+    ],
     "engines": {
         "vscode": "^1.20.0"
     },
     "categories": [
-        "Other"
+        "Formatters"
     ],
     "activationEvents": [
         "*"
@@ -27,22 +32,12 @@
     "contributes": {
         "commands": [
             {
-                "command": "markdown-table-formatter.format",
-                "category": "Markdown Table Formatter",
-                "title": "Format"
-            },
-            {
                 "command": "markdown-table-formatter.enableForCurrentScope",
                 "category": "Markdown Table Formatter",
                 "title": "Enable for current language"
             }
         ],
         "keybindings": [
-            {
-                "command": "markdown-table-formatter.format",
-                "key": "alt+shift+t",
-                "when": "editorTextFocus"
-            },
             {
                 "command": "markdown-table-formatter.enableForCurrentScope",
                 "key": "alt+shift+e",
@@ -53,18 +48,6 @@
             "type": "object",
             "title": "Markdown Table Formatter configurations",
             "properties": {
-                "markdown-table-formatter.formatOnSave": {
-                    "title": "Format on save",
-                    "description": "Format tables when document is saved?",
-                    "type": "boolean",
-                    "default": true
-                },
-                "markdown-table-formatter.autoSelectEntireDocument": {
-                    "title": "Auto select entire document",
-                    "description": "Select entire document if selection is empty",
-                    "type": "boolean",
-                    "default": true
-                },
                 "markdown-table-formatter.spacePadding": {
                     "title": "Space padding",
                     "description": "How many spaces between left and right of each column content",
@@ -80,7 +63,7 @@
                 "markdown-table-formatter.defaultTableJustification": {
                     "title": "defaultTableJustification",
                     "description": "Defines the default justification for tables that have only a \"-\" on the formatting line",
-                    "type": "string",
+                    "type": "array",
                     "enum": [
                         "Left",
                         "Center",

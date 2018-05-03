@@ -125,7 +125,6 @@ export function formatTable(
 
     return (
         (formatrow === 0 && text[1] !== '' ? '\n' : '') +
-        formatted.join('\n') +
-        '\n'
+        formatted.join('\n')
     );
 }

@@ -11,14 +11,26 @@ Uses VSCode `Format Document` and `Format Selection`
 
 ### Settings & Keybindings
 
-- spacePadding: How many spaces between left and right of each column content;
-- keepFirstAndLastPipes: Keep first and last pipes \"|\" in table formatting. Tables are easier to format when pipes are kept;
-- defaultTableJustification: Defines the default justification for tables that have only a \"-\" on the formatting line;
-- markdownGrammarScopes: File language grammar that will be considered Markdown by this package (comma-separated). \nRun \"Markdown Table Formatter: Enable for current language\" command to add current editor grammar to this setting.;
-- limitLastColumnPadding: Do not pad the last column to more than your editor's preferredLineLength setting.;
+- **spacePadding**: How many spaces between left and right of each column content;
+- **keepFirstAndLastPipes**: Keep first and last pipes "|" in table formatting. Tables are easier to format when pipes are kept;
+- **defaultTableJustification**: Defines the default justification for tables that have only "-" on the formatting line;
+- **markdownGrammarScopes**: File language grammar that will be considered Markdown by this package (comma-separated).
+- **limitLastColumnPadding**: Do not pad the last column to more than your editor's preferredLineLength setting.;
 
 ## Tips
 
 ### Enable Markdown Table Formatter for the current file type
 
 To enable Markdown Table Formatter for your current file type: put your cursor in the file, open the Command Palette <kbd>^ (CONTROL)</kbd>+<kbd>⇧ (SHIFT)</kbd>+<kbd>P</kbd> (<kbd>⌘ (CMD)</kbd>+<kbd>⇧ (SHIFT)</kbd>+<kbd>P</kbd> for mac), and run the `Markdown Table Formatter: Enable for current language` command. This will add language grammar from current editor to the list of languages in the settings for the Markdown Table Formatter package. You can edit this setting manually later if you want to.
+
+- - -
+
+
+If you like this extension, please consider [donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2KJXQPK7AAVU6) and/or take a moment to [write a review](https://marketplace.visualstudio.com/items?itemName=fcrespo82.markdown-table-formatter#review-details) and share on <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//marketplace.visualstudio.com/items?itemName=fcrespo82.markdown-table-formatter">Facebook</a> or <a href="https://twitter.com/home?status=https%3A//marketplace.visualstudio.com/items?itemName=fcrespo82.markdown-table-formatter">Twitter</a>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="2KJXQPK7AAVU6">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
+</form>
+

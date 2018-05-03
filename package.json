@@ -11,7 +11,7 @@
         "url": "https://github.com/fcrespo82/vscode-markdown-table-formatter/issues"
     },
     "license": "MIT",
-    "version": "1.2.1",
+    "version": "1.3.0",
     "publisher": "fcrespo82",
     "icon": "resources/icon.png",
     "keywords": [
@@ -48,6 +48,12 @@
             "type": "object",
             "title": "Markdown Table Formatter configurations",
             "properties": {
+                "markdown-table-formatter.enable": {
+                    "title": "Enable Markdown Table Formatter",
+                    "description": "Enable or disable Markdown Table Formatter",
+                    "type": "boolean",
+                    "default": true
+                },
                 "markdown-table-formatter.spacePadding": {
                     "title": "Space padding",
                     "description": "How many spaces between left and right of each column content",

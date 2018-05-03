@@ -1,3 +1,8 @@
+## 1.3.1
+
+* [NEW] Option to disable the formatter
+
+
 ## 1.3.0
 
 The extensions was rewritten to take advantage of the Formatter provider VSCode offers.

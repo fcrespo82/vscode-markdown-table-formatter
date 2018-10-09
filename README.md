@@ -1,3 +1,8 @@
+# Markdown table formatter
+
+![Installs](http://vsmarketplacebadge.apphb.com/installs-short/fcrespo82.markdown-table-formatter.svg)
+![Rating](http://vsmarketplacebadge.apphb.com/rating-star/fcrespo82.markdown-table-formatter.svg)
+
 A simple markdown plugin to format tables.
 
 Based on the awesome [Improved Markdown table commands for TextMate](http://www.leancrew.com/all-this/2012/03/improved-markdown-table-commands-for-textmate/) work from [Dr. Drang (@drdrang)](https://twitter.com/drdrang)

@@ -118,6 +118,6 @@
         "@types/xregexp": "^3.0.29",
         "tslint": "^5.8.0",
         "typescript": "^2.8.3",
-        "vscode": "^1.1.17"
+        "vscode": "^1.1.21"
     }
 }

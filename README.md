@@ -1,7 +1,7 @@
 # Markdown table formatter
 
-![Installs](http://vsmarketplacebadge.apphb.com/installs-short/fcrespo82.markdown-table-formatter.svg)
-![Rating](http://vsmarketplacebadge.apphb.com/rating-star/fcrespo82.markdown-table-formatter.svg)
+![Installs](https://vsmarketplacebadge.apphb.com/installs-short/fcrespo82.markdown-table-formatter.svg)
+![Rating](https://vsmarketplacebadge.apphb.com/rating-star/fcrespo82.markdown-table-formatter.svg)
 
 A simple markdown plugin to format tables.
 

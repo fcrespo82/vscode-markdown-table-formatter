@@ -73,7 +73,7 @@
                     "enum": [
                         "Left",
                         "Center",
-                        "Rigth"
+                        "Right"
                     ],
                     "items": {
                         "type": "string"

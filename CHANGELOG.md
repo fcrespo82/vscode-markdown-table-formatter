@@ -1,3 +1,9 @@
+## 1.4.0
+
+* [ADD] Configuration to remove the colons from format line if the justification is the same as default (default: false)
+* [FIX] Format tables that have no colons or dashes on the format line (e.g. |||)
+
+
 ## 1.3.2
 
 * [FIX] Don't treat \`\|\` (backticked pipes) as a table cell

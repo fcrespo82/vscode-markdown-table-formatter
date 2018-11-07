@@ -2,6 +2,7 @@
 
 * [ADD] Configuration to remove the colons from format line if the justification is the same as default (default: false)
 * [FIX] Format tables that have no colons or dashes on the format line (e.g. |||)
+* [FIX] Configuration for `defaultTableJustification` type was wrong
 
 
 ## 1.3.2

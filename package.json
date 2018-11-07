@@ -69,7 +69,7 @@
                 "markdown-table-formatter.defaultTableJustification": {
                     "title": "defaultTableJustification",
                     "description": "Defines the default justification for tables that have only a \"-\" on the formatting line",
-                    "type": "array",
+                    "type": "string",
                     "enum": [
                         "Left",
                         "Center",

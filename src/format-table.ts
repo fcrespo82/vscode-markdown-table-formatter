@@ -51,16 +51,12 @@ export function formatTable(
     const justify = splitCells(stripTailPipes(formatline)).map(cell => {
         const trimmed = cell.trim();
         if (trimmed === "") {
-            return tableJustMap[settings.defaultTableJustification];
+            return "--";
         }
         const first = trimmed[0];
         const last = trimmed[trimmed.length - 1];
         const ends = (first || ':') + (last || '-');
-        if (ends === '--') {
-            return tableJustMap[settings.defaultTableJustification];
-        } else {
-            return ends;
-        }
+        return ends;
     });
 
     const columns = justify.length;
@@ -100,7 +96,11 @@ export function formatTable(
 
     const just = function (str: string, col: number) {
         const length = Math.max(widths[col] - swidth(str), 0);
-        switch (justify[col]) {
+        var justifySwitch = justify[col];
+        if (justifySwitch === "--") {
+            justifySwitch = tableJustMap[settings.defaultTableJustification];
+        }
+        switch (justifySwitch) {
             case '::':
                 return padding(length / 2) + str + padding((length + 1) / 2);
             case '-:':
@@ -120,6 +120,9 @@ export function formatTable(
         joinCells(
             colArr.map((_x, i) => {
                 const [front, back] = justify[i];
+                if (settings.removeColonsIfSameAsDefault && (justify[i] === tableJustMap[settings.defaultTableJustification])) {
+                    return padding(widths[i], '-');
+                }
                 return front + padding(widths[i] - 2, '-') + back;
             }),
         ),

@@ -12,7 +12,8 @@ function getSettings(): MarkdownTableFormatterSettings {
         keepFirstAndLastPipes: <boolean>vscodeConfig.get<boolean>('keepFirstAndLastPipes'),
         defaultTableJustification: <string>vscodeConfig.get<string>('defaultTableJustification'),
         markdownGrammarScopes: <string[]>vscodeConfig.get<string[]>('markdownGrammarScopes'),
-        limitLastColumnPadding: <boolean>vscodeConfig.get<boolean>('limitLastColumnPadding')
+        limitLastColumnPadding: <boolean>vscodeConfig.get<boolean>('limitLastColumnPadding'),
+        removeColonsIfSameAsDefault: <boolean>vscodeConfig.get<boolean>('removeColonsIfSameAsDefault')
     };
 }
 

@@ -67,8 +67,8 @@
                     "default": true
                 },
                 "markdown-table-formatter.defaultTableJustification": {
-                    "title": "defaultTableJustification",
-                    "description": "Defines the default justification for tables that have only a \"-\" on the formatting line",
+                    "title": "Default table justification",
+                    "description": "Defines the default justification for tables that have only a \"-\" or no colon on the formatting line",
                     "type": "string",
                     "enum": [
                         "Left",
@@ -80,8 +80,14 @@
                     },
                     "default": "Left"
                 },
+                "markdown-table-formatter.removeColonsIfSameAsDefault": {
+                    "title": "Remove colons if Justification is the same as default",
+                    "description": "Remove colons from the format line if the justification is the same as default",
+                    "type": "boolean",
+                    "default": false
+                },
                 "markdown-table-formatter.markdownGrammarScopes": {
-                    "title": "markdownGrammarScopes",
+                    "title": "Grammar scopes to enable Markdown Table Formatter",
                     "description": "File language grammar that will be considered Markdown by this package (comma-separated). \nRun \"Markdown Table Formatter: Enable For Current Scope\" command to add current editor grammar to this setting.",
                     "type": "array",
                     "items": {
@@ -92,7 +98,7 @@
                     ]
                 },
                 "markdown-table-formatter.limitLastColumnPadding": {
-                    "title": "limitLastColumnPadding",
+                    "title": "Limit last column padding",
                     "description": "Do not pad the last column to more than your editor's preferredLineLength setting.",
                     "type": "boolean",
                     "default": false

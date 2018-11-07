@@ -10,10 +10,10 @@ export const tableRegex = XRegExp(`\
 )
 ( # format capture
   (?:
-    \\|\\ *(?::?-+:?|::)\\ *            # format starting w/pipe
-    |\\|?(?:\\ *(?::?-+:?|::)\\ *\\|)+   # or separated by pipe
+    \\|\\ *(?::?-+:?|::)?\\ *            # format starting w/pipe
+    |\\|?(?:\\ *(?::?-+:?|::)?\\ *\\|)+   # or separated by pipe
   )
-  (?:\\ *(?::?-+:?|::)\\ *)?           # maybe w/o trailing pipe
+  (?:\\ *(?::?-+:?|::)?\\ *)?           # maybe w/o trailing pipe
   \\ *                         # maybe trailing whitespace
   \\r?\\n                       # newline
 )

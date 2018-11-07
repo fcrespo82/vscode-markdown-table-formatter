@@ -50,10 +50,12 @@ export function formatTable(
 
     const justify = splitCells(stripTailPipes(formatline)).map(cell => {
         const trimmed = cell.trim();
+        if (trimmed === "") {
+            return tableJustMap[settings.defaultTableJustification];
+        }
         const first = trimmed[0];
         const last = trimmed[trimmed.length - 1];
         const ends = (first || ':') + (last || '-');
-
         if (ends === '--') {
             return tableJustMap[settings.defaultTableJustification];
         } else {

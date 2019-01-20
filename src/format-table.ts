@@ -15,7 +15,7 @@ function padding(len: number, str: string = ' ') {
 }
 const stripTailPipes = (str: string) => str.trim().replace(/(^\||\|$)/g, '');
 const splitCells = (str: string) => {
-    return str.split(/\|(?!`)/);
+    return str.match(/((?:[^`|]|(?:`[^`]*`)|(?:`[^`]*$))+)/g) || []
 };
 const addTailPipes = (str: string) => `|${str}|`;
 const joinCells = (arr: string[]) => arr.join('|');

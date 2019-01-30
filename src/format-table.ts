@@ -15,7 +15,31 @@ function padding(len: number, str: string = ' ') {
 }
 const stripTailPipes = (str: string) => str.trim().replace(/(^\||\|$)/g, '');
 const splitCells = (str: string) => {
-    return str.split(/\|(?!`)/);
+    var items: string[] = [];
+    var nested = false;
+    var buffer: string = '';
+    for (var i = 0; i <= str.length; i++) {
+        if ((str[i] === '|' && !nested) || i == str.length) {
+            if (buffer.length > 0) {
+                items.push(buffer.trim());
+                buffer = '';
+                continue;
+            }
+        }
+        else if (str[i] === '`') {
+            buffer += str[i];
+            if (!nested) {
+                nested = true;
+            } else {
+                nested = false;
+            }
+            continue;
+        } else {
+            buffer += str[i];
+        }
+    }
+
+    return items;
 };
 const addTailPipes = (str: string) => `|${str}|`;
 const joinCells = (arr: string[]) => arr.join('|');

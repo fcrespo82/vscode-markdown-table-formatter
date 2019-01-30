@@ -50,7 +50,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
         while ((matches = tableRegex.exec(text)) !== null) {
             let offset = document.offsetAt(range.start);
             let start = document.positionAt(offset+matches.index);
-            let text = matches[0].trim();
+            let text = matches[0].replace(/^\n+|\n+$/g,'');
             let end = document.positionAt(offset+matches.index+text.length);
             let nrange = new vscode.Range(start, end);
             items.push({ match: matches, range: nrange });

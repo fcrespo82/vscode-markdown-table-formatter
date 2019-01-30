@@ -44,9 +44,9 @@ export function formatTable(
         data = text[3];
     } else {
         formatrow = 1;
-        data = text[1] + text[3];
+        data = text[1] + text[3].replace(/^\n+|\n+$/g, '');
     }
-    const lines = data.trim().split(/\r?\n/);
+    const lines = data.split(/\r?\n/);
 
     const justify = splitCells(stripTailPipes(formatline)).map(cell => {
         const trimmed = cell.trim();

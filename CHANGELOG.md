@@ -1,3 +1,9 @@
+## 1.4.1
+
+* [FIX] Ignore pipe symbols between pairs of backtick #4
+* [FIX] Repeat character inserted at end of table on format #6
+
+
 ## 1.4.0
 
 * [ADD] Configuration to remove the colons from format line if the justification is the same as default (default: false)

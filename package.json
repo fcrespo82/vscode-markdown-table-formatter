@@ -119,11 +119,11 @@
     },
     "devDependencies": {
         "@types/mocha": "^2.2.42",
-        "@types/node": "^7.0.62",
+        "@types/node": "^7.10.6",
         "@types/wcwidth": "^1.0.0",
         "@types/xregexp": "^3.0.29",
-        "tslint": "^5.8.0",
-        "typescript": "^2.8.3",
-        "vscode": "^1.1.22"
+        "tslint": "^5.16.0",
+        "typescript": "^2.9.2",
+        "vscode": "^1.1.34"
     }
 }

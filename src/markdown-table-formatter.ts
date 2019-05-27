@@ -15,7 +15,7 @@ vscode.workspace.onDidChangeConfiguration(e => {
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: vscode.ExtensionContext): Promise<boolean> {
 
     const commandEnable = vscode.commands.registerTextEditorCommand("markdown-table-formatter.enableForCurrentScope", (editor, edit) => {
         const scopes = config.get<string[]>('markdownGrammarScopes', []);
@@ -30,6 +30,8 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(commandEnable);
     registerScopes();
+
+    return Promise.resolve(true);
 }
 
 function registerScopes() {
@@ -43,5 +45,6 @@ function registerScopes() {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {
+export function deactivate(): Promise<boolean> {
+    return Promise.resolve(true);
 }

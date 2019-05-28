@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
-import { tableRegex } from './regex';
 import { formatTable } from './format-table';
 import { MarkdownTableFormatterSettings } from './interfaces';
+import { tableRegex } from './regex';
 import XRegExp = require('xregexp');
 
 function getSettings(): MarkdownTableFormatterSettings {
@@ -9,12 +9,12 @@ function getSettings(): MarkdownTableFormatterSettings {
     let vscodeConfig = vscode.workspace.getConfiguration('markdown-table-formatter');
     // Forcing cast because defaults are defined in packages.json, so always have a value
     return {
-        spacePadding: <number>vscodeConfig.get<number>('spacePadding'),
-        keepFirstAndLastPipes: <boolean>vscodeConfig.get<boolean>('keepFirstAndLastPipes'),
-        defaultTableJustification: <string>vscodeConfig.get<string>('defaultTableJustification'),
-        markdownGrammarScopes: <string[]>vscodeConfig.get<string[]>('markdownGrammarScopes'),
-        limitLastColumnPadding: <boolean>vscodeConfig.get<boolean>('limitLastColumnPadding'),
-        removeColonsIfSameAsDefault: <boolean>vscodeConfig.get<boolean>('removeColonsIfSameAsDefault')
+        spacePadding: vscodeConfig.get<number>('spacePadding')!,
+        keepFirstAndLastPipes: vscodeConfig.get<boolean>('keepFirstAndLastPipes')!,
+        defaultTableJustification: vscodeConfig.get<string>('defaultTableJustification')!,
+        markdownGrammarScopes: vscodeConfig.get<string[]>('markdownGrammarScopes')!,
+        limitLastColumnPadding: vscodeConfig.get<boolean>('limitLastColumnPadding')!,
+        removeColonsIfSameAsDefault: vscodeConfig.get<boolean>('removeColonsIfSameAsDefault')!
     };
 }
 

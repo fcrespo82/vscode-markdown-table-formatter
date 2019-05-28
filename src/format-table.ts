@@ -105,7 +105,7 @@ export function formatTable(
     );
 
     if (settings.limitLastColumnPadding) {
-        const preferredLineLength = <number>vscode.workspace.getConfiguration('editor').get('wordWrapColumn');
+        const preferredLineLength = vscode.workspace.getConfiguration('editor').get<number>('wordWrapColumn', 80);
         const sum = (arr: number[]) => arr.reduce((x, y) => x + y, 0);
         const wsum = sum(widths);
         if (wsum > preferredLineLength) {

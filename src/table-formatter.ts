@@ -6,15 +6,15 @@ import XRegExp = require('xregexp');
 
 function getSettings(): MarkdownTableFormatterSettings {
     // This iplementation should be overrided for any custom editor/platform the plugin is used
-    let vscodeConfig = vscode.workspace.getConfiguration('markdown-table-formatter');
+    let mtf_config = vscode.workspace.getConfiguration('markdown-table-formatter');
     // Forcing cast because defaults are defined in packages.json, so always have a value
     return {
-        spacePadding: vscodeConfig.get<number>('spacePadding')!,
-        keepFirstAndLastPipes: vscodeConfig.get<boolean>('keepFirstAndLastPipes')!,
-        defaultTableJustification: vscodeConfig.get<string>('defaultTableJustification')!,
-        markdownGrammarScopes: vscodeConfig.get<string[]>('markdownGrammarScopes')!,
-        limitLastColumnPadding: vscodeConfig.get<boolean>('limitLastColumnPadding')!,
-        removeColonsIfSameAsDefault: vscodeConfig.get<boolean>('removeColonsIfSameAsDefault')!
+        spacePadding: mtf_config.get<number>('spacePadding', 1),
+        keepFirstAndLastPipes: mtf_config.get<boolean>('keepFirstAndLastPipes', true),
+        defaultTableJustification: mtf_config.get<string>('defaultTableJustification', 'Left'),
+        markdownGrammarScopes: mtf_config.get<string[]>('markdownGrammarScopes', ['markdown']),
+        limitLastColumnPadding: mtf_config.get<boolean>('limitLastColumnPadding', false),
+        removeColonsIfSameAsDefault: mtf_config.get<boolean>('removeColonsIfSameAsDefault', false)
     };
 }
 

@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { tableRegex } from './regex';
 import { formatTable } from './format-table';
 import { MarkdownTableFormatterSettings } from './interfaces';
+import XRegExp = require('xregexp');
 
 function getSettings(): MarkdownTableFormatterSettings {
     // This iplementation should be overrided for any custom editor/platform the plugin is used
@@ -42,18 +43,19 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
         return edits;
     }
 
-    private tablesIn(document: vscode.TextDocument, range: vscode.Range) {
-        var items: any = [];
+    private tablesIn(document: vscode.TextDocument, range: vscode.Range): any[] {
+        var items: any[] = [];
 
         const text = document.getText(range);
-        var matches;
-        while ((matches = tableRegex.exec(text)) !== null) {
+        var pos = 0, match;
+        while ((match = XRegExp.exec(text, tableRegex, pos, false))) {
+            pos = match.index + match[0].length;
             let offset = document.offsetAt(range.start);
-            let start = document.positionAt(offset+matches.index);
-            let text = matches[0].replace(/^\n+|\n+$/g,'');
-            let end = document.positionAt(offset+matches.index+text.length);
-            let nrange = new vscode.Range(start, end);
-            items.push({ match: matches, range: nrange });
+            let start = document.positionAt(offset + match.index);
+            let text = match[0].replace(/^\n+|\n+$/g, '');
+            let end = document.positionAt(offset + match.index + text.length);
+            let new_range = new vscode.Range(start, end);
+            items.push({ match: match, range: new_range });
         }
         return items;
     }

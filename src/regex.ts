@@ -1,14 +1,14 @@
 import XRegExp = require('xregexp');
 
 export const tableRegex = XRegExp(`\
-( # header capture
+(?<header> # header capture
   (?:
     (?:[^\\r\\n]*?\\|[^\\r\\n]*)       # line w/ at least one pipe
     \\ *                       # maybe trailing whitespace
   )?                          # maybe header
   (?:\\r?\\n|^)                 # newline
 )
-( # format capture
+(?<format> # format capture
   (?:
     \\|\\ *(?::?-+:?|::)?\\ *            # format starting w/pipe
     |\\|?(?:\\ *(?::?-+:?|::)?\\ *\\|)+   # or separated by pipe
@@ -17,7 +17,7 @@ export const tableRegex = XRegExp(`\
   \\ *                         # maybe trailing whitespace
   \\r?\\n                       # newline
 )
-( # body capture
+(?<body> # body capture
   (?:
     (?:[^\\r\\n]*?\\|[^\\r\\n]*)       # line w/ at least one pipe
     \\ *                       # maybe trailing whitespace

@@ -3,6 +3,7 @@ import { formatTable } from './format-table';
 import { MarkdownTableFormatterSettings } from './interfaces';
 import { tableRegex } from './regex';
 import XRegExp = require('xregexp');
+import { MDTable } from './Table';
 
 function getSettings(): MarkdownTableFormatterSettings {
     // This iplementation should be overrided for any custom editor/platform the plugin is used
@@ -49,12 +50,17 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
         const text = document.getText(range);
         var pos = 0, match;
         while ((match = XRegExp.exec(text, tableRegex, pos, false))) {
+            
             pos = match.index + match[0].length;
             let offset = document.offsetAt(range.start);
             let start = document.positionAt(offset + match.index);
             let text = match[0].replace(/^\n+|\n+$/g, '');
             let end = document.positionAt(offset + match.index + text.length);
             let new_range = new vscode.Range(start, end);
+            
+            var t = new MDTable(offset, start, end, text);
+
+
             items.push({ match: match, range: new_range });
         }
         return items;

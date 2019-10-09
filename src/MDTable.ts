@@ -1,6 +1,7 @@
 import { Range, Position, workspace } from "vscode";
-import { splitCells, stripHeaderTailPipes, addTailPipes, padding, joinCells, swidth, tableJustification, columnSizes, formatLines } from "./utils";
+import { splitCells, stripHeaderTailPipes, addTailPipes, padding, joinCells, swidth, tableJustification, columnSizes, formatLines, fixJustification } from "./utils";
 import { MarkdownTableFormatterSettings } from "./interfaces";
+import { settings } from "cluster";
 
 export class MDTable {
 	private offset: number;
@@ -50,8 +51,23 @@ export class MDTable {
 			? addTailPipes
 			: (x: string) => x;
 
-		return formatLines([this.header, this.format, ...this.body], this.format, this.columnSizes);
-
+		let format = this.format.map((item, i) => {
+			const [front, back] = fixJustification(item);
+			if (settings.removeColonsIfSameAsDefault && (fixJustification(item) === tableJustification[settings.defaultTableJustification])) {
+				return padding(columnSizes(this.header, this.body, settings.trimValues)[i], '-');
+			}
+			return front + padding(columnSizes(this.header, this.body, settings.trimValues)[i] - 2, '-') + back;
+		});
+		let formatted = formatLines([this.header, format, ...this.body], this.format, columnSizes(this.header, this.body, settings.trimValues), settings).map(line => {
+			const cellPadding = padding(settings.spacePadding);
+			return line.map(cell => {
+				if (settings.trimValues) {
+					cell = cell.trim();
+				}
+				return `${cellPadding}${cell}${cellPadding}`;
+			});
+		}).map(joinCells).map(addTailPipesIfNeeded);
+		return formatted;
 		// 	let formatline = this.text.trim();
 		// 	const headerline = text[1].trim();
 

@@ -1,4 +1,4 @@
-|header a|header b|
+|header a       |header b|
 |-|-|
 |column a 1|column b 1|
 |column a 2|column b 2|
@@ -16,3 +16,9 @@ Sed lacinia tortor et ultrices semper.
 | Topic        | Status | Notes |
 |--------------|--------|-------|
 | Is Iot used? | `NO`   |       |
+
+
+header a       ,header b  
+-              ,-         
+column a 1     ,column b 1
+column a 2     ,column b 2

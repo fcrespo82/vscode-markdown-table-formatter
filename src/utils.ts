@@ -1,4 +1,5 @@
 import wcswidth = require('wcwidth');
+import { MarkdownTableFormatterSettings } from './interfaces';
 
 export let tableJustification: { [key: string]: string } = {
 	Left: ':-',
@@ -75,23 +76,32 @@ export let columnSizes = (header: string[], body: string[][], trim = false) => {
 	});
 };
 
-export let formatLine = (line: string[], format: string[], size: number[]) => {
-	return line.map((value, index, _) => {
+export let formatLine = (line: string[], format: string[], size: number[], settings: MarkdownTableFormatterSettings) => {
+	line = line.map((column, index, _) => {
 		let columnSize = size[index];
 		let columnJustification = format[index];
-		let text = value;
-		return justify(value, columnJustification, columnSize);
+		let text = justify(column, columnJustification, columnSize, settings);
+		return text;
 	});
+	return line;
 };
 
-export let formatLines = (lines: string[][], format: string[], size: number[]) => {
-	return lines.map(line => {
-		return formatLine(line, format, size);
+export let formatLines = (lines: string[][], format: string[], size: number[], settings: MarkdownTableFormatterSettings) => {
+	lines = lines.map(line => {
+		return formatLine(line, format, size, settings);
 	});
+	return lines;
 };
 
-export let justify = (text: string, justification: string, length: number) => {
+export let justify = (text: string, justification: string, length: number, settings: MarkdownTableFormatterSettings) => {
+	if (settings.trimValues) {
+		text = text.trim();
+	}
+	length = Math.max(length - swidth(text), 0);
 	let justifySwitch = fixJustification(justification);
+	if (justifySwitch === "--") {
+		justifySwitch = tableJustification[settings.defaultTableJustification];
+	}
 	switch (justifySwitch) {
 		case '::':
 			return padding(length / 2) + text + padding((length + 1) / 2);
@@ -104,7 +114,7 @@ export let justify = (text: string, justification: string, length: number) => {
 	}
 };
 
-let fixJustification = (cell: string) => {
+export let fixJustification = (cell: string) => {
 	const trimmed = cell.trim();
 	if (trimmed === "") {
 		return "--";

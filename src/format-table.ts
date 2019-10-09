@@ -1,59 +1,10 @@
-import wcswidth = require('wcwidth');
+
 import * as vscode from 'vscode';
 import { MarkdownTableFormatterSettings } from './interfaces';
+import { stripHeaderTailPipes, splitCells, padding, joinCells, swidth, addTailPipes, tableJustification } from './utils';
 
-function swidth(str: string) {
-    // zero-width Unicode characters that we should ignore for
-    // purposes of computing string "display" width
-    const zwcrx = /[\u200B-\u200D\uFEFF\u00AD]/g;
-    const match = str.match(zwcrx);
-    return wcswidth(str) - (match ? match.length : 0);
-}
+export function formatTable(text: RegExpExecArray, settings: MarkdownTableFormatterSettings) {
 
-function padding(len: number, str: string = ' ') {
-    return str.repeat(len);
-}
-const stripTailPipes = (str: string) => str.trim().replace(/(^\||\|$)/g, '');
-const splitCells = (str: string) => {
-    var items: string[] = [];
-    var nested = false;
-    var buffer: string = '';
-    for (var i = 0; i <= str.length; i++) {
-        if ((str[i] === '|' && !nested) || i == str.length) {
-            if (buffer.length > 0) {
-                items.push(buffer.trim());
-                buffer = '';
-                continue;
-            }
-        }
-        else if (str[i] === '`') {
-            buffer += str[i];
-            if (!nested) {
-                nested = true;
-            } else {
-                nested = false;
-            }
-            continue;
-        } else {
-            buffer += str[i];
-        }
-    }
-
-    return items;
-};
-const addTailPipes = (str: string) => `|${str}|`;
-const joinCells = (arr: string[]) => arr.join('|');
-
-const tableJustMap: { [key: string]: string } = {
-    Left: ':-',
-    Center: '::',
-    Right: '-:'
-};
-
-export function formatTable(
-    text: RegExpExecArray,
-    settings: MarkdownTableFormatterSettings,
-) {
     const addTailPipesIfNeeded = settings.keepFirstAndLastPipes
         ? addTailPipes
         : (x: string) => x;
@@ -72,7 +23,7 @@ export function formatTable(
     }
     const lines = data.split(/\r?\n/);
 
-    const justify = splitCells(stripTailPipes(formatline)).map(cell => {
+    const justify = splitCells(stripHeaderTailPipes(formatline)).map(cell => {
         const trimmed = cell.trim();
         if (trimmed === "") {
             return "--";
@@ -89,7 +40,7 @@ export function formatTable(
     const cellPadding = padding(settings.spacePadding);
 
     const content = lines.map(line => {
-        const cells = splitCells(stripTailPipes(line));
+        const cells = splitCells(stripHeaderTailPipes(line));
         if (columns - cells.length > 0) {
             // pad rows to have `columns` cells
             cells.push(...Array(columns - cells.length).fill(''));
@@ -122,7 +73,7 @@ export function formatTable(
         const length = Math.max(widths[col] - swidth(str), 0);
         var justifySwitch = justify[col];
         if (justifySwitch === "--") {
-            justifySwitch = tableJustMap[settings.defaultTableJustification];
+            justifySwitch = tableJustification[settings.defaultTableJustification];
         }
         switch (justifySwitch) {
             case '::':
@@ -144,7 +95,7 @@ export function formatTable(
         joinCells(
             colArr.map((_x, i) => {
                 const [front, back] = justify[i];
-                if (settings.removeColonsIfSameAsDefault && (justify[i] === tableJustMap[settings.defaultTableJustification])) {
+                if (settings.removeColonsIfSameAsDefault && (justify[i] === tableJustification[settings.defaultTableJustification])) {
                     return padding(widths[i], '-');
                 }
                 return front + padding(widths[i] - 2, '-') + back;

@@ -111,7 +111,9 @@
         "webpack": "webpack --mode development",
         "webpack-dev": "webpack --mode development --watch",
         "test-compile": "tsc -p ./",
-        "lint": "tslint -p ./"
+        "lint": "tslint -p ./",
+        "pretest": "npm run compile",
+        "test": "node ./out/test/runTest.js"
     },
     "dependencies": {
         "wcwidth": "1.*",
@@ -120,13 +122,15 @@
     "devDependencies": {
         "@types/mocha": "^2.2.42",
         "@types/node": "^7.10.6",
+        "@types/glob": "7.1.1",
         "@types/wcwidth": "^1.0.0",
         "@types/xregexp": "^3.0.29",
+        "@types/vscode": "^1.1.34",
         "ts-loader": "^6.0.0",
         "tslint": "^5.16.0",
         "typescript": "^3.4.5",
-        "@types/vscode": "^1.1.34",
         "webpack": "^4.31.0",
-        "webpack-cli": "^3.3.2"
+        "webpack-cli": "^3.3.2",
+        "vscode-test": "^1.1.34"
     }
 }

@@ -23,7 +23,8 @@
             "runtimeExecutable": "${execPath}",
             "args": [
                 "--extensionDevelopmentPath=${workspaceFolder}",
-                "--extensionTestsPath=${workspaceFolder}/out/test"
+                "--extensionTestsPath=${workspaceFolder}/out/test",
+                "${workspaceFolder}/test/tables.md"
             ],
             "outFiles": [
                 "${workspaceFolder}/out/test/**/*.js"

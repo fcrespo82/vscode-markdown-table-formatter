@@ -5,7 +5,7 @@ import { tableRegex } from './regex';
 import XRegExp = require('xregexp');
 import { MDTable } from './MDTable';
 
-function getSettings(): MarkdownTableFormatterSettings {
+export function getSettings(): MarkdownTableFormatterSettings {
     // This iplementation should be overrided for any custom editor/platform the plugin is used
     let mtf_config = vscode.workspace.getConfiguration('markdown-table-formatter');
 

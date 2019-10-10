@@ -21,8 +21,8 @@ export function activate(context: vscode.ExtensionContext): Promise<boolean> {
         const scopes = config.get<string[]>('markdownGrammarScopes', []);
         if (!scopes.includes(editor.document.languageId)) {
             scopes.push(editor.document.languageId);
-            vscode.languages.registerDocumentFormattingEditProvider(editor.document.languageId, markdownTableFormatterProvider);
-            vscode.languages.registerDocumentRangeFormattingEditProvider(editor.document.languageId, markdownTableFormatterProvider);
+            vscode.languages.registerDocumentFormattingEditProvider({ scheme: 'file', language: editor.document.languageId }, markdownTableFormatterProvider);
+            vscode.languages.registerDocumentRangeFormattingEditProvider({ scheme: 'file', language: editor.document.languageId }, markdownTableFormatterProvider);
             config.update("markdownGrammarScopes", scopes, true);
             vscode.window.showInformationMessage(`Markdown table formatter enabled for '${editor.document.languageId}' language!`);
         }
@@ -38,8 +38,8 @@ function registerScopes() {
     if (enable) {
         const scopes = config.get<string[]>('markdownGrammarScopes', []);
         scopes.forEach(scope => {
-            vscode.languages.registerDocumentFormattingEditProvider(scope, markdownTableFormatterProvider);
-            vscode.languages.registerDocumentRangeFormattingEditProvider(scope, markdownTableFormatterProvider);
+            vscode.languages.registerDocumentFormattingEditProvider({ scheme: 'file', language: scope }, markdownTableFormatterProvider);
+            vscode.languages.registerDocumentRangeFormattingEditProvider({ scheme: 'file', language: scope }, markdownTableFormatterProvider);
         });
     }
 }

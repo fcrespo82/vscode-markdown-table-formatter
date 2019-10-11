@@ -1,9 +1,8 @@
 import * as vscode from 'vscode';
-import { formatTable } from './format-table';
 import { MarkdownTableFormatterSettings } from './interfaces';
+import { MDTable } from './MDTable';
 import { tableRegex } from './regex';
 import XRegExp = require('xregexp');
-import { MDTable } from './MDTable';
 
 export function getSettings(): MarkdownTableFormatterSettings {
     // This iplementation should be overrided for any custom editor/platform the plugin is used
@@ -38,15 +37,15 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
             vscode.window.showWarningMessage(`Markdown table formatter is not enabled for '${document.languageId}' language!`);
             return edits;
         }
-        let tables: any[] = this.tablesIn(document, range);
+        let tables: MDTable[] = this.tablesIn(document, range);
         tables.forEach(table => {
-            edits.push(new vscode.TextEdit(table.range, formatTable(table.match, getSettings())));
+            edits.push(new vscode.TextEdit(table.range, table.formatted(getSettings())));
         });
         return edits;
     }
 
-    private tablesIn(document: vscode.TextDocument, range: vscode.Range): any[] {
-        var items: any[] = [];
+    private tablesIn(document: vscode.TextDocument, range: vscode.Range): MDTable[] {
+        var items: MDTable[] = [];
 
         const text = document.getText(range);
         var pos = 0, match;
@@ -56,13 +55,8 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
             let start = document.positionAt(offset + match.index);
             let text = match[0].replace(/^\n+|\n+$/g, '');
             let end = document.positionAt(offset + match.index + text.length);
-            let new_range = new vscode.Range(start, end);
-
             let table = new MDTable(offset, start, end, text);
-            let formatted = table.formatted(getSettings());
-
-
-            items.push({ match: match, range: new_range });
+            items.push(table);
         }
         return items;
     }

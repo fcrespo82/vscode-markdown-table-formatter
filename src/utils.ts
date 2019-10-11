@@ -90,9 +90,7 @@ export let formatLines = (lines: string[][], format: string[], size: number[], s
 };
 
 export let justify = (text: string, justification: string, length: number, settings: MarkdownTableFormatterSettings) => {
-
 	text = text.trim();
-
 	length = Math.max(length - swidth(text), 0);
 	let justifySwitch = fixJustification(justification);
 	if (justifySwitch === "--") {

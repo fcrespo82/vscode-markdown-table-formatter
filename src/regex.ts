@@ -25,5 +25,5 @@ export const tableRegex = XRegExp(`\
   )+ # at least one
 )
 `,
-    'gx',
+  'gx',
 );

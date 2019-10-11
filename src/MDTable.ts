@@ -1,8 +1,6 @@
-import { Range, Position, workspace } from "vscode";
-import { splitCells, stripHeaderTailPipes, addTailPipes, padding, joinCells, swidth, tableJustification, columnSizes, formatLines, fixJustification } from "./utils";
+import { Position, Range } from "vscode";
 import { MarkdownTableFormatterSettings } from "./interfaces";
-import { settings } from "cluster";
-import { join } from "path";
+import { addTailPipes, columnSizes, fixJustification, formatLines, joinCells, padding, splitCells, stripHeaderTailPipes, tableJustification } from "./utils";
 
 export class MDTable {
 	private offset: number;
@@ -81,7 +79,7 @@ export class MDTable {
 				return `${cellPadding}${cell}${cellPadding}`;
 			});
 		}).map(joinCells).map(addTailPipesIfNeeded);
-		
+
 		let formatted = [header, formatLine, ...body];
 
 		return formatted.join('\n');

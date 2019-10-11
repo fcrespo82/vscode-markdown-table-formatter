@@ -2,6 +2,7 @@ import { Range, Position, workspace } from "vscode";
 import { splitCells, stripHeaderTailPipes, addTailPipes, padding, joinCells, swidth, tableJustification, columnSizes, formatLines, fixJustification } from "./utils";
 import { MarkdownTableFormatterSettings } from "./interfaces";
 import { settings } from "cluster";
+import { join } from "path";
 
 export class MDTable {
 	private offset: number;
@@ -51,47 +52,37 @@ export class MDTable {
 			? addTailPipes
 			: (x: string) => x;
 
-		let format = this.format.map((item, i) => {
-			const [front, back] = fixJustification(item);
-			if (settings.removeColonsIfSameAsDefault && (fixJustification(item) === tableJustification[settings.defaultTableJustification])) {
-				return padding(columnSizes(this.header, this.body, settings.trimValues)[i], '-');
-			}
-			return front + padding(columnSizes(this.header, this.body, settings.trimValues)[i] - 2, '-') + back;
-		});
-
-
-		let header = formatLines([this.header], this.format, columnSizes(this.header, this.body, settings.trimValues), settings).map(line => {
+		let header = formatLines([this.header], this.format, columnSizes(this.header, this.body), settings).map(line => {
 			const cellPadding = padding(settings.spacePadding);
 			return line.map(cell => {
-				if (settings.trimValues) {
-					cell = cell.trim();
-				}
+				// if (settings.trimValues) {
+				// 	cell = cell.trim();
+				// }
 				return `${cellPadding}${cell}${cellPadding}`;
 			});
 		}).map(joinCells).map(addTailPipesIfNeeded);
 
-		let formatLine = formatLines([this.format], this.format, columnSizes(this.header, this.body, settings.trimValues), settings).map(line => {
-			const cellPadding = padding(settings.spacePadding);
-			return line.map(cell => {
-				if (settings.trimValues) {
-					cell = cell.trim();
+		let formatLine = formatLines([this.format], this.format, columnSizes(this.header, this.body), settings).map(line => {
+			return line.map((item, i) => {
+				const [front, back] = fixJustification(item);
+				if (settings.removeColonsIfSameAsDefault && (fixJustification(item) === tableJustification[settings.defaultTableJustification])) {
+					return padding(columnSizes(this.header, this.body)[i], '-');
 				}
-				return `${cell}`;
+				return front + padding(columnSizes(this.header, this.body)[i], '-') + back;
 			});
 		}).map(joinCells).map(addTailPipesIfNeeded);
 
-
-		let body = formatLines(this.body, this.format, columnSizes(this.header, this.body, settings.trimValues), settings).map(line => {
+		let body = formatLines(this.body, this.format, columnSizes(this.header, this.body), settings).map(line => {
 			const cellPadding = padding(settings.spacePadding);
 			return line.map(cell => {
-				if (settings.trimValues) {
-					cell = cell.trim();
-				}
+				// if (settings.trimValues) {
+				// 	cell = cell.trim();
+				// }
 				return `${cellPadding}${cell}${cellPadding}`;
 			});
 		}).map(joinCells).map(addTailPipesIfNeeded);
 		
-		let formatted = [header, formatLine, body];
+		let formatted = [header, formatLine, ...body];
 
 		return formatted.join('\n');
 	}

@@ -17,7 +17,6 @@ export function getSettings(): MarkdownTableFormatterSettings {
         markdownGrammarScopes: mtf_config.get<string[]>('markdownGrammarScopes', ['markdown']),
         limitLastColumnPadding: mtf_config.get<boolean>('limitLastColumnPadding', false),
         removeColonsIfSameAsDefault: mtf_config.get<boolean>('removeColonsIfSameAsDefault', false),
-        trimValues: mtf_config.get<boolean>('trimValues', true),
     };
 }
 

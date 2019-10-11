@@ -1,13 +1,10 @@
 import * as assert from 'assert';
-
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import * as vscode from 'vscode';
-import { MDTable } from '../../MDTable';
-import { MarkdownTableFormatterProvider, getSettings } from '../../table-formatter';
-import { testTables } from '../files/tables';
 import { MarkdownTableFormatterSettings } from '../../interfaces';
-// import * as myExtension from '../extension';
+import { MDTable } from '../../MDTable';
+import { testTables } from '../files/tables';
 
 suite('Extension Test Suite', () => {
 
@@ -17,16 +14,15 @@ suite('Extension Test Suite', () => {
 		defaultTableJustification: 'Left',
 		markdownGrammarScopes: ['markdown'],
 		limitLastColumnPadding: false,
-		removeColonsIfSameAsDefault: false,
-		trimValues: false,
+		removeColonsIfSameAsDefault: false
 	};
+
 	vscode.window.showInformationMessage('Starting all tests.');
 
-	test('Should format correctly', () => {
-		// testTables.forEach(testTable => {
-		console.log(testTables[0].test);
-		let table = new MDTable(0, new vscode.Position(0, 0), new vscode.Position(0, 0), testTables[0].test);
-		assert.equal(table.formatted(settings), testTables[0].expected);
-		// });
+	testTables.forEach((testTable, i) => {
+		test(`Should format correctly table ${i}`, () => {
+			let table = new MDTable(0, new vscode.Position(0, 0), new vscode.Position(0, 0), testTable.test);
+			assert.equal(table.formatted(settings), testTable.expected);
+		});
 	});
 });

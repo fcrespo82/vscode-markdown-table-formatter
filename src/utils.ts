@@ -56,14 +56,10 @@ export let splitCells = (str: string) => {
 	return items;
 };
 
-export let columnSizes = (header: string[], body: string[][], trim = false) => {
+export let columnSizes = (header: string[], body: string[][]) => {
 	return [header, ...body].map((line, i, a) => {
 		return line.map((column, ci, ca) => {
-			if (trim) {
-				return swidth(column.trim());
-			} else {
-				return swidth(column);
-			}
+			return swidth(column.trim());
 		});
 	}).reduce((previous, current, i, a) => {
 		return previous.map((column, index, a) => {
@@ -94,9 +90,9 @@ export let formatLines = (lines: string[][], format: string[], size: number[], s
 };
 
 export let justify = (text: string, justification: string, length: number, settings: MarkdownTableFormatterSettings) => {
-	if (settings.trimValues) {
-		text = text.trim();
-	}
+
+	text = text.trim();
+
 	length = Math.max(length - swidth(text), 0);
 	let justifySwitch = fixJustification(justification);
 	if (justifySwitch === "--") {
@@ -123,4 +119,4 @@ export let fixJustification = (cell: string) => {
 	const last = trimmed[trimmed.length - 1];
 	const ends = (first || ':') + (last || '-');
 	return ends;
-}
+};

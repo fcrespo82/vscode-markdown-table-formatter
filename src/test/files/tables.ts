@@ -18,7 +18,8 @@ export let testTables = [
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: false
 		}
 	},
 	{
@@ -40,7 +41,8 @@ export let testTables = [
 			defaultTableJustification: 'Center',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: false
 		}
 	},
 	{
@@ -62,7 +64,8 @@ export let testTables = [
 			defaultTableJustification: 'Right',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: false
 		}
 	},
 	{
@@ -84,7 +87,8 @@ export let testTables = [
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: true
+			removeColonsIfSameAsDefault: true,
+			globalColumnSizes: false
 		}
 	},
 	{
@@ -106,7 +110,8 @@ export let testTables = [
 			defaultTableJustification: 'Center',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: true
+			removeColonsIfSameAsDefault: true,
+			globalColumnSizes: false
 		}
 	},
 	{
@@ -128,7 +133,8 @@ export let testTables = [
 			defaultTableJustification: 'Right',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: true
+			removeColonsIfSameAsDefault: true,
+			globalColumnSizes: false
 		}
 	},
 	{
@@ -150,7 +156,8 @@ export let testTables = [
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: false
 		}
 	},
 	{
@@ -172,7 +179,8 @@ export let testTables = [
 			defaultTableJustification: 'Center',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: false
 		}
 	},
 	{
@@ -194,7 +202,8 @@ export let testTables = [
 			defaultTableJustification: 'Right',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: false
 		}
 	},
 	{
@@ -216,7 +225,8 @@ export let testTables = [
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: false
 		}
 	},
 	{
@@ -238,7 +248,8 @@ export let testTables = [
 			defaultTableJustification: 'Center',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: false
 		}
 	},
 	{
@@ -260,7 +271,8 @@ export let testTables = [
 			defaultTableJustification: 'Right',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: false
 		}
 	},
 	{
@@ -280,7 +292,8 @@ export let testTables = [
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: false
 		}
 	},
 	{
@@ -300,7 +313,8 @@ export let testTables = [
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: false
 		}
 	},
 	{
@@ -320,7 +334,8 @@ export let testTables = [
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: false
 		}
 	},
 	{
@@ -341,7 +356,8 @@ export let testTables = [
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: false
 		}
 	},
 	{
@@ -360,7 +376,8 @@ export let testTables = [
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: false
 		}
 	},
 	{
@@ -379,7 +396,8 @@ export let testTables = [
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: false
 		}
 	},
 	{
@@ -477,7 +495,35 @@ export let testTables = [
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: false
+		}
+	},
+	{
+		input: `\
+|Small a|Small b|
+|:-|:-|
+|L:1 C:A|L:1 C:B|
+
+|Large header a|Large header b|
+|:-|:-|
+|Line:1 Column:A|Line:1 Column:B|`,
+		expected: `\
+| Small a         | Small b         |
+|:----------------|:----------------|
+| L:1 C:A         | L:1 C:B         |
+
+| Large header a  | Large header b  |
+|:----------------|:----------------|
+| Line:1 Column:A | Line:1 Column:B |`,
+		settings: {
+			spacePadding: 1,
+			keepFirstAndLastPipes: true,
+			defaultTableJustification: 'Left',
+			markdownGrammarScopes: ['markdown'],
+			limitLastColumnPadding: false,
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: true
 		}
 	}
 ];

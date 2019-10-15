@@ -11,6 +11,7 @@ export class MDTable {
 	readonly format: string[] = [];
 	readonly body: string[][] = [];
 	readonly range: Range;
+	private _columnSizes: number[] = [];
 
 	get columns() {
 		return this.header.length;
@@ -25,7 +26,10 @@ export class MDTable {
 	}
 
 	get columnSizes() {
-		return columnSizes(this.header, this.body);
+		return this._columnSizes;
+	}
+	set columnSizes(value) {
+		this._columnSizes = value;
 	}
 
 	constructor(offset: number, start: Position, end: Position, text: string) {
@@ -43,6 +47,8 @@ export class MDTable {
 		this.body = reversed.reverse().map((lineBody) => {
 			return splitCells(stripHeaderTailPipes(lineBody));
 		});
+
+		this._columnSizes = columnSizes(this.header, this.body);
 	}
 
 	formatted = (settings: MarkdownTableFormatterSettings) => {
@@ -50,24 +56,24 @@ export class MDTable {
 			? addTailPipes
 			: (x: string) => x;
 
-		let header = formatLines([this.header], this.format, columnSizes(this.header, this.body), settings).map(line => {
+		let header = formatLines([this.header], this.format, this.columnSizes, settings).map(line => {
 			let cellPadding = padding(settings.spacePadding);
 			return line.map((cell, i) => {
 				return `${cellPadding}${cell}${cellPadding}`;
 			});
 		}).map(joinCells).map(addTailPipesIfNeeded);
 
-		let formatLine = formatLines([this.format], this.format, columnSizes(this.header, this.body), settings).map(line => {
+		let formatLine = formatLines([this.format], this.format, this.columnSizes, settings).map(line => {
 			return line.map((cell, i) => {
 				let [front, back] = fixJustification(cell);
 				if (settings.removeColonsIfSameAsDefault && (fixJustification(cell) === tableJustification[settings.defaultTableJustification])) {
-					return padding(columnSizes(this.header, this.body)[i] + (settings.spacePadding * 2), '-');
+					return padding(this.columnSizes[i] + (settings.spacePadding * 2), '-');
 				}
-				return front + padding(columnSizes(this.header, this.body)[i] + (settings.spacePadding * 2) - 2, '-') + back;
+				return front + padding(this.columnSizes[i] + (settings.spacePadding * 2) - 2, '-') + back;
 			});
 		}).map(joinCells).map(addTailPipesIfNeeded);
 
-		let body = formatLines(this.body, this.format, columnSizes(this.header, this.body), settings).map(line => {
+		let body = formatLines(this.body, this.format, this.columnSizes, settings).map(line => {
 			let cellPadding = padding(settings.spacePadding);
 			return line.map((cell, i) => {
 				return `${cellPadding}${cell}${cellPadding}`;

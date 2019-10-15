@@ -102,6 +102,12 @@
                     "description": "Do not pad the last column to more than your editor's preferredLineLength setting.",
                     "type": "boolean",
                     "default": false
+                },
+                "markdown-table-formatter.globalColumnSizes": {
+                    "title": "Keep columns sizes the same",
+                    "description": "Calculates the column sizes based on all tables on the document.",
+                    "type": "boolean",
+                    "default": false
                 }
             }
         }

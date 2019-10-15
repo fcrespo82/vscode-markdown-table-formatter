@@ -16,6 +16,7 @@ export function getSettings(): MarkdownTableFormatterSettings {
         markdownGrammarScopes: mtf_config.get<string[]>('markdownGrammarScopes', ['markdown']),
         limitLastColumnPadding: mtf_config.get<boolean>('limitLastColumnPadding', false),
         removeColonsIfSameAsDefault: mtf_config.get<boolean>('removeColonsIfSameAsDefault', false),
+        globalColumnSizes: mtf_config.get<boolean>('globalColumnSizes', false),
     };
 }
 
@@ -38,9 +39,27 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
             return edits;
         }
         let tables: MDTable[] = this.tablesIn(document, range);
-        tables.forEach(table => {
-            edits.push(new vscode.TextEdit(table.range, table.formatted(getSettings())));
-        });
+        if (getSettings().globalColumnSizes) {
+            let maxSize = tables.map(table => {
+                return table.columnSizes;
+            }).reduce((p, c) => {
+                let length = p.length > c.length ? p.length : c.length;
+                for (let index = 0; index < length; index++) {
+                    if (p[index] > c[index]) {
+                        c[index] = p[index];
+                    }
+                }
+                return c;
+            });
+            tables.forEach(table => {
+                table.columnSizes = maxSize;
+                edits.push(new vscode.TextEdit(table.range, table.formatted(getSettings())));
+            });
+        } else {
+            tables.forEach(table => {
+                edits.push(new vscode.TextEdit(table.range, table.formatted(getSettings())));
+            });
+        }
         return edits;
     }
 

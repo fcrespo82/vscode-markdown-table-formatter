@@ -46,36 +46,30 @@ export class MDTable {
 	}
 
 	formatted = (settings: MarkdownTableFormatterSettings) => {
-		const addTailPipesIfNeeded = settings.keepFirstAndLastPipes
+		let addTailPipesIfNeeded = settings.keepFirstAndLastPipes
 			? addTailPipes
 			: (x: string) => x;
 
 		let header = formatLines([this.header], this.format, columnSizes(this.header, this.body), settings).map(line => {
-			const cellPadding = padding(settings.spacePadding);
-			return line.map(cell => {
-				// if (settings.trimValues) {
-				// 	cell = cell.trim();
-				// }
+			let cellPadding = padding(settings.spacePadding);
+			return line.map((cell, i) => {
 				return `${cellPadding}${cell}${cellPadding}`;
 			});
 		}).map(joinCells).map(addTailPipesIfNeeded);
 
 		let formatLine = formatLines([this.format], this.format, columnSizes(this.header, this.body), settings).map(line => {
-			return line.map((item, i) => {
-				const [front, back] = fixJustification(item);
-				if (settings.removeColonsIfSameAsDefault && (fixJustification(item) === tableJustification[settings.defaultTableJustification])) {
-					return padding(columnSizes(this.header, this.body)[i], '-');
+			return line.map((cell, i) => {
+				let [front, back] = fixJustification(cell);
+				if (settings.removeColonsIfSameAsDefault && (fixJustification(cell) === tableJustification[settings.defaultTableJustification])) {
+					return padding(columnSizes(this.header, this.body)[i] + (settings.spacePadding * 2), '-');
 				}
-				return front + padding(columnSizes(this.header, this.body)[i], '-') + back;
+				return front + padding(columnSizes(this.header, this.body)[i] + (settings.spacePadding * 2) - 2, '-') + back;
 			});
 		}).map(joinCells).map(addTailPipesIfNeeded);
 
 		let body = formatLines(this.body, this.format, columnSizes(this.header, this.body), settings).map(line => {
-			const cellPadding = padding(settings.spacePadding);
-			return line.map(cell => {
-				// if (settings.trimValues) {
-				// 	cell = cell.trim();
-				// }
+			let cellPadding = padding(settings.spacePadding);
+			return line.map((cell, i) => {
 				return `${cellPadding}${cell}${cellPadding}`;
 			});
 		}).map(joinCells).map(addTailPipesIfNeeded);

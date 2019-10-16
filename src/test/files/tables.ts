@@ -685,7 +685,7 @@ export let testTables = [
 | Is source control used?           | NO               |                |
 | Are changes peer reviewed?        | PARTIAL          |                |`,
 		settings: {
-			spacePadding: 2,
+			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],

@@ -65,24 +65,34 @@ suite('Extension Test Suite', () => {
 						return table.formatted(testTable.settings || settings);
 					}).join('\n\n');
 				} if (testSettings.globalColumnSizes === 'Same table size') {
-					let maxColumns = tables.map(table => {
+					let maxTableWidth = tables.map(table => {
 						return table.columnSizes;
 					}).map(sizeArray => {
-						return sumArray(sizeArray);
+						return { size: sumArray(sizeArray), columns: sizeArray.length };
 					}).reduce((p, c) => {
-						return p > c ? p : c;
+						return p.size > c.size ? p : c;
 					});
 					let tableSizes = tables.map(table => {
 						return table.columnSizes;
 					}).map((sizeArray, i) => {
-						if (sumArray(sizeArray) !== maxColumns) {
+						console.log(`sizeArray:${sizeArray}`);
+						if (sumArray(sizeArray) !== maxTableWidth.size) {
+							let currentTableColumns = sizeArray.length;
 							return sizeArray.map(size => {
-								return Math.round((size / sumArray(sizeArray)) * maxColumns) - 1;
+								// let extraWidth = ((maxTableWidth.columns * settings.spacePadding) + maxTableWidth.columns + 1);
+								// let extraWithCurrentTable = ((currentTableColumns * settings.spacePadding) + currentTableColumns + 1);
+								// let widthAjust = (extraWithCurrentTable - extraWidth) / currentTableColumns;
+								// console.log(`extraWidth:${extraWidth}, extraWithCurrentTable:${extraWithCurrentTable}, currentTableColumns:${currentTableColumns}, widthAjust:${widthAjust}`);
+								console.log(`size:${size}, sumArray(sizeArray):${sumArray(sizeArray)}, maxTableWidth.size:${maxTableWidth.size}`);
+								let notAjusted = ((size / sumArray(sizeArray)) * maxTableWidth.size);
+								let ajustment = (maxTableWidth.columns - currentTableColumns);
+								let noRound = notAjusted + ajustment;
+								let result = Math.round(noRound);
+								console.log(`notAjusted:${notAjusted}, ajustment:${ajustment}, noRound:${noRound}, result:${result}`);
+								return result;
 							});
 						} else {
-							return sizeArray.map(size => {
-								return Math.round((size / sumArray(sizeArray)) * maxColumns);
-							});
+							return sizeArray;
 						}
 					});
 					formattedTables = tables.map((table, i) => {

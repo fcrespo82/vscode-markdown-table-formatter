@@ -97,24 +97,19 @@
                         "markdown"
                     ]
                 },
-                "markdown-table-formatter.limitLastColumnPadding": {
-                    "title": "Limit last column padding",
-                    "description": "Do not pad the last column to more than your editor's preferredLineLength setting.",
-                    "type": "boolean",
-                    "default": false
-                },
                 "markdown-table-formatter.globalColumnSizes": {
                     "title": "Keep columns sizes the same",
                     "description": "Calculates the column sizes based on all tables on the document.",
                     "type": "string",
                     "enum": [
+                        "Disabled",
                         "Same column size",
                         "Same table size"
                     ],
                     "items": {
                         "type": "string"
                     },
-                    "default": "Same column sizes"
+                    "default": "Disabled"
                 }
             }
         }

@@ -1,3 +1,11 @@
+## 2.0.0
+
+* [NEW] Global column sizes - options: Disabled, Same column size, Same table size (default: Disabled)
+<!-- * [NEW] Sort table -->
+<!-- * [NEW] Reorder columns -->
+* [REMOVED] Limit Last Column Padding - If you use this feature please let me know that I'll find a way to add it back. For now keep on the older version.
+
+
 ## 1.4.1
 
 * [FIX] Ignore pipe symbols between pairs of backtick #4
@@ -6,7 +14,7 @@
 
 ## 1.4.0
 
-* [ADD] Configuration to remove the colons from format line if the justification is the same as default (default: false)
+* [NEW] Configuration to remove the colons from format line if the justification is the same as default (default: false)
 * [FIX] Format tables that have no colons or dashes on the format line (e.g. |||)
 * [FIX] Configuration for `defaultTableJustification` type was wrong
 
@@ -29,7 +37,7 @@ The extensions was rewritten to take advantage of the Formatter provider VSCode 
     - Now it uses the config provided by VSCode
 * [REPLACED] Auto Select Entire Document
     - Now registers a formatter provider for entire document and for selection
-* [FIX] Sometimes, when formatting, a line was wrongly added.
+* [FIX] Sometimes, when formatting, a line was wrongly NEWed.
 
 
 ## 1.2.0

@@ -9,7 +9,7 @@
             "runtimeExecutable": "${execPath}",
             "args": [
                 "--extensionDevelopmentPath=${workspaceFolder}",
-                "${workspaceFolder}/test/tables.md"
+                "${workspaceFolder}/test/tables2.md"
             ],
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"
@@ -23,8 +23,7 @@
             "runtimeExecutable": "${execPath}",
             "args": [
                 "--extensionDevelopmentPath=${workspaceFolder}",
-                "--extensionTestsPath=${workspaceFolder}/out/test/suite/index",
-                "${workspaceFolder}/test/tables.md"
+                "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
             ],
             "outFiles": [
                 "${workspaceFolder}/out/test/**/*.js"

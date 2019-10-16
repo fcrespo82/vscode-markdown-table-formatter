@@ -18,10 +18,10 @@ Sed lacinia tortor et ultrices semper.
 | Is Iot used? | `NO`   |       |
 
 
-header a       ,header b  
--              ,-         
-column a 1     ,column b 1
-column a 2     ,column b 2
+header a       |header b  
+-              |-         
+column a 1     |column b 1
+column a 2     |column b 2
 
 |Left header|Center header |Right header|Default header|
 |:-|::|-:|-|

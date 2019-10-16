@@ -1,5 +1,9 @@
 import wcswidth = require('wcwidth');
+import { Range, TextDocument } from 'vscode';
 import { MarkdownTableFormatterSettings } from './interfaces';
+import { MDTable } from './MDTable';
+import { tableRegex } from './regex';
+import XRegExp = require('xregexp');
 
 export let tableJustification: { [key: string]: string } = {
 	Left: ':-',
@@ -36,7 +40,7 @@ export let splitCells = (str: string) => {
 	var buffer: string = '';
 	for (var i = 0; i <= str.length; i++) {
 		if ((str[i] === '|' && !nested) || i === str.length) {
-			if (buffer.length > 0) {
+			if (buffer.length >= 0) {
 				items.push(buffer);
 				buffer = '';
 				continue;
@@ -117,4 +121,92 @@ export let fixJustification = (cell: string) => {
 	const last = trimmed[trimmed.length - 1];
 	const ends = (first || ':') + (last || '-');
 	return ends;
+};
+
+export let sumArray = (array: number[]): number => {
+	return array.reduce((p, c) => p + c);
+};
+
+export let discoverMaxColumnSizes = (tables: MDTable[]): number[] => {
+	return tables.map(table => {
+		return table.columnSizes;
+	}).reduce((p, c) => {
+		let length = p.length > c.length ? p.length : c.length;
+		let previousBigger = p.length > c.length;
+		let result = p.length > c.length ? p : c;
+		for (let index = 0; index < length; index++) {
+			if (previousBigger) {
+				if (c[index] > p[index]) {
+					result[index] = c[index];
+				}
+			} else {
+				if (p[index] > c[index]) {
+					result[index] = p[index];
+				}
+			}
+		}
+		return result;
+	});
+};
+
+export let discoverMaxTableSizes = (tables: MDTable[], padding: number): number[][] => {
+	let tableInfo = tables.map(table => {
+		return { columnSizes: table.columnSizes, columns: table.columns };
+	});
+
+	let maxTableSize = tableInfo.reduce((p, c) => {
+		return sumArray(p.columnSizes) > sumArray(c.columnSizes) ? p : c;
+	});
+
+	return tableInfo.map(info => {
+		let unusableCharsMax = sumArray(maxTableSize.columnSizes) + (maxTableSize.columns * padding * 2) + (maxTableSize.columns + 1);
+		let unusableCharsCurrent = (info.columns * padding * 2) + (info.columns + 1);
+		let unusable = (unusableCharsMax - unusableCharsCurrent);
+
+		let quotient = Math.floor(unusable / info.columns);
+		let remainder = unusable % info.columns;
+		if (sumArray(info.columnSizes) !== sumArray(maxTableSize.columnSizes)) {
+
+			let missing = info.columnSizes.map(size => {
+				return quotient - size;
+			});
+			let adjusted = missing.map((qf, i) => {
+				if (qf > 0) {
+					return info.columnSizes[i] + qf;
+				} else {
+					return info.columnSizes[i] - qf;
+				}
+
+			});
+			let rev = adjusted.reverse();
+			rev[0] += remainder;
+			adjusted = rev.reverse();
+
+			info.columnSizes = adjusted;
+		}
+		return info;
+	}).map(info => {
+		return info.columnSizes;
+	});
+};
+
+export let pad = (text: string, columns: number): string => {
+	return (' '.repeat(columns) + text).slice(-columns);
+};
+
+export let tablesIn = (document: TextDocument, range: Range): MDTable[] => {
+	var items: MDTable[] = [];
+
+	const text = document.getText(range);
+	var pos = 0, match;
+	while ((match = XRegExp.exec(text, tableRegex, pos, false))) {
+		pos = match.index + match[0].length;
+		let offset = document.offsetAt(range.start);
+		let start = document.positionAt(offset + match.index);
+		let text = match[0].replace(/^\n+|\n+$/g, '');
+		let end = document.positionAt(offset + match.index + text.length);
+		let table = new MDTable(offset, start, end, text);
+		items.push(table);
+	}
+	return items;
 };

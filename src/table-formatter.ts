@@ -1,8 +1,7 @@
 import * as vscode from 'vscode';
 import { MarkdownTableFormatterSettings } from './interfaces';
 import { MDTable } from './MDTable';
-import { tableRegex } from './regex';
-import XRegExp = require('xregexp');
+import { discoverMaxColumnSizes, discoverMaxTableSizes, tablesIn } from './utils';
 
 export function getSettings(): MarkdownTableFormatterSettings {
     // This iplementation should be overrided for any custom editor/platform the plugin is used
@@ -38,45 +37,29 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
             vscode.window.showWarningMessage(`Markdown table formatter is not enabled for '${document.languageId}' language!`);
             return edits;
         }
-        let tables: MDTable[] = this.tablesIn(document, range);
+        let tables: MDTable[] = tablesIn(document, range);
         if (getSettings().globalColumnSizes === 'Same column size') {
-            let maxSize = tables.map(table => {
-                return table.columnSizes;
-            }).reduce((p, c) => {
-                let length = p.length > c.length ? p.length : c.length;
-                for (let index = 0; index < length; index++) {
-                    if (p[index] > c[index]) {
-                        c[index] = p[index];
-                    }
-                }
-                return c;
-            });
+            let maxSize = discoverMaxColumnSizes(tables);
             tables.forEach(table => {
                 table.columnSizes = maxSize;
-                edits.push(new vscode.TextEdit(table.range, table.formatted(getSettings())));
             });
-        } else {
-            tables.forEach(table => {
-                edits.push(new vscode.TextEdit(table.range, table.formatted(getSettings())));
+        } if (getSettings().globalColumnSizes === 'Same table size') {
+            let tableSizes = discoverMaxTableSizes(tables, getSettings().spacePadding);
+            tables.forEach((table, i) => {
+                table.columnSizes = tableSizes[i];
             });
         }
+        tables.forEach(table => {
+            edits.push(new vscode.TextEdit(table.range, table.formatted(getSettings())));
+        });
         return edits;
     }
 
-    private tablesIn(document: vscode.TextDocument, range: vscode.Range): MDTable[] {
-        var items: MDTable[] = [];
+}
 
-        const text = document.getText(range);
-        var pos = 0, match;
-        while ((match = XRegExp.exec(text, tableRegex, pos, false))) {
-            pos = match.index + match[0].length;
-            let offset = document.offsetAt(range.start);
-            let start = document.positionAt(offset + match.index);
-            let text = match[0].replace(/^\n+|\n+$/g, '');
-            let end = document.positionAt(offset + match.index + text.length);
-            let table = new MDTable(offset, start, end, text);
-            items.push(table);
-        }
-        return items;
+export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
+    provideCodeLenses(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
+
+        return [];
     }
 }

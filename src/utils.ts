@@ -166,17 +166,15 @@ export let discoverMaxTableSizes = (tables: MDTable[], padding: number): number[
 		let quotient = Math.floor(unusable / info.columns);
 		let remainder = unusable % info.columns;
 		if (sumArray(info.columnSizes) !== sumArray(maxTableSize.columnSizes)) {
-
-			let missing = info.columnSizes.map(size => {
+			let missingColumns = info.columnSizes.map(size => {
 				return quotient - size;
 			});
-			let adjusted = missing.map((qf, i) => {
-				if (qf > 0) {
-					return info.columnSizes[i] + qf;
+			let adjusted = missingColumns.map((missing, i) => {
+				if (missing > 0) {
+					return info.columnSizes[i] + missing;
 				} else {
-					return info.columnSizes[i] - qf;
+					return info.columnSizes[i] - missing;
 				}
-
 			});
 			let rev = adjusted.reverse();
 			rev[0] += remainder;

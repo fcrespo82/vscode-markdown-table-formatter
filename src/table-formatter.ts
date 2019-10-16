@@ -16,7 +16,7 @@ export function getSettings(): MarkdownTableFormatterSettings {
         markdownGrammarScopes: mtf_config.get<string[]>('markdownGrammarScopes', ['markdown']),
         limitLastColumnPadding: mtf_config.get<boolean>('limitLastColumnPadding', false),
         removeColonsIfSameAsDefault: mtf_config.get<boolean>('removeColonsIfSameAsDefault', false),
-        globalColumnSizes: mtf_config.get<boolean>('globalColumnSizes', false),
+        globalColumnSizes: mtf_config.get<string>('globalColumnSizes', 'Same column size'),
     };
 }
 
@@ -39,7 +39,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
             return edits;
         }
         let tables: MDTable[] = this.tablesIn(document, range);
-        if (getSettings().globalColumnSizes) {
+        if (getSettings().globalColumnSizes === 'Same column size') {
             let maxSize = tables.map(table => {
                 return table.columnSizes;
             }).reduce((p, c) => {

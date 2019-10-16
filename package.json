@@ -106,8 +106,15 @@
                 "markdown-table-formatter.globalColumnSizes": {
                     "title": "Keep columns sizes the same",
                     "description": "Calculates the column sizes based on all tables on the document.",
-                    "type": "boolean",
-                    "default": false
+                    "type": "string",
+                    "enum": [
+                        "Same column size",
+                        "Same table size"
+                    ],
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": "Same column sizes"
                 }
             }
         }

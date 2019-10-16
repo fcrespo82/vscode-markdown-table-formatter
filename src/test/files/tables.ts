@@ -19,7 +19,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -42,7 +42,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -65,7 +65,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -88,7 +88,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: true,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -111,7 +111,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: true,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -134,7 +134,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: true,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -157,7 +157,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -180,7 +180,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -203,7 +203,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -226,7 +226,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -249,7 +249,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -272,7 +272,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -293,7 +293,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -314,7 +314,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -335,7 +335,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -357,7 +357,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -377,7 +377,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -397,7 +397,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -496,7 +496,7 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: false
+			globalColumnSizes: 'Same column size'
 		}
 	},
 	{
@@ -523,7 +523,90 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: true
+			globalColumnSizes: 'Same column size'
+		}
+	},
+	{
+		input: `\
+|Small a|Small b|Small c|
+|:-|:-|:-|
+|L:1 C:A|L:1 C:B|L:1 C:C|
+
+|Large header a|Large header b|
+|:-|:-|
+|Line:1 Column:A|Line:1 Column:B|`,
+		expected: `\
+| Small a         | Small b         | Small c |
+|:----------------|:----------------|:--------|
+| L:1 C:A         | L:1 C:B         | L:1 C:C |
+
+| Large header a  | Large header b  |
+|:----------------|:----------------|
+| Line:1 Column:A | Line:1 Column:B |`,
+		settings: {
+			spacePadding: 1,
+			keepFirstAndLastPipes: true,
+			defaultTableJustification: 'Left',
+			markdownGrammarScopes: ['markdown'],
+			limitLastColumnPadding: false,
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: 'Same column size'
+		}
+	},
+	{
+		input: `\
+|Small a|Small b|Small c|
+|:-|:-|:-|
+|L:1 C:A|L:1 C:B|L:1 C:C|
+
+|Large header a|Large header b|
+|:-|:-|
+|Line:1 Column:A|Line:1 Column:B|`,
+		expected: `\
+| Small a   | Small b   | Small c   |
+|:----------|:----------|:----------|
+| L:1 C:A   | L:1 C:B   | L:1 C:C   |
+
+| Large header a  | Large header b  |
+|:----------------|:----------------|
+| Line:1 Column:A | Line:1 Column:B |`,
+		settings: {
+			spacePadding: 1,
+			keepFirstAndLastPipes: true,
+			defaultTableJustification: 'Left',
+			markdownGrammarScopes: ['markdown'],
+			limitLastColumnPadding: false,
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: 'Same table size'
+		}
+	},
+	{
+		input: `\
+| Topic| Status| Notes |
+|:---------------------------|:----------|:------|
+| Is source control used?| \`NO\`| |
+| Are changes peer reviewed? | \`PARTIAL\` | |
+
+| Topic| Status|
+|:-------------------------------|:--------------|
+| Is Iot used?| \`NO\`|`,
+		expected: `\
+| Topic                      | Status    | Notes |
+|:---------------------------|:----------|:------|
+| Is source control used?    | \`NO\`      |       |
+| Are changes peer reviewed? | \`PARTIAL\` |       |
+
+| Topic                          | Status        |
+|:-------------------------------|:--------------|
+| Is Iot used?                   | \`NO\`          |`,
+		settings: {
+			spacePadding: 1,
+			keepFirstAndLastPipes: true,
+			defaultTableJustification: 'Left',
+			markdownGrammarScopes: ['markdown'],
+			limitLastColumnPadding: false,
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: 'Same table size'
 		}
 	}
 ];

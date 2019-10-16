@@ -5,6 +5,6 @@ export interface MarkdownTableFormatterSettings {
     markdownGrammarScopes: string[];
     limitLastColumnPadding: boolean;
     removeColonsIfSameAsDefault: boolean;
-    globalColumnSizes: boolean;
+    globalColumnSizes: string;
 }
 

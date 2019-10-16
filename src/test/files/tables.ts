@@ -606,24 +606,53 @@ export let testTables = [
 	{
 		input: `\
 | Topic| Status| Notes |
-|:---------------------------|:----------|:------|
-| Is source control used?| \`NO\`| |
-| Are changes peer reviewed? | \`PARTIAL\` | |
+|:---|:----|:-|
+| Is source control used?| NO| |
+| Are changes peer reviewed? | PARTIAL | |
 
 | Topic| Status|
-|:-------------------------------|:--------------|
-| Is Iot used?| \`NO\`|`,
+|:-|:--|
+| Is Iot used?| NO|`,
 		expected: `\
-| Topic                      | Status    | Notes |
-|:---------------------------|:----------|:------|
-| Is source control used?    | \`NO\`      |       |
-| Are changes peer reviewed? | \`PARTIAL\` |       |
+| Topic                      | Status  | Notes |
+|:---------------------------|:--------|:------|
+| Is source control used?    | NO      |       |
+| Are changes peer reviewed? | PARTIAL |       |
 
-| Topic                 | Status                 |
-|:----------------------|:-----------------------|
-| Is Iot used?          | \`NO\`                   |`,
+| Topic                | Status                |
+|:---------------------|:----------------------|
+| Is Iot used?         | NO                    |`,
 		settings: {
 			spacePadding: 1,
+			keepFirstAndLastPipes: true,
+			defaultTableJustification: 'Left',
+			markdownGrammarScopes: ['markdown'],
+			limitLastColumnPadding: false,
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: 'Same table size'
+		}
+	},
+	{
+		input: `\
+| Topic| Status| Notes |
+|:---|:----|:-|
+| Is source control used?| NO| |
+| Are changes peer reviewed? | PARTIAL | |
+
+| Topic| Status|
+|:-|:--|
+| Is Iot used?| NO|`,
+		expected: `\
+|  Topic                       |  Status   |  Notes  |
+|:-----------------------------|:----------|:--------|
+|  Is source control used?     |  NO       |         |
+|  Are changes peer reviewed?  |  PARTIAL  |         |
+
+|  Topic                  |  Status                  |
+|:------------------------|:-------------------------|
+|  Is Iot used?           |  NO                      |`,
+		settings: {
+			spacePadding: 2,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],

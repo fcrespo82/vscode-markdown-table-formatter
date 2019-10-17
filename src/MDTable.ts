@@ -52,7 +52,7 @@ export class MDTable {
 	}
 
 	notFormatted = () => {
-
+		
 		let joined = [this.header, this.format, ...this.body].map(joinCells).map(addTailPipes);
 		return joined.join('\n');
 	}

@@ -2,7 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { MarkdownTableCodeLensProvider } from "./MarkdownTableCodeLensProvider";
-import { MarkdownTableFormatterProvider } from './table-formatter';
+import { MarkdownTableFormatterProvider, getSettings } from './table-formatter';
 import { MDTable } from './MDTable';
 
 const markdownTableFormatterProvider = new MarkdownTableFormatterProvider();
@@ -35,10 +35,11 @@ export function activate(context: vscode.ExtensionContext): Promise<boolean> {
     vscode.commands.registerTextEditorCommand('sortTable', (editor, edit, ...args) => {
         let table: MDTable = args[0];
         let header = args[1];
-        table.body.sort(sortFunctionHeader(header, table));
+        let sort = args[2];
+        table.body.sort(sortFunctionHeader(header, table, sort));
 
         editor.edit(editBuilder => {
-            editBuilder.replace(table.range, table.notFormatted());
+            editBuilder.replace(table.range, table.formatted(getSettings()));
         });
     });
 
@@ -59,18 +60,37 @@ function registerScopes() {
     }
 }
 
-function sortFunctionHeader(header: string, table: MDTable) {
+function sortFunctionHeader(header: string, table: MDTable, sort: string) {
     let index = table.header.findIndex(v => {
-        return v === header;
+        return v.indexOf(header) >= 0;
     });
-    return function sortFunction(a: any, b: any) {
-        if (a[index] === b[index]) {
-            return 0;
-        }
-        else {
-            return (a[index] < b[index]) ? -1 : 1;
-        }
-    };
+    table.header.forEach((header, i) => {
+        table.header[i] = header.replace('▼', '').replace('▲', '');
+    });
+
+    if (sort === '▲') {
+        table.header[index] = header.replace('▼', '').replace('▲', '').trim() + ' ▼';
+        return function sortFunction(a: any, b: any) {
+            if (a[index] === b[index]) {
+                return 0;
+            }
+            else {
+                return (a[index] > b[index]) ? -1 : 1;
+            }
+        };
+    } else {
+        table.header[index] = header.replace('▼', '').replace('▲', '').trim() + ' ▲';
+        return function sortFunction(a: any, b: any) {
+            if (a[index] === b[index]) {
+                return 0;
+            }
+            else {
+                return (a[index] < b[index]) ? -1 : 1;
+            }
+        };
+    }
+
+
 }
 // this method is called when your extension is deactivated
 export function deactivate(): Promise<boolean> {

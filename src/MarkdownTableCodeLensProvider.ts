@@ -9,12 +9,18 @@ export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
 
 		let lens = tables.map(table => {
 			return table.header.map(header => {
+				let sort = '▲';
+				if (header.indexOf('▲') >= 0) {
+					sort = '▲';
+				} else {
+					sort = '▼';
+				}
 				return new vscode.CodeLens(table.range, {
-					title: `Sort by ${header}`,
-					tooltip: `Tooltip sort by ${header}`,
-					arguments: [table, header],
-					command: 'sortTable'
-				} as vscode.Command);
+					title: `Sort by ${header.replace('▲', '').replace('▼', '')}`,
+					tooltip: `Tooltip sort by ${header.replace('▲', '').replace('▼', '')}`,
+					command: 'sortTable',
+					arguments: [table, header, sort]
+				});
 			});
 		});
 

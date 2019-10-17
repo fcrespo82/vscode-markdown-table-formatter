@@ -51,6 +51,12 @@ export class MDTable {
 		this._columnSizes = columnSizes(this.header, this.body);
 	}
 
+	notFormatted = () => {
+
+		let joined = [this.header, this.format, ...this.body].map(joinCells).map(addTailPipes);
+		return joined.join('\n');
+	}
+
 	formatted = (settings: MarkdownTableFormatterSettings) => {
 		let addTailPipesIfNeeded = settings.keepFirstAndLastPipes
 			? addTailPipes

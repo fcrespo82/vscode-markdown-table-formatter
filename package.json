@@ -35,6 +35,11 @@
                 "command": "markdown-table-formatter.enableForCurrentScope",
                 "category": "Markdown Table Formatter",
                 "title": "Enable for current language"
+            },
+            {
+                "command": "markdown-table-formatter.sortTable",
+                "category": "Markdown Table Formatter",
+                "title": "Sort Table by header"
             }
         ],
         "keybindings": [

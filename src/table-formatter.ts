@@ -57,9 +57,3 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 }
 
-export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
-    provideCodeLenses(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
-
-        return [];
-    }
-}

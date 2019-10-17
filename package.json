@@ -119,9 +119,7 @@
         "webpack": "webpack --mode development",
         "webpack-dev": "webpack --mode development --watch",
         "test-compile": "tsc -p ./",
-        "lint": "tslint -p ./",
-        "pretest": "webpack --mode development",
-        "test": "node ./out/test/runTest.js"
+        "lint": "tslint -p ./"
     },
     "dependencies": {
         "wcwidth": "1.*",

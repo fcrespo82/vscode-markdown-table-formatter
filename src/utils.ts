@@ -159,31 +159,26 @@ export let discoverMaxTableSizes = (tables: MDTable[], padding: number): number[
 	});
 
 	return tableInfo.map(info => {
-		let unusableCharsMax = sumArray(maxTableSize.columnSizes) + (maxTableSize.columns * padding * 2) + (maxTableSize.columns + 1);
-		let unusableCharsCurrent = (info.columns * padding * 2) + (info.columns + 1);
-		let unusable = (unusableCharsMax - unusableCharsCurrent);
-
-		let quotient = Math.floor(unusable / info.columns);
-		let remainder = unusable % info.columns;
+		let totalCharsMaxTable = sumArray(maxTableSize.columnSizes) + (maxTableSize.columns * padding * 2) + (maxTableSize.columns + 1);
+		let totalCharsCurrentTable = sumArray(info.columnSizes) + (info.columns * padding * 2) + (info.columns + 1);
+		let missingAdjustment = Math.floor(totalCharsMaxTable - totalCharsCurrentTable);
+		let remainder = missingAdjustment % info.columns;
 		if (sumArray(info.columnSizes) !== sumArray(maxTableSize.columnSizes)) {
-			let missingColumns = info.columnSizes.map(size => {
-				return quotient - size;
-			});
-			let adjusted = missingColumns.map((missing, i) => {
-				if (missing > 0) {
-					return info.columnSizes[i] + missing;
-				} else {
-					return info.columnSizes[i] - missing;
-				}
-			});
-			let rev = adjusted.reverse();
-			rev[0] += remainder;
-			adjusted = rev.reverse();
 
-			info.columnSizes = adjusted;
+			for (; missingAdjustment > 0;) {
+				info.columnSizes.forEach((size, i) => {
+					if (missingAdjustment > 0) {
+						info.columnSizes[i] += 1;
+					}
+					missingAdjustment--;
+				});
+			}
+			if (sumArray(info.columnSizes) + (info.columns * padding * 2) + (info.columns + 1) < totalCharsMaxTable) {
+				let rev = info.columnSizes.reverse();
+				rev[0] += remainder;
+				info.columnSizes = rev.reverse();
+			}
 		}
-		return info;
-	}).map(info => {
 		return info.columnSizes;
 	});
 };

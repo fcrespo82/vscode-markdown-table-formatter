@@ -619,9 +619,9 @@ export let testTables = [
 | Is source control used?    | NO      |       |
 | Are changes peer reviewed? | PARTIAL |       |
 
-| Topic                | Status                |
-|:---------------------|:----------------------|
-| Is Iot used?         | NO                    |`,
+| Topic                    | Status            |
+|:-------------------------|:------------------|
+| Is Iot used?             | NO                |`,
 		settings: {
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
@@ -648,9 +648,9 @@ export let testTables = [
 |  Is source control used?     |  NO       |         |
 |  Are changes peer reviewed?  |  PARTIAL  |         |
 
-|  Topic                  |  Status                  |
-|:------------------------|:-------------------------|
-|  Is Iot used?           |  NO                      |`,
+|  Topic                      |  Status              |
+|:----------------------------|:---------------------|
+|  Is Iot used?               |  NO                  |`,
 		settings: {
 			spacePadding: 2,
 			keepFirstAndLastPipes: true,
@@ -663,7 +663,7 @@ export let testTables = [
 	},
 	{
 		input: `\
-|Left header|Center header |Right header|Default header|
+|1eft header|Center header |Right header|Default header|
 |:-|::|-:|-|
 |Line:1 Column:A|Line:1 Column:B|Line:1 Column:C|Line:1 Column:D|
 |Line:2 Col:A|Line:2 Col:B|Line:2 Col:C|Line:2 Col:D|
@@ -674,16 +674,16 @@ export let testTables = [
 | Is source control used?    | NO        |       |
 | Are changes peer reviewed? | PARTIAL   |       |`
 		, expected: `\
-| Left header     |  Center header  |    Right header | Default header  |
+| 1eft header     |  Center header  |    Right header | Default header  |
 |:----------------|:---------------:|----------------:|-----------------|
 | Line:1 Column:A | Line:1 Column:B | Line:1 Column:C | Line:1 Column:D |
 | Line:2 Col:A    |  Line:2 Col:B   |    Line:2 Col:C | Line:2 Col:D    |
 | L:3 C:A         |     L:3 C:B     |         L:3 C:C | L:3 C:D         |
 
-| Topic                             | Status           | Notes          |
-|-----------------------------------|------------------|----------------|
-| Is source control used?           | NO               |                |
-| Are changes peer reviewed?        | PARTIAL          |                |`,
+| Topic                               | Status          | Notes         |
+|-------------------------------------|-----------------|---------------|
+| Is source control used?             | NO              |               |
+| Are changes peer reviewed?          | PARTIAL         |               |`,
 		settings: {
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,

@@ -1,9 +1,10 @@
-| Header a | Header b | Header c |
-|----------|----------|----------|
-| B        | C        | F        |
-| A        | D        | E        |
+| Header a | Header b ▲az | Header c |
+|----------|--------------|----------|
+| 2| C| F|
+| 1| D| E|
 
 
-| Header g   | Header h   |
+
+| Header g | Header h |
 |------------|------------|
 | 1234567890 | 1234567890 |

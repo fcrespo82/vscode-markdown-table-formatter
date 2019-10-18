@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { MDTable, MDTableSortDirection } from './MDTable';
+import { hasAscendingSortIndicator, setAscSortIndicator, setDescSortIndicator } from './sort-utils';
 import { tablesIn } from './utils';
-import { hasAscendingSortIndicator, cleanSortIndicator, sortIndicator, hasDescendingSortIndicator, toggleSortIndicator } from './sort-utils';
 
 
 export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
@@ -11,9 +11,11 @@ export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
 
 		let lens = tables.map(table => {
 			return table.header.map((header, i) => {
-				let sort = hasDescendingSortIndicator(header) ? MDTableSortDirection.Asc : MDTableSortDirection.Desc;
+
+				let sort = hasAscendingSortIndicator(header) ? MDTableSortDirection.Desc : MDTableSortDirection.Asc;
+				let indicator = hasAscendingSortIndicator(header) ? setDescSortIndicator(header) : setAscSortIndicator(header);
 				return new vscode.CodeLens(table.range, {
-					title: `Sort by ${toggleSortIndicator(header)}`,
+					title: `${indicator}`,
 					command: 'sortTable',
 					arguments: [table, i, sort]
 				});

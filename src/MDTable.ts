@@ -1,7 +1,8 @@
 import { Position, Range } from "vscode";
+import { addTailPipes, fixJustification, formatLines, joinCells, splitCells, stripHeaderTailPipes, tableJustification } from "./formatter-utils";
 import { MarkdownTableFormatterSettings } from "./interfaces";
-import { addTailPipes, columnSizes, fixJustification, formatLines, joinCells, padding, splitCells, stripHeaderTailPipes, tableJustification } from "./utils";
 import { cleanSortIndicator, setAscSortIndicator, setDescSortIndicator } from "./sort-utils";
+import { columnSizes, padding } from "./utils";
 
 export enum MDTableSortDirection {
 	Asc,
@@ -61,7 +62,7 @@ export class MDTable {
 		return joined.join('\n');
 	}
 
-	sorted = (headerIndex: number, sortDirection: MDTableSortDirection) => {
+	sorted = (headerIndex: number, sortDirection: MDTableSortDirection, settings: MarkdownTableFormatterSettings) => {
 		this.header.forEach((header, i) => {
 			if (i !== headerIndex) {
 				this.header[i] = cleanSortIndicator(header);
@@ -76,7 +77,7 @@ export class MDTable {
 						return 0;
 					}
 					else {
-						return (a[headerIndex] > b[headerIndex]) ? -1 : 1;
+						return (a[headerIndex] < b[headerIndex]) ? -1 : 1;
 					}
 				});
 				break;
@@ -88,7 +89,7 @@ export class MDTable {
 						return 0;
 					}
 					else {
-						return (a[headerIndex] < b[headerIndex]) ? -1 : 1;
+						return (a[headerIndex] > b[headerIndex]) ? -1 : 1;
 					}
 				});
 				break;

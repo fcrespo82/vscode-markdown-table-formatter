@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
-import { MDTable } from './MDTable';
+import { MDTable, MDTableSortDirection } from './MDTable';
 import { tablesIn } from './utils';
+import { hasAscendingSortIndicator, cleanSortIndicator, sortIndicator, hasDescendingSortIndicator, toggleSortIndicator } from './sort-utils';
+
 
 export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
 	provideCodeLenses(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
@@ -8,18 +10,12 @@ export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
 		let tables: MDTable[] = tablesIn(document, fullDocumentRange);
 
 		let lens = tables.map(table => {
-			return table.header.map(header => {
-				let sort = '▲';
-				if (header.indexOf('▲') >= 0) {
-					sort = '▲';
-				} else {
-					sort = '▼';
-				}
+			return table.header.map((header, i) => {
+				let sort = hasDescendingSortIndicator(header) ? MDTableSortDirection.Asc : MDTableSortDirection.Desc;
 				return new vscode.CodeLens(table.range, {
-					title: `Sort by ${header.replace('▲', '').replace('▼', '')}`,
-					tooltip: `Tooltip sort by ${header.replace('▲', '').replace('▼', '')}`,
+					title: `Sort by ${toggleSortIndicator(header)}`,
 					command: 'sortTable',
-					arguments: [table, header, sort]
+					arguments: [table, i, sort]
 				});
 			});
 		});

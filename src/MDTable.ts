@@ -1,7 +1,12 @@
 import { Position, Range } from "vscode";
 import { MarkdownTableFormatterSettings } from "./interfaces";
 import { addTailPipes, columnSizes, fixJustification, formatLines, joinCells, padding, splitCells, stripHeaderTailPipes, tableJustification } from "./utils";
+import { cleanSortIndicator, setAscSortIndicator, setDescSortIndicator } from "./sort-utils";
 
+export enum MDTableSortDirection {
+	Asc,
+	Desc
+}
 export class MDTable {
 	private offset: number;
 	private start: Position;
@@ -52,9 +57,43 @@ export class MDTable {
 	}
 
 	notFormatted = () => {
-		
 		let joined = [this.header, this.format, ...this.body].map(joinCells).map(addTailPipes);
 		return joined.join('\n');
+	}
+
+	sorted = (headerIndex: number, sortDirection: MDTableSortDirection) => {
+		this.header.forEach((header, i) => {
+			if (i !== headerIndex) {
+				this.header[i] = cleanSortIndicator(header);
+			}
+		});
+		switch (sortDirection) {
+			case MDTableSortDirection.Asc:
+				this.header[headerIndex] = setAscSortIndicator(this.header[headerIndex]);
+				this.columnSizes = columnSizes(this.header, this.body);
+				this.body.sort((a: any, b: any) => {
+					if (a[headerIndex] === b[headerIndex]) {
+						return 0;
+					}
+					else {
+						return (a[headerIndex] > b[headerIndex]) ? -1 : 1;
+					}
+				});
+				break;
+			case MDTableSortDirection.Desc:
+				this.header[headerIndex] = setDescSortIndicator(this.header[headerIndex]);
+				this.columnSizes = columnSizes(this.header, this.body);
+				this.body.sort((a: any, b: any) => {
+					if (a[headerIndex] === b[headerIndex]) {
+						return 0;
+					}
+					else {
+						return (a[headerIndex] < b[headerIndex]) ? -1 : 1;
+					}
+				});
+				break;
+		}
+		return this.notFormatted();
 	}
 
 	formatted = (settings: MarkdownTableFormatterSettings) => {

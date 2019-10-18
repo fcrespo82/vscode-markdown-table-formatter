@@ -2,8 +2,8 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { MarkdownTableCodeLensProvider } from "./MarkdownTableCodeLensProvider";
-import { MarkdownTableFormatterProvider, getSettings } from './table-formatter';
-import { MDTable } from './MDTable';
+import { sortCommand } from './sort-utils';
+import { MarkdownTableFormatterProvider } from './table-formatter';
 
 const markdownTableFormatterProvider = new MarkdownTableFormatterProvider();
 const markdownTableCodeLensProvider = new MarkdownTableCodeLensProvider();
@@ -11,10 +11,11 @@ const markdownTableCodeLensProvider = new MarkdownTableCodeLensProvider();
 let config = vscode.workspace.getConfiguration('markdown-table-formatter');
 let enable: boolean = config.get<boolean>('enable', true);
 
+let disposables: vscode.Disposable[] = [];
+
 vscode.workspace.onDidChangeConfiguration(e => {
     config = vscode.workspace.getConfiguration('markdown-table-formatter');
     enable = config.get<boolean>('enable', true);
-    registerScopes();
 });
 
 // this method is called when your extension is activated
@@ -25,74 +26,43 @@ export function activate(context: vscode.ExtensionContext): Promise<boolean> {
         const scopes = config.get<string[]>('markdownGrammarScopes', []);
         if (!scopes.includes(editor.document.languageId)) {
             scopes.push(editor.document.languageId);
-            vscode.languages.registerDocumentFormattingEditProvider({ scheme: 'file', language: editor.document.languageId }, markdownTableFormatterProvider);
-            vscode.languages.registerDocumentRangeFormattingEditProvider({ scheme: 'file', language: editor.document.languageId }, markdownTableFormatterProvider);
             config.update("markdownGrammarScopes", scopes, true);
+            registerExtensionFor(editor.document.languageId);
             vscode.window.showInformationMessage(`Markdown table formatter enabled for '${editor.document.languageId}' language!`);
         }
     });
 
-    vscode.commands.registerTextEditorCommand('sortTable', (editor, edit, ...args) => {
-        let table: MDTable = args[0];
-        let header = args[1];
-        let sort = args[2];
-        table.body.sort(sortFunctionHeader(header, table, sort));
+    const commandSort = vscode.commands.registerTextEditorCommand('sortTable', sortCommand);
 
-        editor.edit(editBuilder => {
-            editBuilder.replace(table.range, table.formatted(getSettings()));
-        });
-    });
+    context.subscriptions.push(commandEnable, commandSort);
+    disposables.push(commandEnable, commandSort);
 
-    context.subscriptions.push(commandEnable);
     registerScopes();
 
     return Promise.resolve(true);
 }
 
+let registerExtensionFor = (scope: string) => {
+    const dfep = vscode.languages.registerDocumentFormattingEditProvider(scope, markdownTableFormatterProvider);
+    const dfrep = vscode.languages.registerDocumentRangeFormattingEditProvider(scope, markdownTableFormatterProvider);
+    const clp = vscode.languages.registerCodeLensProvider(scope, markdownTableCodeLensProvider);
+    disposables.push(dfep, dfrep, clp);
+};
+
 function registerScopes() {
     if (enable) {
         const scopes = config.get<string[]>('markdownGrammarScopes', []);
         scopes.forEach(scope => {
-            vscode.languages.registerDocumentFormattingEditProvider({ scheme: 'file', language: scope }, markdownTableFormatterProvider);
-            vscode.languages.registerDocumentRangeFormattingEditProvider({ scheme: 'file', language: scope }, markdownTableFormatterProvider);
-            vscode.languages.registerCodeLensProvider({ scheme: 'file', language: scope }, markdownTableCodeLensProvider);
+            registerExtensionFor(scope);
         });
-    }
-}
-
-function sortFunctionHeader(header: string, table: MDTable, sort: string) {
-    let index = table.header.findIndex(v => {
-        return v.indexOf(header) >= 0;
-    });
-    table.header.forEach((header, i) => {
-        table.header[i] = header.replace('▼', '').replace('▲', '');
-    });
-
-    if (sort === '▲') {
-        table.header[index] = header.replace('▼', '').replace('▲', '').trim() + ' ▼';
-        return function sortFunction(a: any, b: any) {
-            if (a[index] === b[index]) {
-                return 0;
-            }
-            else {
-                return (a[index] > b[index]) ? -1 : 1;
-            }
-        };
     } else {
-        table.header[index] = header.replace('▼', '').replace('▲', '').trim() + ' ▲';
-        return function sortFunction(a: any, b: any) {
-            if (a[index] === b[index]) {
-                return 0;
-            }
-            else {
-                return (a[index] < b[index]) ? -1 : 1;
-            }
-        };
+        disposables.map(d => d.dispose());
     }
-
-
 }
+
+
 // this method is called when your extension is deactivated
 export function deactivate(): Promise<boolean> {
+    disposables.map(d => d.dispose());
     return Promise.resolve(true);
 }

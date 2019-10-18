@@ -16,6 +16,4 @@ export class MarkdownTableCodeActionsProvider implements vscode.CodeActionProvid
 
 	providedCodeActionKinds = [vscode.CodeActionKind.Refactor];
 
-
-
 }

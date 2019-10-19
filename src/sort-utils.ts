@@ -1,10 +1,12 @@
-import { TextEditor, TextEditorEdit } from "vscode";
+import { TextEditor, TextEditorEdit, window, DecorationOptions, TextDocument } from "vscode";
 import { MDTable, MDTableSortDirection } from "./MDTable";
 import { getSettings } from "./utils";
+import { markdownTableCodeLensProvider } from "./extension";
+import { MarkdownTableSortOptions } from "./MarkdownTableCodeLensProvider";
 
 export let sortIndicator = {
-	ascending: '▲az',
-	descending: '▼za',
+	ascending: '▲',
+	descending: '▼',
 	separator: ' '
 };
 export let cleanSortIndicator = (text: string): string => {
@@ -33,11 +35,11 @@ export let toggleSortIndicator = (text: string): string => {
 };
 
 export const sortCommand = (editor: TextEditor, edit: TextEditorEdit, ...args: any[]) => {
-	let table: MDTable = args[0];
-	let header: number = args[1];
-	let sort: MDTableSortDirection = args[2];
+	let options: MarkdownTableSortOptions = args[0];
+	
+	markdownTableCodeLensProvider.setActiveSort(options);
 
 	editor.edit(editBuilder => {
-		editBuilder.replace(table.range, table.sorted(header, sort, getSettings()));
+		editBuilder.replace(options.table.range, options.table.sorted(options.header_index, options.sort_direction, getSettings()));
 	});
 };

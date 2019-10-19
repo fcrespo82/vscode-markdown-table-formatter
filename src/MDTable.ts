@@ -70,8 +70,6 @@ export class MDTable {
 		});
 		switch (sortDirection) {
 			case MDTableSortDirection.Asc:
-				this.header[headerIndex] = setAscSortIndicator(this.header[headerIndex]);
-				this.columnSizes = columnSizes(this.header, this.body);
 				this.body.sort((a: any, b: any) => {
 					if (a[headerIndex] === b[headerIndex]) {
 						return 0;
@@ -82,8 +80,6 @@ export class MDTable {
 				});
 				break;
 			case MDTableSortDirection.Desc:
-				this.header[headerIndex] = setDescSortIndicator(this.header[headerIndex]);
-				this.columnSizes = columnSizes(this.header, this.body);
 				this.body.sort((a: any, b: any) => {
 					if (a[headerIndex] === b[headerIndex]) {
 						return 0;

@@ -1,8 +1,7 @@
-| Header a | Header b ▲az | Header c |
+| Header a | Header b | Header c |
 |----------|--------------|----------|
 | 2| C| F|
 | 1| D| E|
-
 
 
 | Header g | Header h |

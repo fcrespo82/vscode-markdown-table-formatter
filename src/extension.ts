@@ -6,7 +6,7 @@ import { sortCommand } from './sort-utils';
 import { MarkdownTableFormatterProvider } from './table-formatter';
 
 const markdownTableFormatterProvider = new MarkdownTableFormatterProvider();
-const markdownTableCodeLensProvider = new MarkdownTableCodeLensProvider();
+export const markdownTableCodeLensProvider = new MarkdownTableCodeLensProvider();
 
 let config = vscode.workspace.getConfiguration('markdown-table-formatter');
 let enable: boolean = config.get<boolean>('enable', true);

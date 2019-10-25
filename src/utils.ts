@@ -1,6 +1,6 @@
 import { Range, TextDocument, workspace } from 'vscode';
-import { MarkdownTableFormatterSettings } from './interfaces';
-import { MDTable } from './MDTable';
+import MarkdownTableFormatterSettings from './MarkdownTableFormatterSettings';
+import { MarkdownTable } from './MarkdownTable';
 import { tableRegex } from './regex';
 import wcswidth = require('wcwidth');
 import XRegExp = require('xregexp');
@@ -57,7 +57,7 @@ export let sumArray = (array: number[]): number => {
 	return array.reduce((p, c) => p + c);
 };
 
-export let discoverMaxColumnSizes = (tables: MDTable[]): number[] => {
+export let discoverMaxColumnSizes = (tables: MarkdownTable[]): number[] => {
 	return tables.map(table => {
 		return table.columnSizes;
 	}).reduce((p, c) => {
@@ -79,7 +79,7 @@ export let discoverMaxColumnSizes = (tables: MDTable[]): number[] => {
 	});
 };
 
-export let discoverMaxTableSizes = (tables: MDTable[], padding: number): number[][] => {
+export let discoverMaxTableSizes = (tables: MarkdownTable[], padding: number): number[][] => {
 	let tableInfo = tables.map(table => {
 		return { columnSizes: table.columnSizes, columns: table.columns };
 	});
@@ -117,8 +117,8 @@ export let pad = (text: string, columns: number): string => {
 	return (' '.repeat(columns) + text).slice(-columns);
 };
 
-export let tablesIn = (document: TextDocument, range: Range): MDTable[] => {
-	var items: MDTable[] = [];
+export let tablesIn = (document: TextDocument, range: Range): MarkdownTable[] => {
+	var items: MarkdownTable[] = [];
 
 	const text = document.getText(range);
 	var pos = 0, match;
@@ -128,7 +128,7 @@ export let tablesIn = (document: TextDocument, range: Range): MDTable[] => {
 		let start = document.positionAt(offset + match.index);
 		let text = match[0].replace(/^\n+|\n+$/g, '');
 		let end = document.positionAt(offset + match.index + text.length);
-		let table = new MDTable(offset, start, end, text);
+		let table = new MarkdownTable(offset, start, end, text);
 		items.push(table);
 	}
 	return items;

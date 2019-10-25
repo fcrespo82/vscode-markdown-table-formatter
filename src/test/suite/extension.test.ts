@@ -2,7 +2,7 @@ import * as assert from 'assert';
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import * as vscode from 'vscode';
-import { MarkdownTableFormatterSettings } from '../../interfaces';
+import MarkdownTableFormatterSettings from '../../MarkdownTableFormatterSettings';
 import { discoverMaxColumnSizes, discoverMaxTableSizes, pad, tablesIn } from '../../utils';
 import { testTables } from '../files/tables';
 

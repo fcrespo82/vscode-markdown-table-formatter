@@ -1,4 +1,4 @@
-export interface MarkdownTableFormatterSettings {
+export default interface MarkdownTableFormatterSettings {
     spacePadding: number;
     keepFirstAndLastPipes: boolean;
     defaultTableJustification: string;

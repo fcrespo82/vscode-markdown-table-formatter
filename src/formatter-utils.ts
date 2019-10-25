@@ -1,7 +1,6 @@
-import { MarkdownTableFormatterSettings } from './interfaces';
+
+import MarkdownTableFormatterSettings from './MarkdownTableFormatterSettings';
 import { padding, swidth } from './utils';
-import wcswidth = require('wcwidth');
-import XRegExp = require('xregexp');
 
 export let tableJustification: { [key: string]: string } = {
 	Left: ':-',

@@ -39,7 +39,7 @@
             {
                 "command": "markdown-table-formatter.sortTable",
                 "category": "Markdown Table Formatter",
-                "title": "Sort Table by header"
+                "title": "Sort table by header"
             }
         ],
         "keybindings": [

@@ -1,8 +1,7 @@
-import { TextEditor, TextEditorEdit, window, DecorationOptions, TextDocument } from "vscode";
-import { MDTable, MDTableSortDirection } from "./MDTable";
-import { getSettings } from "./utils";
+import { TextEditor, TextEditorEdit } from "vscode";
 import { markdownTableCodeLensProvider } from "./extension";
-import { MarkdownTableSortOptions } from "./MarkdownTableCodeLensProvider";
+import { SortCommandArguments } from "./MarkdownTableCodeLensProvider";
+import { getSettings } from "./utils";
 
 export let sortIndicator = {
 	ascending: '▲',
@@ -35,11 +34,21 @@ export let toggleSortIndicator = (text: string): string => {
 };
 
 export const sortCommand = (editor: TextEditor, edit: TextEditorEdit, ...args: any[]) => {
-	let options: MarkdownTableSortOptions = args[0];
-	
-	markdownTableCodeLensProvider.setActiveSort(options);
+	let sortArguments: SortCommandArguments = args[0];
+
+	markdownTableCodeLensProvider.setActiveSort(sortArguments.document, sortArguments.table, sortArguments.options);
 
 	editor.edit(editBuilder => {
-		editBuilder.replace(options.table.range, options.table.sorted(options.header_index, options.sort_direction, getSettings()));
+		editBuilder.replace(sortArguments.table.range, sortArguments.table.sorted(sortArguments.options.header_index, sortArguments.options.sort_direction, getSettings()));
+	});
+};
+
+export const resetCommand = (editor: TextEditor, edit: TextEditorEdit, ...args: any[]) => {
+	let sortArguments: SortCommandArguments = args[0];
+
+	markdownTableCodeLensProvider.setActiveSort(sortArguments.document, sortArguments.table, undefined);
+
+	editor.edit(editBuilder => {
+		editBuilder.replace(sortArguments.table.range, sortArguments.table.notFormattedDefault());
 	});
 };

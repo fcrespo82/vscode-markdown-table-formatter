@@ -2,7 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { MarkdownTableCodeLensProvider } from "./MarkdownTableCodeLensProvider";
-import { sortCommand } from './sort-utils';
+import { sortCommand, resetCommand } from './sort-utils';
 import { MarkdownTableFormatterProvider } from './table-formatter';
 
 const markdownTableFormatterProvider = new MarkdownTableFormatterProvider();
@@ -33,9 +33,10 @@ export function activate(context: vscode.ExtensionContext): Promise<boolean> {
     });
 
     const commandSort = vscode.commands.registerTextEditorCommand('sortTable', sortCommand);
+    const commandReset = vscode.commands.registerTextEditorCommand('resetTable', resetCommand);
 
-    context.subscriptions.push(commandEnable, commandSort);
-    disposables.push(commandEnable, commandSort);
+    disposables.push(commandEnable, commandSort, commandReset);
+    context.subscriptions.push(...disposables);
 
     registerScopes();
 

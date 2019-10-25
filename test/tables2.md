@@ -1,7 +1,9 @@
 | Header a | Header b | Header c |
 |----------|--------------|----------|
-| 2| C| F|
+| 3| D| E|
 | 1| D| E|
+| 2| C| F|
+
 
 
 | Header g | Header h |

@@ -16,8 +16,14 @@ export class MDTable {
 	readonly header: string[] = [];
 	readonly format: string[] = [];
 	readonly body: string[][] = [];
+	readonly defaultBody: string[][] = [];
 	readonly range: Range;
 	private _columnSizes: number[] = [];
+
+	get id(): string {
+		// Improve
+		return (this.header.length + this.format.length).toString();
+	}
 
 	get columns() {
 		return this.header.length;
@@ -53,12 +59,20 @@ export class MDTable {
 		this.body = reversed.reverse().map((lineBody) => {
 			return splitCells(stripHeaderTailPipes(lineBody));
 		});
+		this.defaultBody = reversed.reverse().map((lineBody) => {
+			return splitCells(stripHeaderTailPipes(lineBody));
+		});
 
 		this._columnSizes = columnSizes(this.header, this.body);
 	}
 
 	notFormatted = () => {
 		let joined = [this.header, this.format, ...this.body].map(joinCells).map(addTailPipes);
+		return joined.join('\n');
+	}
+
+	notFormattedDefault = () => {
+		let joined = [this.header, this.format, ...this.defaultBody].map(joinCells).map(addTailPipes);
 		return joined.join('\n');
 	}
 

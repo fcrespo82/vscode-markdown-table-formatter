@@ -18,29 +18,15 @@ export interface SortCommandArguments {
 
 export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
 
-	private disposables: vscode.Disposable[] = [];
+	public disposables: vscode.Disposable[] = [];
 	private config: vscode.WorkspaceConfiguration;
 
 	constructor() {
 		this.config = vscode.workspace.getConfiguration('markdown-table-formatter');
-		vscode.workspace.onDidChangeConfiguration(changeConfigurationEvent => {
-			if (changeConfigurationEvent.affectsConfiguration('markdown-table-formatter')) {
-				this.config = vscode.workspace.getConfiguration('markdown-table-formatter');
-				if (this.config.get<boolean>("enable", true)) {
-					if (this.disposables.length === 0) {
-						this.register();
-					}
-				} else {
-					this.dispose();
-					this.disposables = [];
-				}
-			}
-		}, this, this.disposables);
-
 	}
 
 	public register() {
-		if (this.config.get<boolean>("enable", true)) {
+		if (this.config.get<boolean>("enableSort", true)) {
 			const scopes = this.config.get<string[]>('markdownGrammarScopes', []);
 			scopes.forEach(scope => {
 				this.registerCodeLensForScope(scope);
@@ -119,5 +105,6 @@ export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
 
 	dispose() {
 		this.disposables.map(d => d.dispose());
+		this.disposables = [];
 	}
 }

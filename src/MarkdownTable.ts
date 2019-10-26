@@ -8,6 +8,7 @@ export enum MarkdownTableSortDirection {
 	Asc,
 	Desc
 }
+
 export class MarkdownTable {
 	private offset: number;
 	private start: Position;
@@ -85,21 +86,21 @@ export class MarkdownTable {
 		switch (sortDirection) {
 			case MarkdownTableSortDirection.Asc:
 				this.body.sort((a: any, b: any) => {
-					if (a[headerIndex] === b[headerIndex]) {
+					if (a[headerIndex].trim() === b[headerIndex].trim()) {
 						return 0;
 					}
 					else {
-						return (a[headerIndex] < b[headerIndex]) ? -1 : 1;
+						return (a[headerIndex].trim() < b[headerIndex].trim()) ? -1 : 1;
 					}
 				});
 				break;
 			case MarkdownTableSortDirection.Desc:
 				this.body.sort((a: any, b: any) => {
-					if (a[headerIndex] === b[headerIndex]) {
+					if (a[headerIndex].trim() === b[headerIndex].trim()) {
 						return 0;
 					}
 					else {
-						return (a[headerIndex] > b[headerIndex]) ? -1 : 1;
+						return (a[headerIndex].trim() > b[headerIndex].trim()) ? -1 : 1;
 					}
 				});
 				break;
@@ -121,11 +122,43 @@ export class MarkdownTable {
 
 		let formatLine = formatLines([this.format], this.format, this.columnSizes, settings).map(line => {
 			return line.map((cell, i) => {
+				let line: string = "";
 				let [front, back] = fixJustification(cell);
 				if (settings.removeColonsIfSameAsDefault && (fixJustification(cell) === tableJustification[settings.defaultTableJustification])) {
-					return padding(this.columnSizes[i] + (settings.spacePadding * 2), '-');
+					front = back = '-';
 				}
-				return front + padding(this.columnSizes[i] + (settings.spacePadding * 2) - 2, '-') + back;
+
+				let spacePadding = padding(settings.spacePadding, ' ');
+				switch (settings.delimiterRowPadding) {
+					case 'None':
+						line = front + padding(this.columnSizes[i] + (settings.spacePadding * 2) - 2, '-') + back;
+						break;
+					case 'Follow Space Padding':
+						line = `${spacePadding}${front}${padding(this.columnSizes[i] - 2, '-')}${back}${spacePadding}`;
+						break;
+					case 'Single Space Always':
+						line = ` ${front}${padding(this.columnSizes[i] + (settings.spacePadding * 2) - 4, '-')}${back} `;
+						break;
+					case 'Alignment Marker':
+						let justifySwitch = fixJustification(cell);
+						if (justifySwitch === "--") {
+							justifySwitch = tableJustification[settings.defaultTableJustification];
+						}
+						switch (justifySwitch) {
+							case '::':
+								line = `${spacePadding}${front}${padding(this.columnSizes[i] + (settings.spacePadding * 2) - 4, '-')}${back}${spacePadding}`;
+								break;
+							case '-:':
+								line = `${spacePadding}${front}${padding(this.columnSizes[i] + (settings.spacePadding * 2) - 3, '-')}${back}`;
+								break;
+							case ':-':
+								line = `${front}${padding(this.columnSizes[i] + (settings.spacePadding * 2) - 3, '-')}${back}${spacePadding}`;
+								break;
+						}
+						break;
+				}
+
+				return line;
 			});
 		}).map(joinCells).map(addTailPipesIfNeeded);
 

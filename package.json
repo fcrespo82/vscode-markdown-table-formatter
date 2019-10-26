@@ -59,6 +59,12 @@
                     "type": "boolean",
                     "default": true
                 },
+                "markdown-table-formatter.enableSort": {
+                    "title": "Enable Markdown Table Formatter Sort Lenses",
+                    "description": "Enable or disable Markdown Table Formatter Sort Lenses",
+                    "type": "boolean",
+                    "default": true
+                },
                 "markdown-table-formatter.spacePadding": {
                     "title": "Space padding",
                     "description": "How many spaces between left and right of each column content",
@@ -80,9 +86,6 @@
                         "Center",
                         "Right"
                     ],
-                    "items": {
-                        "type": "string"
-                    },
                     "default": "Left"
                 },
                 "markdown-table-formatter.removeColonsIfSameAsDefault": {
@@ -111,10 +114,19 @@
                         "Same column size",
                         "Same table size"
                     ],
-                    "items": {
-                        "type": "string"
-                    },
                     "default": "Disabled"
+                },
+                "markdown-table-formatter.delimiterRowPadding": {
+                    "title": "Keep columns sizes the same",
+                    "description": "Calculates the column sizes based on all tables on the document.",
+                    "type": "string",
+                    "enum": [
+                        "None",
+                        "Follow space padding",
+                        "Single space always",
+                        "Alignment marker"
+                    ],
+                    "default": "None"
                 }
             }
         }

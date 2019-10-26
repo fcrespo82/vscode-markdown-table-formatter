@@ -16,12 +16,15 @@ Uses VSCode `Format Document` and `Format Selection`
 
 ### Settings & Keybindings
 
+- **enable**: Enable or disable the formatter;
+- **enableSort**: Enable or disable table sorter;
+
 - **spacePadding**: How many spaces between left and right of each column content;
 - **keepFirstAndLastPipes**: Keep first and last pipes "|" in table formatting. Tables are easier to format when pipes are kept;
 - **defaultTableJustification**: Defines the default justification for tables that have only "-" on the formatting line;
-- **markdownGrammarScopes**: File language grammar that will be considered Markdown by this package (comma-separated).
-- **limitLastColumnPadding**: Do not pad the last column to more than your editor's preferredLineLength setting.;
-- **removeColonsIfSameAsDefault**: Remove colons from the format line if the justification is the same as default.;
+- **removeColonsIfSameAsDefault**: Remove colons from the format line if the justification is the same as default;
+- **markdownGrammarScopes**: File language grammar that will be considered Markdown by this package.
+- **globalColumnSizes**: Format tables locally, with same column sizes or same table size.
 
 ## Tips
 

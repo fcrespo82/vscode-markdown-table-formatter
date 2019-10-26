@@ -24,7 +24,8 @@ suite('Extension Test Suite', () => {
 		markdownGrammarScopes: ['markdown'],
 		limitLastColumnPadding: false,
 		removeColonsIfSameAsDefault: false,
-		globalColumnSizes: 'Same column size'
+		globalColumnSizes: 'Same column size',
+		delimiterRowPadding: 'None'
 	};
 
 	testTables.forEach((testTable, i) => {

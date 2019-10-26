@@ -13,6 +13,31 @@ export function activate(context: vscode.ExtensionContext): Promise<boolean> {
     markdownTableFormatterProvider.register();
     markdownTableCodeLensProvider.register();
 
+    vscode.workspace.onDidChangeConfiguration(changeConfigurationEvent => {
+        if (changeConfigurationEvent.affectsConfiguration('markdown-table-formatter')) {
+            let config = vscode.workspace.getConfiguration('markdown-table-formatter');
+            if (config.get<boolean>("enable", true)) {
+                if (markdownTableFormatterProvider.disposables.length === 0) {
+                    markdownTableFormatterProvider.register();
+                }
+            } else {
+                markdownTableFormatterProvider.dispose();
+            }
+        }
+    });
+    vscode.workspace.onDidChangeConfiguration(changeConfigurationEvent => {
+        if (changeConfigurationEvent.affectsConfiguration('markdown-table-formatter')) {
+            let config = vscode.workspace.getConfiguration('markdown-table-formatter');
+            if (config.get<boolean>("enableSort", true)) {
+                if (markdownTableCodeLensProvider.disposables.length === 0) {
+                    markdownTableCodeLensProvider.register();
+                }
+            } else {
+                markdownTableCodeLensProvider.dispose();
+            }
+        }
+    });
+
     return Promise.resolve(true);
 }
 

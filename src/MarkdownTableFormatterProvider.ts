@@ -4,24 +4,11 @@ import { discoverMaxColumnSizes, discoverMaxTableSizes, getSettings, tablesIn } 
 
 export class MarkdownTableFormatterProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider {
 
-    private disposables: vscode.Disposable[] = [];
+    public disposables: vscode.Disposable[] = [];
     private config: vscode.WorkspaceConfiguration;
 
     constructor() {
         this.config = vscode.workspace.getConfiguration('markdown-table-formatter');
-        vscode.workspace.onDidChangeConfiguration(changeConfigurationEvent => {
-            if (changeConfigurationEvent.affectsConfiguration('markdown-table-formatter')) {
-                this.config = vscode.workspace.getConfiguration('markdown-table-formatter');
-                if (this.config.get<boolean>("enable", true)) {
-                    if (this.disposables.length === 0) {
-                        this.register();
-                    }
-                } else {
-                    this.dispose();
-                    this.disposables = [];
-                }
-            }
-        }, this, this.disposables);
     }
 
     public register() {
@@ -85,6 +72,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
     dispose() {
         this.disposables.map(d => d.dispose());
+        this.disposables = [];
     }
 
 }

@@ -1,3 +1,4 @@
+
 export default interface MarkdownTableFormatterSettings {
     spacePadding: number;
     keepFirstAndLastPipes: boolean;
@@ -6,5 +7,6 @@ export default interface MarkdownTableFormatterSettings {
     limitLastColumnPadding: boolean;
     removeColonsIfSameAsDefault: boolean;
     globalColumnSizes: string;
+    delimiterRowPadding: string;
 }
 

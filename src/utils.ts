@@ -1,6 +1,6 @@
 import { Range, TextDocument, workspace } from 'vscode';
-import MarkdownTableFormatterSettings from './MarkdownTableFormatterSettings';
 import { MarkdownTable } from './MarkdownTable';
+import MarkdownTableFormatterSettings from './MarkdownTableFormatterSettings';
 import { tableRegex } from './regex';
 import wcswidth = require('wcwidth');
 import XRegExp = require('xregexp');
@@ -17,10 +17,9 @@ export function getSettings(): MarkdownTableFormatterSettings {
 		limitLastColumnPadding: mtf_config.get<boolean>('limitLastColumnPadding', false),
 		removeColonsIfSameAsDefault: mtf_config.get<boolean>('removeColonsIfSameAsDefault', false),
 		globalColumnSizes: mtf_config.get<string>('globalColumnSizes', 'Same column size'),
+		delimiterRowPadding: mtf_config.get<string>('delimiterRowPadding', 'None')
 	};
 }
-
-
 
 export let swidth = (str: string) => {
 	// zero-width Unicode characters that we should ignore for purposes of computing string "display" width

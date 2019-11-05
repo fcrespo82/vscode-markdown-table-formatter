@@ -127,7 +127,8 @@ export let tablesIn = (document: TextDocument, range: Range): MarkdownTable[] =>
 		let start = document.positionAt(offset + match.index);
 		let text = match[0].replace(/^\n+|\n+$/g, '');
 		let end = document.positionAt(offset + match.index + text.length);
-		let table = new MarkdownTable(offset, start, end, text);
+		// let table = new MarkdownTable(offset, start, end, text);
+		let table = new MarkdownTable(offset, start, end, match);
 		items.push(table);
 	}
 	return items;

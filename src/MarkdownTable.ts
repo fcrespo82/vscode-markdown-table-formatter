@@ -45,6 +45,7 @@ export class MarkdownTable {
 		this._columnSizes = value;
 	}
 
+	// TODO: Change constructor to accept XRegExpExecArray
 	constructor(offset: number, start: Position, end: Position, text: string) {
 		this.offset = offset;
 		this.start = start;

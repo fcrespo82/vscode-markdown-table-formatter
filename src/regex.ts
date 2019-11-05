@@ -1,28 +1,28 @@
 import XRegExp = require('xregexp');
 
 export const tableRegex = XRegExp(`\
-(?<header> # header capture
+(?<header>                                # header capture
   (?:
-    (?:[^\\r\\n]*?\\|[^\\r\\n]*)       # line w/ at least one pipe
-    \\ *                       # maybe trailing whitespace
-  )?                          # maybe header
-  (?:\\r?\\n|^)                 # newline
-)
-(?<format> # format capture
+    (?:[^\\r\\n]*?\\|[^\\r\\n]*)          # line w/ at least one pipe
+    \\ *                                  # maybe trailing whitespace
+  )
+  (?:\\r?\\n|^)                           # newline
+)?                                        # maybe header
+(?<format>                                # format capture
   (?:
-    \\|\\ *(?::?-+:?|::)?\\ *            # format starting w/pipe
+    \\|\\ *(?::?-+:?|::)?\\ *             # format starting w/pipe
     |\\|?(?:\\ *(?::?-+:?|::)?\\ *\\|)+   # or separated by pipe
   )
-  (?:\\ *(?::?-+:?|::)?\\ *)?           # maybe w/o trailing pipe
-  \\ *                         # maybe trailing whitespace
-  \\r?\\n                       # newline
+  (?:\\ *(?::?-+:?|::)?\\ *)?             # maybe w/o trailing pipe
+  \\ *                                    # maybe trailing whitespace
+  \\r?\\n                                 # newline
 )
-(?<body> # body capture
+(?<body>                                  # body capture
   (?:
-    (?:[^\\r\\n]*?\\|[^\\r\\n]*)       # line w/ at least one pipe
-    \\ *                       # maybe trailing whitespace
-    (?:\\r?\\n|$)               # newline
-  )+ # at least one
+    (?:[^\\r\\n]*?\\|[^\\r\\n]*)          # line w/ at least one pipe
+    \\ *                                  # maybe trailing whitespace
+    (?:\\r?\\n|$)                         # newline
+)+                                        # at least one
 )
 `,
   'gx',

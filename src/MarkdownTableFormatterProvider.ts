@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { MarkdownTable } from './MarkdownTable';
 import { discoverMaxColumnSizes, discoverMaxTableSizes, getSettings, tablesIn } from './utils';
+import { setExtensionTables, getExtensionTables } from './extension';
 
 export class MarkdownTableFormatterProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider {
 
@@ -18,6 +19,16 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
                 this.registerFormatterForScope(scope);
             });
             this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.enableForCurrentScope", this.enableForCurrentScopeCommand));
+
+            vscode.workspace.onDidOpenTextDocument(document => {
+                let fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
+                setExtensionTables(tablesIn(document, fullDocumentRange));
+            });
+    
+            vscode.workspace.onDidChangeTextDocument(change => {
+                let fullDocumentRange = change.document.validateRange(new vscode.Range(0, 0, change.document.lineCount + 1, 0));
+                setExtensionTables(tablesIn(change.document, fullDocumentRange));
+            });
         }
     }
 
@@ -37,7 +48,8 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
             vscode.window.showWarningMessage(`Markdown table formatter is not enabled for '${document.languageId}' language!`);
             return edits;
         }
-        let tables: MarkdownTable[] = tablesIn(document, range);
+        let tables: MarkdownTable[] = getExtensionTables(range) || setExtensionTables(tablesIn(document, range));
+
         if (getSettings().globalColumnSizes === 'Same column size') {
             let maxSize = discoverMaxColumnSizes(tables);
             tables.forEach(table => {

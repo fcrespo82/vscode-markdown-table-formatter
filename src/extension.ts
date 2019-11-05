@@ -3,13 +3,55 @@
 import * as vscode from 'vscode';
 import { MarkdownTableCodeLensProvider } from "./MarkdownTableCodeLensProvider";
 import { MarkdownTableFormatterProvider } from './MarkdownTableFormatterProvider';
+import { MarkdownTable } from './MarkdownTable';
+import { tablesIn } from './utils';
 
 export const markdownTableFormatterProvider = new MarkdownTableFormatterProvider();
 export const markdownTableCodeLensProvider = new MarkdownTableCodeLensProvider();
 
+var _extensionTables: MarkdownTable[];
+
+export function setExtensionTables(tables: MarkdownTable[]): MarkdownTable[] {
+    _extensionTables = tables;
+    return _extensionTables;
+}
+
+export function getExtensionTables(range: vscode.Range): MarkdownTable[] {
+    
+    return _extensionTables.filter(t => {
+        return range.contains(t.range);
+    });
+}
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext): Promise<boolean> {
+
+    const smallNumberDecorationType = vscode.window.createTextEditorDecorationType({
+        backgroundColor: 'orange',
+        rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
+        overviewRulerColor: 'orange',
+        overviewRulerLane: vscode.OverviewRulerLane.Full,
+        light: {
+            // this color will be used in light color themes
+            backgroundColor: 'darkorange'
+        },
+        dark: {
+            // this color will be used in dark color themes
+            backgroundColor: 'darkorange'
+        }
+    });
+
+    vscode.commands.registerTextEditorCommand("markdown-table-formatter.showDebug", (editor, edit) => {
+        let fullDocumentRange = editor.document.validateRange(new vscode.Range(0, 0, editor.document.lineCount + 1, 0));
+
+        let tables = tablesIn(editor.document, fullDocumentRange);
+        let ranges = tables.map(t => {
+            return t.range;
+        });
+        editor.setDecorations(smallNumberDecorationType, ranges);
+    });
+
     markdownTableFormatterProvider.register();
     markdownTableCodeLensProvider.register();
 

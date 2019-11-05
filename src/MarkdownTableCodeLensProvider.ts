@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { MarkdownTable, MarkdownTableSortDirection } from './MarkdownTable';
 import { sortIndicator, sortCommand, resetCommand } from './sort-utils';
 import { tablesIn } from './utils';
+import { setExtensionTables, getExtensionTables } from './extension';
 
 export interface MarkdownTableSortOptions {
 	table_index: number;
@@ -20,6 +21,7 @@ export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
 
 	public disposables: vscode.Disposable[] = [];
 	private config: vscode.WorkspaceConfiguration;
+	// private tables!: MarkdownTable[];
 
 	constructor() {
 		this.config = vscode.workspace.getConfiguration('markdown-table-formatter');
@@ -33,6 +35,17 @@ export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
 			});
 			this.disposables.push(vscode.commands.registerTextEditorCommand('sortTable', sortCommand));
 			// this.disposables.push(vscode.commands.registerTextEditorCommand('resetTable', resetCommand));
+
+			vscode.workspace.onDidOpenTextDocument(document => {
+				let fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
+				setExtensionTables(tablesIn(document, fullDocumentRange));
+			});
+
+			vscode.workspace.onDidChangeTextDocument(change => {
+				let fullDocumentRange = change.document.validateRange(new vscode.Range(0, 0, change.document.lineCount + 1, 0));
+				setExtensionTables(tablesIn(change.document, fullDocumentRange));
+			});
+
 		}
 	}
 
@@ -55,7 +68,7 @@ export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
 
 	provideCodeLenses(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
 		let fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
-		let tables: MarkdownTable[] = tablesIn(document, fullDocumentRange);
+		let tables: MarkdownTable[] = getExtensionTables(fullDocumentRange) || setExtensionTables(tablesIn(document, fullDocumentRange));
 
 		let lenses = tables.filter(table => {
 			return table.bodyLines > 1;

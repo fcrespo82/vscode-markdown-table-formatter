@@ -40,6 +40,11 @@
                 "command": "markdown-table-formatter.sortTable",
                 "category": "Markdown Table Formatter",
                 "title": "Sort table by header"
+            },
+            {
+                "command": "markdown-table-formatter.showDebug",
+                "category": "Markdown Table Formatter",
+                "title": "Show debug info"
             }
         ],
         "keybindings": [

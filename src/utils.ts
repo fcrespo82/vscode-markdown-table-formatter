@@ -1,5 +1,5 @@
 import { Range, TextDocument, workspace } from 'vscode';
-import { MarkdownTable } from './MarkdownTable';
+import { MarkdownTable, XRegExpExecArray } from './MarkdownTable';
 import MarkdownTableFormatterSettings from './MarkdownTableFormatterSettings';
 import { tableRegex } from './regex';
 import wcswidth = require('wcwidth');
@@ -127,8 +127,7 @@ export let tablesIn = (document: TextDocument, range: Range): MarkdownTable[] =>
 		let start = document.positionAt(offset + match.index);
 		let text = match[0].replace(/^\n+|\n+$/g, '');
 		let end = document.positionAt(offset + match.index + text.length);
-		// let table = new MarkdownTable(offset, start, end, text);
-		let table = new MarkdownTable(offset, start, end, match);
+		let table = new MarkdownTable(offset, start, end, match as XRegExpExecArray);
 		items.push(table);
 	}
 	return items;

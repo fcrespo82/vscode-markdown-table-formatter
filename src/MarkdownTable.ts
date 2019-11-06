@@ -9,11 +9,15 @@ export enum MarkdownTableSortDirection {
 	Desc
 }
 
+export interface XRegExpExecArray extends RegExpExecArray {
+	groups: any;
+}
+
 export class MarkdownTable {
 	private offset: number;
 	private start: Position;
 	private end: Position;
-	readonly text: string;
+	// readonly text: string;
 	readonly header: string[] = [];
 	readonly format: string[] = [];
 	readonly body: string[][] = [];
@@ -45,25 +49,22 @@ export class MarkdownTable {
 		this._columnSizes = value;
 	}
 
-	// TODO: Change constructor to accept XRegExpExecArray
-	constructor(offset: number, start: Position, end: Position, text: string) {
+	constructor(offset: number, start: Position, end: Position, regexpArray: XRegExpExecArray) {
 		this.offset = offset;
 		this.start = start;
 		this.end = end;
-		this.text = text.replace(/^\n+|\n+$/g, '');
+		// this.text = text.replace(/^\n+|\n+$/g, '');
+
 		this.range = new Range(this.start, this.end);
 
-		let lines = text.split(/\r?\n/);
-		let reversed = lines.reverse();
-		this.header = splitCells(stripHeaderTailPipes(reversed.pop()));
-		this.format = splitCells(stripHeaderTailPipes(reversed.pop()));
+		this.header = splitCells(stripHeaderTailPipes(regexpArray.groups.header));
+		this.format = splitCells(stripHeaderTailPipes(regexpArray.groups.format));
 
-		this.body = reversed.reverse().map((lineBody) => {
+		// this.body = regexpArray.groups.body.replace(/^\r?\n+|\r?\n+$/g, '').split(/\r?\n/).map((lineBody: string) => {
+		this.body = regexpArray.groups.body.split(/\r?\n/).map((lineBody: string) => {
 			return splitCells(stripHeaderTailPipes(lineBody));
 		});
-		this.defaultBody = reversed.reverse().map((lineBody) => {
-			return splitCells(stripHeaderTailPipes(lineBody));
-		});
+		this.defaultBody = this.body;
 
 		this._columnSizes = columnSizes(this.header, this.body);
 	}

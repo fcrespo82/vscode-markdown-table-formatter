@@ -1,29 +1,26 @@
 import XRegExp = require('xregexp');
-
-export const tableRegex = XRegExp(`\
+XRegExp.install("namespacing");
+export const tableRegex = XRegExp(String.raw`
 (?<header>                                # header capture
-  (?:
-    (?:[^\\r\\n]*?\\|[^\\r\\n]*)          # line w/ at least one pipe
-    \\ *                                  # maybe trailing whitespace
-  )
-  (?:\\r?\\n|^)                           # newline
-)?                                        # maybe header
+  ^                                       # line start
+  (?:[^\r\n]*?\|[^\r\n]*)                 # line w/ at least one pipe
+  $                                       # line end
+)?                                        # optional header
+(?:\r?\n)                                 # newline
 (?<format>                                # format capture
-  (?:
-    \\|\\ *(?::?-+:?|::)?\\ *             # format starting w/pipe
-    |\\|?(?:\\ *(?::?-+:?|::)?\\ *\\|)+   # or separated by pipe
-  )
-  (?:\\ *(?::?-+:?|::)?\\ *)?             # maybe w/o trailing pipe
-  \\ *                                    # maybe trailing whitespace
-  \\r?\\n                                 # newline
+  ^                                       # line start
+  (?:[:-]*?\|[:-]*)+                      # line containing separator items w/ at least one pipe
+  \s*                                     # maybe trailing whitespace
+  $                                       # line end
 )
+(?:\r?\n)                                 # newline
 (?<body>                                  # body capture
   (?:
-    (?:[^\\r\\n]*?\\|[^\\r\\n]*)          # line w/ at least one pipe
-    \\ *                                  # maybe trailing whitespace
-    (?:\\r?\\n|$)                         # newline
-)+                                        # at least one
+    (?:[^\r\n]*?\|[^\r\n]*)               # line w/ at least one pipe
+    \s*?                                  # maybe trailing whitespace
+    (?:\r?\n|^|$)?                        # newline
+  )+                                      # at least one
 )
 `,
-  'gx',
+  'gmx',
 );

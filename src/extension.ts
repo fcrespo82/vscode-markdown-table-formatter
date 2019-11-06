@@ -17,8 +17,7 @@ export function setExtensionTables(tables: MarkdownTable[]): MarkdownTable[] {
 }
 
 export function getExtensionTables(range: vscode.Range): MarkdownTable[] {
-    
-    return _extensionTables.filter(t => {
+        return _extensionTables.filter(t => {
         return range.contains(t.range);
     });
 }
@@ -27,7 +26,7 @@ export function getExtensionTables(range: vscode.Range): MarkdownTable[] {
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext): Promise<boolean> {
 
-    const smallNumberDecorationType = vscode.window.createTextEditorDecorationType({
+    const markdownTableDecoration = vscode.window.createTextEditorDecorationType({
         backgroundColor: 'orange',
         rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
         overviewRulerColor: 'orange',
@@ -49,7 +48,7 @@ export function activate(context: vscode.ExtensionContext): Promise<boolean> {
         let ranges = tables.map(t => {
             return t.range;
         });
-        editor.setDecorations(smallNumberDecorationType, ranges);
+        editor.setDecorations(markdownTableDecoration, ranges);
     });
 
     markdownTableFormatterProvider.register();

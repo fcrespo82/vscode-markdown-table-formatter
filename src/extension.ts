@@ -17,11 +17,12 @@ export function setExtensionTables(tables: MarkdownTable[]): MarkdownTable[] {
 }
 
 export function getExtensionTables(range: vscode.Range): MarkdownTable[] {
-        return _extensionTables.filter(t => {
+    return _extensionTables.filter(t => {
         return range.contains(t.range);
     });
 }
 
+let decorationsEnabled = false;
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext): Promise<boolean> {
@@ -41,14 +42,19 @@ export function activate(context: vscode.ExtensionContext): Promise<boolean> {
         }
     });
 
-    vscode.commands.registerTextEditorCommand("markdown-table-formatter.showDebug", (editor, edit) => {
-        let fullDocumentRange = editor.document.validateRange(new vscode.Range(0, 0, editor.document.lineCount + 1, 0));
+    vscode.commands.registerTextEditorCommand("markdown-table-formatter.toggleDebug", (editor, edit) => {
+        decorationsEnabled = !decorationsEnabled;
+        if (decorationsEnabled) {
+            let fullDocumentRange = editor.document.validateRange(new vscode.Range(0, 0, editor.document.lineCount + 1, 0));
 
-        let tables = tablesIn(editor.document, fullDocumentRange);
-        let ranges = tables.map(t => {
-            return t.range;
-        });
-        editor.setDecorations(markdownTableDecoration, ranges);
+            let tables = tablesIn(editor.document, fullDocumentRange);
+            let ranges = tables.map(t => {
+                return t.range;
+            });
+            editor.setDecorations(markdownTableDecoration, ranges);
+        } else {
+            editor.setDecorations(markdownTableDecoration, []);
+        }
     });
 
     markdownTableFormatterProvider.register();

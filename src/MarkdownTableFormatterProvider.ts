@@ -48,7 +48,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
             vscode.window.showWarningMessage(`Markdown table formatter is not enabled for '${document.languageId}' language!`);
             return edits;
         }
-        let tables: MarkdownTable[] = getExtensionTables(range) || setExtensionTables(tablesIn(document, range));
+        let tables: MarkdownTable[] = setExtensionTables(tablesIn(document, range));
 
         if (getSettings().globalColumnSizes === 'Same column size') {
             let maxSize = discoverMaxColumnSizes(tables);

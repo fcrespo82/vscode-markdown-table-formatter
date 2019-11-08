@@ -42,7 +42,7 @@
                 "title": "Sort table by header"
             },
             {
-                "command": "markdown-table-formatter.showDebug",
+                "command": "markdown-table-formatter.toggleDebug",
                 "category": "Markdown Table Formatter",
                 "title": "Show debug info"
             }

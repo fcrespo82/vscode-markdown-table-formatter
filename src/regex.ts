@@ -5,15 +5,15 @@ export const tableRegex = XRegExp(String.raw`
   ^                                       # line start
   (?:[^\r\n]*?\|[^\r\n]*)                 # line w/ at least one pipe
   $                                       # line end
+  (?:\r?\n)                              # newline
 )?                                        # optional header
-(?:\r?\n)                                 # newline
 (?<format>                                # format capture
   ^                                       # line start
   (?:[:-]*?\|[:-]*)+                      # line containing separator items w/ at least one pipe
   \s*                                     # maybe trailing whitespace
   $                                       # line end
+  (?:\r?\n)?                              # newline
 )
-(?:\r?\n)                                 # newline
 (?<body>                                  # body capture
   (?:
     (?:[^\r\n]*?\|[^\r\n]*)               # line w/ at least one pipe

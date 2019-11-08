@@ -53,15 +53,13 @@ export class MarkdownTable {
 		this.offset = offset;
 		this.start = start;
 		this.end = end;
-		// this.text = text.replace(/^\n+|\n+$/g, '');
 
 		this.range = new Range(this.start, this.end);
 
 		this.header = splitCells(stripHeaderTailPipes(regexpArray.groups.header));
 		this.format = splitCells(stripHeaderTailPipes(regexpArray.groups.format));
 
-		// this.body = regexpArray.groups.body.replace(/^\r?\n+|\r?\n+$/g, '').split(/\r?\n/).map((lineBody: string) => {
-		this.body = regexpArray.groups.body.split(/\r?\n/).map((lineBody: string) => {
+		this.body = regexpArray.groups.body.replace(/^\r?\n+|\r?\n+$/g, '').split(/\r?\n/).map((lineBody: string) => {
 			return splitCells(stripHeaderTailPipes(lineBody));
 		});
 		this.defaultBody = this.body;
@@ -115,12 +113,15 @@ export class MarkdownTable {
 			? addTailPipes
 			: (x: string) => x;
 
-		let header = formatLines([this.header], this.format, this.columnSizes, settings).map(line => {
-			let cellPadding = padding(settings.spacePadding);
-			return line.map((cell, i) => {
-				return `${cellPadding}${cell}${cellPadding}`;
-			});
-		}).map(joinCells).map(addTailPipesIfNeeded);
+		let header: string[] = [];
+		if (this.header) {
+			header = formatLines([this.header], this.format, this.columnSizes, settings).map(line => {
+				let cellPadding = padding(settings.spacePadding);
+				return line.map((cell, i) => {
+					return `${cellPadding}${cell}${cellPadding}`;
+				});
+			}).map(joinCells).map(addTailPipesIfNeeded);
+		}
 
 		let formatLine = formatLines([this.format], this.format, this.columnSizes, settings).map(line => {
 			return line.map((cell, i) => {

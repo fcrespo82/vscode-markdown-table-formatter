@@ -38,6 +38,22 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
     private moveColumnRight(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
         let tables = getExtensionTables(editor.selection);
+        
+        let header1 = tables[0].header[1];
+        tables[0].header[1] = tables[0].header[0];
+        tables[0].header[0] = header1;
+
+        let format1 = tables[0].format[1];
+        tables[0].format[1] = tables[0].format[0];
+        tables[0].format[0] = format1;
+
+        tables[0].body.forEach((_, i) => {
+            let body1 = tables[0].body[i][1];
+            tables[0].body[i][1] = tables[0].body[i][0];
+            tables[0].body[i][0] = body1;
+        });
+
+        edit.replace(tables[0].range, tables[0].notFormatted());
     }
 
     private moveColumnLeft(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {

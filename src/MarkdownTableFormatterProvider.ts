@@ -31,7 +31,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
             });
 
             this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnRight", this.moveColumnRight));
-            this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnRight", this.moveColumnLeft));
+            this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnLeft", this.moveColumnLeft));
 
         }
     }

@@ -18,7 +18,7 @@ export function setExtensionTables(tables: MarkdownTable[]): MarkdownTable[] {
 
 export function getExtensionTables(range: vscode.Range): MarkdownTable[] {
     return _extensionTables.filter(t => {
-        return range.contains(t.range);
+        return t.range.contains(range);
     });
 }
 

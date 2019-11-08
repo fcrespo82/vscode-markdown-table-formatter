@@ -720,5 +720,43 @@ export let testTables = [
 			globalColumnSizes: 'Same table size',
 			delimiterRowPadding: 'None'
 		}
-	}
+	},
+	{
+		input: `\
+|------------|---------------|
+| 1234567890 | 1234567890 |`,
+		expected: `\
+|------------|------------|
+| 1234567890 | 1234567890 |`,
+				settings: {
+			spacePadding: 1,
+			keepFirstAndLastPipes: true,
+			defaultTableJustification: 'Left',
+			markdownGrammarScopes: ['markdown'],
+			limitLastColumnPadding: false,
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: 'Same column size',
+			delimiterRowPadding: 'None'
+		}
+	},
+	{
+		input: `\
+|  |  |
+|------------|---------------|
+| 1234567890 | 1234567890 |`,
+		expected: `\
+|            |            |
+|------------|------------|
+| 1234567890 | 1234567890 |`,
+				settings: {
+			spacePadding: 1,
+			keepFirstAndLastPipes: true,
+			defaultTableJustification: 'Left',
+			markdownGrammarScopes: ['markdown'],
+			limitLastColumnPadding: false,
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: 'Same column size',
+			delimiterRowPadding: 'None'
+		}
+	},
 ];

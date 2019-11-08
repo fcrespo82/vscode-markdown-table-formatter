@@ -44,7 +44,7 @@
             {
                 "command": "markdown-table-formatter.toggleDebug",
                 "category": "Markdown Table Formatter",
-                "title": "Show debug info"
+                "title": "Toggle debug decorations"
             }
         ],
         "keybindings": [

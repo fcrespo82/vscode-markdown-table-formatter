@@ -5,7 +5,7 @@ export const tableRegex = XRegExp(String.raw`
   ^                                       # line start
   (?:[^\r\n]*?\|[^\r\n]*)                 # line w/ at least one pipe
   $                                       # line end
-  (?:\r?\n)                              # newline
+  (?:\r?\n)                               # newline
 )?                                        # optional header
 (?<format>                                # format capture
   ^                                       # line start

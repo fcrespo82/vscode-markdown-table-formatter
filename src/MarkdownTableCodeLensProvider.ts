@@ -73,6 +73,9 @@ export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
 		let lenses = tables.filter(table => {
 			return table.bodyLines > 1;
 		}).map((table, table_index) => {
+			if (table.header === undefined) {
+				return [];
+			}
 			return [...table.header.map((header, header_index) => {
 				var sort = MarkdownTableSortDirection.Asc;
 				var indicator = `${header.trim()}`;
@@ -90,16 +93,12 @@ export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
 
 							break;
 					}
-					// if (this._activeSortPerDocumentAndTable[document.uri.path][table.id]!.defaultOrder !== undefined) {
-					// 	defaultOrder = this._activeSortPerDocumentAndTable[document.uri.path][table.id]!.defaultOrder;
-					// }
 				}
 
 				return new vscode.CodeLens(table.range, {
 					title: `${indicator}`,
 					command: 'sortTable',
 					arguments: [{ document, table, options: { table_index, header_index, sort_direction: sort } }]
-					// arguments: [{ document, table, options: { table_index, header_index, sort_direction: sort, defaultOrder } }]
 				});
 			})
 				// , new vscode.CodeLens(table.range, {

@@ -17,8 +17,7 @@ export class MarkdownTable {
 	private offset: number;
 	private start: Position;
 	private end: Position;
-	// readonly text: string;
-	readonly header: string[] = [];
+	readonly header!: string[];
 	readonly format: string[] = [];
 	readonly body: string[][] = [];
 	readonly defaultBody: string[][] = [];
@@ -31,7 +30,7 @@ export class MarkdownTable {
 	}
 
 	get columns() {
-		return this.header.length;
+		return this.body[0].length;
 	}
 
 	get bodyLines() {
@@ -56,7 +55,9 @@ export class MarkdownTable {
 
 		this.range = new Range(this.start, this.end);
 
-		this.header = splitCells(stripHeaderTailPipes(regexpArray.groups.header));
+		if (regexpArray.groups.header) {
+			this.header = splitCells(stripHeaderTailPipes(regexpArray.groups.header));
+		}
 		this.format = splitCells(stripHeaderTailPipes(regexpArray.groups.format));
 
 		this.body = regexpArray.groups.body.replace(/^\r?\n+|\r?\n+$/g, '').split(/\r?\n/).map((lineBody: string) => {
@@ -64,7 +65,11 @@ export class MarkdownTable {
 		});
 		this.defaultBody = this.body;
 
-		this._columnSizes = columnSizes(this.header, this.body);
+		if (regexpArray.groups.header) {
+			this._columnSizes = columnSizes(this.header, this.body);
+		} else {
+			this._columnSizes = columnSizes(this.body[0], this.body);
+		}
 	}
 
 	notFormatted = () => {
@@ -172,7 +177,10 @@ export class MarkdownTable {
 			});
 		}).map(joinCells).map(addTailPipesIfNeeded);
 
-		let formatted = [header, formatLine, ...body];
+		let formatted = [formatLine, ...body];
+		if (this.header) {
+			formatted = [header, formatLine, ...body];
+		}
 
 		return formatted.join('\n');
 	}

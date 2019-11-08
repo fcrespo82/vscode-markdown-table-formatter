@@ -45,12 +45,32 @@
                 "command": "markdown-table-formatter.toggleDebug",
                 "category": "Markdown Table Formatter",
                 "title": "Toggle debug decorations"
+            },
+            {
+                "command": "markdown-table-formatter.moveColumnRight",
+                "category": "Markdown Table Formatter",
+                "title": "Move column right"
+            },
+            {
+                "command": "markdown-table-formatter.moveColumnLeft",
+                "category": "Markdown Table Formatter",
+                "title": "Move column left"
             }
         ],
         "keybindings": [
             {
                 "command": "markdown-table-formatter.enableForCurrentScope",
                 "key": "alt+shift+e",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "markdown-table-formatter.moveColumnRight",
+                "key": "cmd+right",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "markdown-table-formatter.moveColumnLeft",
+                "key": "cmd+left",
                 "when": "editorTextFocus"
             }
         ],

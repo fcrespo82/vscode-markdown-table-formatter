@@ -24,12 +24,24 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
                 let fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
                 setExtensionTables(tablesIn(document, fullDocumentRange));
             });
-    
+
             vscode.workspace.onDidChangeTextDocument(change => {
                 let fullDocumentRange = change.document.validateRange(new vscode.Range(0, 0, change.document.lineCount + 1, 0));
                 setExtensionTables(tablesIn(change.document, fullDocumentRange));
             });
+
+            this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnRight", this.moveColumnRight));
+            this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnRight", this.moveColumnLeft));
+
         }
+    }
+
+    private moveColumnRight(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+        let tables = getExtensionTables(editor.selection);
+    }
+
+    private moveColumnLeft(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+        let tables = getExtensionTables(editor.selection);
     }
 
     provideDocumentFormattingEdits(document: vscode.TextDocument, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {

@@ -68,7 +68,7 @@ export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
 
 	provideCodeLenses(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
 		let fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
-		let tables: MarkdownTable[] = getExtensionTables(fullDocumentRange) || setExtensionTables(tablesIn(document, fullDocumentRange));
+		let tables: MarkdownTable[] = setExtensionTables(tablesIn(document, fullDocumentRange));
 
 		let lenses = tables.filter(table => {
 			return table.bodyLines > 1;
@@ -76,6 +76,7 @@ export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
 			if (table.header === undefined) {
 				return [];
 			}
+			return table.codeLenses;
 			return [...table.header.map((header, header_index) => {
 				var sort = MarkdownTableSortDirection.Asc;
 				var indicator = `${header.trim()}`;

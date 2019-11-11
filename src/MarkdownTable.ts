@@ -1,4 +1,4 @@
-import { Position, Range } from "vscode";
+import { Position, Range, CodeLens } from "vscode";
 import { addTailPipes, fixJustification, formatLines, joinCells, splitCells, stripHeaderTailPipes, tableJustification } from "./formatter-utils";
 import MarkdownTableFormatterSettings from "./MarkdownTableFormatterSettings";
 import { cleanSortIndicator } from "./sort-utils";
@@ -24,6 +24,34 @@ export class MarkdownTable {
 	readonly defaultBody: string[][] = [];
 	readonly range: Range;
 	private _columnSizes: number[] = [];
+	
+	get codeLenses(): CodeLens[] {
+		return this.header.map((header, header_index) => {
+			var sort = MarkdownTableSortDirection.Asc;
+			var indicator = `${header.trim()}`;
+			// var defaultOrder = table.body;
+			// if (this._activeSortPerDocumentAndTable && this._activeSortPerDocumentAndTable[document.uri.path] && this._activeSortPerDocumentAndTable[document.uri.path][table.id] && this._activeSortPerDocumentAndTable[document.uri.path][table.id]!.table_index === table_index && this._activeSortPerDocumentAndTable[document.uri.path][table.id]!.header_index === header_index) {
+
+			// 	switch (this._activeSortPerDocumentAndTable[document.uri.path][table.id]!.sort_direction) {
+			// 		case MarkdownTableSortDirection.Asc:
+			// 			sort = MarkdownTableSortDirection.Desc;
+			// 			indicator = `${header.trim()} ${sortIndicator.ascending}`;
+			// 			break;
+			// 		case MarkdownTableSortDirection.Desc:
+			// 			sort = MarkdownTableSortDirection.Asc;
+			// 			indicator = `${header.trim()} ${sortIndicator.descending}`;
+
+			// 			break;
+			// 	}
+			// }
+
+			return new CodeLens(this.range, {
+				title: `${indicator}`,
+				command: 'sortTable',
+				// arguments: [{ document, table, options: { table_index, header_index, sort_direction: sort } }]
+			});
+		});
+	}
 
 	get id(): string {
 		// Improve

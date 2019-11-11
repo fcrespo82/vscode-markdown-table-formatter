@@ -30,34 +30,64 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
                 setExtensionTables(tablesIn(change.document, fullDocumentRange));
             });
 
-            this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnRight", this.moveColumnRight));
-            this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnLeft", this.moveColumnLeft));
+            this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnRight", this.moveColumnRight, this));
+            this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnLeft", this.moveColumnLeft, this));
 
         }
     }
 
+    private flipColumn(table: MarkdownTable, leftIndex: number, rightIndex: number): MarkdownTable {
+        if (table.header) {
+            let header1 = table.header[rightIndex];
+            table.header[rightIndex] = table.header[leftIndex];
+            table.header[leftIndex] = header1;
+        }
+
+        let format1 = table.format[rightIndex];
+        table.format[rightIndex] = table.format[leftIndex];
+        table.format[leftIndex] = format1;
+
+        table.body.forEach((_, i) => {
+            let body1 = table.body[i][rightIndex];
+            table.body[i][rightIndex] = table.body[i][leftIndex];
+            table.body[i][leftIndex] = body1;
+        });
+        return table;
+    }
+
     private moveColumnRight(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
         let tables = getExtensionTables(editor.selection);
-        
-        let header1 = tables[0].header[1];
-        tables[0].header[1] = tables[0].header[0];
-        tables[0].header[0] = header1;
 
-        let format1 = tables[0].format[1];
-        tables[0].format[1] = tables[0].format[0];
-        tables[0].format[0] = format1;
+        let header = tables[0].getColumnIndexFromRange(editor.selection);
 
-        tables[0].body.forEach((_, i) => {
-            let body1 = tables[0].body[i][1];
-            tables[0].body[i][1] = tables[0].body[i][0];
-            tables[0].body[i][0] = body1;
-        });
+        var leftHeaderIndex = header;
 
-        edit.replace(tables[0].range, tables[0].notFormatted());
+        if ((leftHeaderIndex + 1) >= tables[0].columns) {
+            return;
+        }
+
+        var rightHeaderIndex = header + 1;
+
+        let table = this.flipColumn(tables[0], leftHeaderIndex, rightHeaderIndex);
+
+        edit.replace(table.range, table.notFormatted());
     }
 
     private moveColumnLeft(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
         let tables = getExtensionTables(editor.selection);
+
+        let header = tables[0].getColumnIndexFromRange(editor.selection);
+
+        var leftHeaderIndex = header - 1;
+
+        if (leftHeaderIndex < 0) {
+            return;
+        }
+        var rightHeaderIndex = header;
+
+        let table = this.flipColumn(tables[0], leftHeaderIndex, rightHeaderIndex);
+
+        edit.replace(table.range, table.notFormatted());
     }
 
     provideDocumentFormattingEdits(document: vscode.TextDocument, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {

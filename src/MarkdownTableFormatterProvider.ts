@@ -57,36 +57,25 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
     private moveColumnRight(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
         let tables = getExtensionTables(editor.selection);
-
         let header = tables[0].getColumnIndexFromRange(editor.selection);
-
         var leftHeaderIndex = header;
-
         if ((leftHeaderIndex + 1) >= tables[0].columns) {
             return;
         }
-
         var rightHeaderIndex = header + 1;
-
         let table = this.flipColumn(tables[0], leftHeaderIndex, rightHeaderIndex);
-
         edit.replace(table.range, table.notFormatted());
     }
 
     private moveColumnLeft(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
         let tables = getExtensionTables(editor.selection);
-
         let header = tables[0].getColumnIndexFromRange(editor.selection);
-
         var leftHeaderIndex = header - 1;
-
         if (leftHeaderIndex < 0) {
             return;
         }
         var rightHeaderIndex = header;
-
         let table = this.flipColumn(tables[0], leftHeaderIndex, rightHeaderIndex);
-
         edit.replace(table.range, table.notFormatted());
     }
 
@@ -146,4 +135,3 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
     }
 
 }
-

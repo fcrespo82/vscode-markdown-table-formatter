@@ -77,37 +77,6 @@ export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
 				return [];
 			}
 			return table.codeLenses;
-			return [...table.header.map((header, header_index) => {
-				var sort = MarkdownTableSortDirection.Asc;
-				var indicator = `${header.trim()}`;
-				// var defaultOrder = table.body;
-				if (this._activeSortPerDocumentAndTable && this._activeSortPerDocumentAndTable[document.uri.path] && this._activeSortPerDocumentAndTable[document.uri.path][table.id] && this._activeSortPerDocumentAndTable[document.uri.path][table.id]!.table_index === table_index && this._activeSortPerDocumentAndTable[document.uri.path][table.id]!.header_index === header_index) {
-
-					switch (this._activeSortPerDocumentAndTable[document.uri.path][table.id]!.sort_direction) {
-						case MarkdownTableSortDirection.Asc:
-							sort = MarkdownTableSortDirection.Desc;
-							indicator = `${header.trim()} ${sortIndicator.ascending}`;
-							break;
-						case MarkdownTableSortDirection.Desc:
-							sort = MarkdownTableSortDirection.Asc;
-							indicator = `${header.trim()} ${sortIndicator.descending}`;
-
-							break;
-					}
-				}
-
-				return new vscode.CodeLens(table.range, {
-					title: `${indicator}`,
-					command: 'sortTable',
-					arguments: [{ document, table, options: { table_index, header_index, sort_direction: sort } }]
-				});
-			})
-				// , new vscode.CodeLens(table.range, {
-				// title: `Reset sort`,
-				// command: 'resetTable',
-				// arguments: [{ document, table, options: undefined }]
-				// })
-			];
 		});
 		return lenses.reduce((acc, val) => acc.concat(val), []);
 	}

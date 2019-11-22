@@ -1,9 +1,10 @@
 ## 2.0.0
 
 * [NEW] Global column sizes - options: Disabled, Same column size, Same table size (default: Disabled)
-<!-- * [NEW] Sort table -->
-<!-- * [NEW] Reorder columns -->
-* [REMOVED] Limit Last Column Padding - If you use this feature please let me know that I'll find a way to add it back. For now keep on the older version.
+* [NEW] Sort table
+* [NEW] Reorder columns
+* [REMOVED] Limit Last Column Padding - If you use this feature please let me know and I'll find a way to add it back. For now, if you rely on this, keep on the older version.
+* [CHANGED] A lot of internal fixes and improvements 
 
 
 ## 1.4.1

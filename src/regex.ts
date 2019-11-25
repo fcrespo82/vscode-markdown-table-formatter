@@ -9,7 +9,7 @@ export const tableRegex = XRegExp(String.raw`
 )?                                        # optional header
 (?<format>                                # format capture
   ^                                       # line start
-  (?:[:-]*?\|[:-]*)+                      # line containing separator items w/ at least one pipe
+  (?:[ :-]*?\|[ :-]*)+                    # line containing separator items w/ at least one pipe
   \s*                                     # maybe trailing whitespace
   $                                       # line end
   (?:\r?\n)?                              # newline

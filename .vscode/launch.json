@@ -10,7 +10,7 @@
             "args": [
                 "--disable-extensions",
                 "--extensionDevelopmentPath=${workspaceFolder}",
-                "${workspaceFolder}/src/test/files/tables2.md"
+                "${workspaceFolder}/src/test/files/tables3.md"
             ],
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"

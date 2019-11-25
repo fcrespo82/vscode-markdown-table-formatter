@@ -2,6 +2,26 @@
 export let testTables = [
 	{
 		input: `\
+| Foo | Bar |
+| - | - |
+|Baz|Qux|`,
+		expected: `\
+| Foo | Bar |
+| --- | --- |
+| Baz | Qux |`,
+		settings: {
+			spacePadding: 1,
+			keepFirstAndLastPipes: true,
+			defaultTableJustification: 'Left',
+			markdownGrammarScopes: ['markdown'],
+			limitLastColumnPadding: false,
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: 'Same column size',
+			delimiterRowPadding: 'None'
+		}
+	},
+	{
+		input: `\
 |Left header|Center header |Right header|Default header|
 |||||
 |Line:1 Column:A|Line:1 Column:B|Line:1 Column:C|Line:1 Column:D|

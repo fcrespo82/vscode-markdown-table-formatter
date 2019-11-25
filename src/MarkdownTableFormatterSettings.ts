@@ -1,4 +1,3 @@
-
 export default interface MarkdownTableFormatterSettings {
     spacePadding: number;
     keepFirstAndLastPipes: boolean;
@@ -9,4 +8,3 @@ export default interface MarkdownTableFormatterSettings {
     globalColumnSizes: string;
     delimiterRowPadding: string;
 }
-

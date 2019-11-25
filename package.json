@@ -11,7 +11,7 @@
         "url": "https://github.com/fcrespo82/vscode-markdown-table-formatter/issues"
     },
     "license": "MIT",
-    "version": "1.4.3",
+    "version": "2.0.0",
     "publisher": "fcrespo82",
     "icon": "resources/icon.png",
     "keywords": [
@@ -45,12 +45,32 @@
                 "command": "markdown-table-formatter.toggleDebug",
                 "category": "Markdown Table Formatter",
                 "title": "Toggle debug decorations"
+            },
+            {
+                "command": "markdown-table-formatter.moveColumnRight",
+                "category": "Markdown Table Formatter",
+                "title": "Move column right"
+            },
+            {
+                "command": "markdown-table-formatter.moveColumnLeft",
+                "category": "Markdown Table Formatter",
+                "title": "Move column left"
             }
         ],
         "keybindings": [
             {
                 "command": "markdown-table-formatter.enableForCurrentScope",
                 "key": "alt+shift+e",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "markdown-table-formatter.moveColumnRight",
+                "key": "cmd+right",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "markdown-table-formatter.moveColumnLeft",
+                "key": "cmd+left",
                 "when": "editorTextFocus"
             }
         ],
@@ -151,7 +171,7 @@
         "@types/glob": "7.1.1",
         "@types/mocha": "^2.2.42",
         "@types/node": "^7.10.9",
-        "@types/vscode": "^1.39.0",
+        "@types/vscode": "^1.34.0",
         "@types/wcwidth": "^1.0.0",
         "@types/xregexp": "^3.0.30",
         "mocha": "^6.2.2",

@@ -1,10 +1,9 @@
 import * as vscode from 'vscode';
-import { MarkdownTable, MarkdownTableSortDirection } from './MarkdownTable';
-import { discoverMaxColumnSizes, discoverMaxTableSizes, getSettings, tablesIn, padding } from './utils';
-import { setExtensionTables, getExtensionTables } from './extension';
+import { getExtensionTables, setExtensionTables } from '../extension';
+import { addTailPipes, fixJustification, joinCells, tableJustification } from './MarkdownTableFormatterUtils';
+import { MarkdownTable } from '../MarkdownTable';
 import MarkdownTableFormatterSettings from './MarkdownTableFormatterSettings';
-import { addTailPipes, formatLines, joinCells, fixJustification, tableJustification } from './formatter-utils';
-import { cleanSortIndicator } from './sort-utils';
+import { discoverMaxColumnSizes, discoverMaxTableSizes, getSettings, padding, swidth, tablesIn } from '../MarkdownTableUtils';
 
 export class MarkdownTableFormatterProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider {
 
@@ -108,7 +107,41 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		this.disposables.push(vscode.languages.registerDocumentRangeFormattingEditProvider(scope, this));
 	}
 
+	private formatLine(line: string[], format: string[], size: number[], settings: MarkdownTableFormatterSettings) {
+		line = line.map((column, index, _) => {
+			let columnSize = size[index];
+			let columnJustification = format[index];
+			let text = this.justify(column, columnJustification, columnSize, settings);
+			return text;
+		});
+		return line;
+	}
 
+	private formatLines(lines: string[][], format: string[], size: number[], settings: MarkdownTableFormatterSettings) {
+		lines = lines.map(line => {
+			return this.formatLine(line, format, size, settings);
+		});
+		return lines;
+	}
+
+	private justify(text: string, justification: string, length: number, settings: MarkdownTableFormatterSettings) {
+		text = text.trim();
+		length = Math.max(length - swidth(text), 0);
+		let justifySwitch = fixJustification(justification);
+		if (justifySwitch === "--") {
+			justifySwitch = tableJustification[settings.defaultTableJustification];
+		}
+		switch (justifySwitch) {
+			case '::':
+				return padding(length / 2) + text + padding((length + 1) / 2);
+			case '-:':
+				return padding(length) + text;
+			case ':-':
+				return text + padding(length);
+			default:
+				throw new Error(`Unknown column justification ${justifySwitch}`);
+		}
+	}
 
 	public formatTable(table: MarkdownTable, settings: MarkdownTableFormatterSettings) {
 		let addTailPipesIfNeeded = settings.keepFirstAndLastPipes
@@ -117,7 +150,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 		let header: string[] = [];
 		if (table.header) {
-			header = formatLines([table.header], table.format, table.columnSizes, settings).map(line => {
+			header = this.formatLines([table.header], table.format, table.columnSizes, settings).map(line => {
 				let cellPadding = padding(settings.spacePadding);
 				return line.map((cell, i) => {
 					return `${cellPadding}${cell}${cellPadding}`;
@@ -125,7 +158,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			}).map(joinCells).map(addTailPipesIfNeeded);
 		}
 
-		let formatLine = formatLines([table.format], table.format, table.columnSizes, settings).map(line => {
+		let formatLine = this.formatLines([table.format], table.format, table.columnSizes, settings).map(line => {
 			return line.map((cell, i) => {
 				let line: string = "";
 				let [front, back] = fixJustification(cell);
@@ -167,7 +200,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			});
 		}).map(joinCells).map(addTailPipesIfNeeded);
 
-		let body = formatLines(table.body, table.format, table.columnSizes, settings).map(line => {
+		let body = this.formatLines(table.body, table.format, table.columnSizes, settings).map(line => {
 			let cellPadding = padding(settings.spacePadding);
 			return line.map((cell, i) => {
 				return `${cellPadding}${cell}${cellPadding}`;

@@ -1,8 +1,3 @@
-import { TextEditor, TextEditorEdit } from "vscode";
-import { markdownTableCodeLensProvider } from "./extension";
-import { SortCommandArguments } from "./MarkdownTableCodeLensProvider";
-import { getSettings } from "./utils";
-
 export let sortIndicator = {
 	ascending: '▲',
 	descending: '▼',

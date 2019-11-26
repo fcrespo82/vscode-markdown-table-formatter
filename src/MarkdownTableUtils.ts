@@ -1,7 +1,7 @@
 import { Range, TextDocument, workspace } from 'vscode';
 import { MarkdownTable, XRegExpExecArray } from './MarkdownTable';
-import MarkdownTableFormatterSettings from './MarkdownTableFormatterSettings';
-import { tableRegex } from './regex';
+import MarkdownTableFormatterSettings from './formatter/MarkdownTableFormatterSettings';
+import { tableRegex } from './MarkdownTableRegex';
 import wcswidth = require('wcwidth');
 import XRegExp = require('xregexp');
 

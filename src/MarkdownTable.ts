@@ -1,15 +1,7 @@
-import { Position, Range, CodeLens } from "vscode";
-import { addTailPipes, fixJustification, formatLines, joinCells, splitCells, stripHeaderTailPipes, tableJustification } from "./formatter-utils";
-import MarkdownTableFormatterSettings from "./MarkdownTableFormatterSettings";
-import { cleanSortIndicator } from "./sort-utils";
-import { columnSizes, padding } from "./utils";
+import { Position, Range } from "vscode";
+import { addTailPipes, joinCells, splitCells, stripHeaderTailPipes } from "./formatter/MarkdownTableFormatterUtils";
+import { columnSizes } from "./MarkdownTableUtils";
 var md5 = require("md5");
-
-export enum MarkdownTableSortDirection {
-	None,
-	Asc,
-	Desc
-}
 
 export interface XRegExpExecArray extends RegExpExecArray {
 	groups: any;

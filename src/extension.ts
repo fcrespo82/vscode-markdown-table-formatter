@@ -1,13 +1,13 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { MarkdownTableCodeLensProvider } from "./MarkdownTableCodeLensProvider";
-import { MarkdownTableFormatterProvider } from './MarkdownTableFormatterProvider';
 import { MarkdownTable } from './MarkdownTable';
-import { tablesIn } from './utils';
+import { MarkdownTableFormatterProvider } from './formatter/MarkdownTableFormatterProvider';
+import { MarkdownTableSortCodeLensProvider } from "./sorter/MarkdownTableSortCodeLensProvider";
+import { tablesIn } from './MarkdownTableUtils';
 
 export const markdownTableFormatterProvider = new MarkdownTableFormatterProvider();
-export const markdownTableCodeLensProvider = new MarkdownTableCodeLensProvider();
+export const markdownTableCodeLensProvider = new MarkdownTableSortCodeLensProvider();
 
 var _extensionTables: MarkdownTable[];
 

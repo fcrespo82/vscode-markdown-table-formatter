@@ -1,22 +1,14 @@
 import * as vscode from 'vscode';
-import { MarkdownTable, MarkdownTableSortDirection } from './MarkdownTable';
-import { cleanSortIndicator } from './sort-utils';
-import { tablesIn, getSettings } from './utils';
-import { setExtensionTables, getExtensionTables } from './extension';
-import MarkdownTableFormatterSettings from './MarkdownTableFormatterSettings';
+import { setExtensionTables } from '../extension';
+import { MarkdownTable } from '../MarkdownTable';
+import MarkdownTableFormatterSettings from '../formatter/MarkdownTableFormatterSettings';
+import MarkdownTableSortOptions from './MarkdownTableSortOptions';
+import { cleanSortIndicator } from './MarkdownTableSortUtils';
+import { getSettings, tablesIn } from '../MarkdownTableUtils';
+import MarkdownTableSortCommandArguments from './MarkdownTableSortCommandArguments';
+import { MarkdownTableSortDirection } from './MarkdownTableSortDirection';
 
-export interface MarkdownTableSortOptions {
-	header_index: number;
-	sort_direction: MarkdownTableSortDirection;
-}
-
-export interface SortCommandArguments {
-	table: MarkdownTable;
-	options: MarkdownTableSortOptions;
-	document: vscode.TextDocument;
-}
-
-export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
+export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvider {
 
 	public disposables: vscode.Disposable[] = [];
 	private config: vscode.WorkspaceConfiguration;
@@ -123,7 +115,7 @@ export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
 	// vscode.Commands
 	// vscode.Command
 	private sortCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit, ...args: any[]) {
-		let sortArguments: SortCommandArguments = args[0];
+		let sortArguments: MarkdownTableSortCommandArguments = args[0];
 
 		this.setActiveSort(editor.document, sortArguments.table, sortArguments.options);
 
@@ -134,7 +126,7 @@ export class MarkdownTableCodeLensProvider implements vscode.CodeLensProvider {
 
 	// vscode.Command
 	private resetCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit, ...args: any[]) {
-		let sortArguments: SortCommandArguments = args[0];
+		let sortArguments: MarkdownTableSortCommandArguments = args[0];
 
 		this.setActiveSort(sortArguments.document, sortArguments.table, undefined);
 

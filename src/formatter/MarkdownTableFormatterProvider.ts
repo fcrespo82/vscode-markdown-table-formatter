@@ -27,7 +27,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			scopes.forEach(scope => {
 				this.registerFormatterForScope(scope);
 			});
-			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.enableForCurrentScope", this.enableForCurrentScopeCommand));
+			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.enableForCurrentScope", this.enableForCurrentScopeCommand, this));
 
 			vscode.workspace.onDidOpenTextDocument(document => {
 				let fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));

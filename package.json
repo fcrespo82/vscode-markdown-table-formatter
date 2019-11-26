@@ -66,13 +66,13 @@
             {
                 "command": "markdown-table-formatter.moveColumnRight",
                 "key": "alt+shift+right",
-                "mac": "cmd+option+right",
+                "mac": "cmd+alt+right",
                 "when": "editorTextFocus"
             },
             {
                 "command": "markdown-table-formatter.moveColumnLeft",
                 "key": "alt+shift+left",
-                "mac": "cmd+option+left",
+                "mac": "cmd+alt+left",
                 "when": "editorTextFocus"
             }
         ],

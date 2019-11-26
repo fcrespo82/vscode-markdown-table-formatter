@@ -29,7 +29,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 			scopes.forEach(scope => {
 				this.registerCodeLensForScope(scope);
 			});
-			this.disposables.push(vscode.commands.registerTextEditorCommand('sortTable', this.sortCommand));
+			this.disposables.push(vscode.commands.registerTextEditorCommand('sortTable', this.sortCommand, this));
 			// this.disposables.push(vscode.commands.registerTextEditorCommand('resetTable', resetCommand));
 
 			vscode.workspace.onDidOpenTextDocument(document => {

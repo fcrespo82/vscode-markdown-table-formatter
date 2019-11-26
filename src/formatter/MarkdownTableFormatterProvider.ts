@@ -4,6 +4,8 @@ import { addTailPipes, fixJustification, joinCells, tableJustification } from '.
 import { MarkdownTable } from '../MarkdownTable';
 import MarkdownTableFormatterSettings from './MarkdownTableFormatterSettings';
 import { discoverMaxColumnSizes, discoverMaxTableSizes, getSettings, padding, swidth, tablesIn } from '../MarkdownTableUtils';
+import { MarkdownTableFormatterGlobalColumnSizes } from './MarkdownTableFormatterGlobalColumnSizes';
+import { MarkdownTableFormatterDelimiterRowPadding } from './MarkdownTableFormatterDelimiterRowPadding';
 
 export class MarkdownTableFormatterProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider {
 
@@ -83,12 +85,12 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		}
 		let tables: MarkdownTable[] = setExtensionTables(tablesIn(document, range));
 
-		if (getSettings().globalColumnSizes === 'Same column size') {
+		if (getSettings().globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameColumnSize) {
 			let maxSize = discoverMaxColumnSizes(tables);
 			tables.forEach(table => {
 				table.columnSizes = maxSize;
 			});
-		} if (getSettings().globalColumnSizes === 'Same table size') {
+		} if (getSettings().globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameTableSize) {
 			let tableSizes = discoverMaxTableSizes(tables, getSettings().spacePadding);
 			tables.forEach((table, i) => {
 				table.columnSizes = tableSizes[i];
@@ -168,16 +170,16 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 				let spacePadding = padding(settings.spacePadding, ' ');
 				switch (settings.delimiterRowPadding) {
-					case 'None':
+					case MarkdownTableFormatterDelimiterRowPadding.None:
 						line = front + padding(table.columnSizes[i] + (settings.spacePadding * 2) - 2, '-') + back;
 						break;
-					case 'Follow Space Padding':
+					case MarkdownTableFormatterDelimiterRowPadding.FollowSpacePadding:
 						line = `${spacePadding}${front}${padding(table.columnSizes[i] - 2, '-')}${back}${spacePadding}`;
 						break;
-					case 'Single Space Always':
+					case MarkdownTableFormatterDelimiterRowPadding.SingleApaceAlways:
 						line = ` ${front}${padding(table.columnSizes[i] + (settings.spacePadding * 2) - 4, '-')}${back} `;
 						break;
-					case 'Alignment Marker':
+					case MarkdownTableFormatterDelimiterRowPadding.AlignmentMarker:
 						let justifySwitch = fixJustification(cell);
 						if (justifySwitch === "--") {
 							justifySwitch = tableJustification[settings.defaultTableJustification];

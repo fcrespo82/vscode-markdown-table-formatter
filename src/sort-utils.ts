@@ -32,23 +32,3 @@ export let toggleSortIndicator = (text: string): string => {
 		return cleanSortIndicator(text) + sortIndicator.separator + sortIndicator.descending;
 	}
 };
-
-export const sortCommand = (editor: TextEditor, edit: TextEditorEdit, ...args: any[]) => {
-	let sortArguments: SortCommandArguments = args[0];
-
-	markdownTableCodeLensProvider.setActiveSort(sortArguments.document, sortArguments.table, sortArguments.options);
-
-	editor.edit(editBuilder => {
-		editBuilder.replace(sortArguments.table.range, sortArguments.table.sorted(sortArguments.options.header_index, sortArguments.options.sort_direction, getSettings()));
-	});
-};
-
-export const resetCommand = (editor: TextEditor, edit: TextEditorEdit, ...args: any[]) => {
-	let sortArguments: SortCommandArguments = args[0];
-
-	markdownTableCodeLensProvider.setActiveSort(sortArguments.document, sortArguments.table, undefined);
-
-	editor.edit(editBuilder => {
-		editBuilder.replace(sortArguments.table.range, sortArguments.table.notFormattedDefault());
-	});
-};

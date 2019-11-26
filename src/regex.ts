@@ -22,5 +22,5 @@ export const tableRegex = XRegExp(String.raw`
   )+                                      # at least one
 )
 `,
-  'gmx',
+	'gmx',
 );

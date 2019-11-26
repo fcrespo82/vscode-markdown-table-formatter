@@ -5,6 +5,7 @@ import * as vscode from 'vscode';
 import MarkdownTableFormatterSettings from '../../MarkdownTableFormatterSettings';
 import { discoverMaxColumnSizes, discoverMaxTableSizes, pad, tablesIn } from '../../utils';
 import { testTables } from '../files/tables';
+import { MarkdownTableFormatterProvider } from '../../MarkdownTableFormatterProvider';
 
 suite('Extension Test Suite', () => {
 
@@ -28,6 +29,8 @@ suite('Extension Test Suite', () => {
 		delimiterRowPadding: 'None'
 	};
 
+	let formatterProvider = new MarkdownTableFormatterProvider();
+
 	testTables.forEach((testTable, i) => {
 		let testSettings: MarkdownTableFormatterSettings = testTable.settings || settings;
 
@@ -49,7 +52,7 @@ suite('Extension Test Suite', () => {
 					});
 				}
 				let formattedTables = tables.map(table => {
-					return table.formatted(testTable.settings || settings);
+					return formatterProvider.formatTable(table, testTable.settings || settings);
 				}).join('\n\n');
 				assert.equal(formattedTables, testTable.expected);
 			});

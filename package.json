@@ -138,8 +138,8 @@
                     "type": "string",
                     "enum": [
                         "Disabled",
-                        "Same column size",
-                        "Same table size"
+                        "Same Column Size",
+                        "Same Table Size"
                     ],
                     "default": "Disabled"
                 },
@@ -149,9 +149,9 @@
                     "type": "string",
                     "enum": [
                         "None",
-                        "Follow space padding",
-                        "Single space always",
-                        "Alignment marker"
+                        "Follow Space Padding",
+                        "Single Space Always",
+                        "Alignment Marker"
                     ],
                     "default": "None"
                 }

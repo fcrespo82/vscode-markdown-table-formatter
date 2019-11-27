@@ -1,12 +1,10 @@
 import * as vscode from 'vscode';
-import { setExtensionTables, getTable } from '../extension';
+import { getTable, setExtensionTables } from '../extension';
 import { MarkdownTable } from '../MarkdownTable';
-import MarkdownTableFormatterSettings from '../formatter/MarkdownTableFormatterSettings';
+import { tablesIn } from '../MarkdownTableUtils';
+import { MarkdownTableSortDirection } from './MarkdownTableSortDirection';
 import MarkdownTableSortOptions from './MarkdownTableSortOptions';
 import { cleanSortIndicator, sortIndicator } from './MarkdownTableSortUtils';
-import { tablesIn } from '../MarkdownTableUtils';
-import MarkdownTableSortCommandArguments from './MarkdownTableSortCommandArguments';
-import { MarkdownTableSortDirection } from './MarkdownTableSortDirection';
 
 export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvider {
 
@@ -90,10 +88,14 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 			// FIXME: Improve
 			let activeSort = this.getActiveSort(document, table.id, header_index);
 			let direction = undefined;
+
 			var indicator = `${header.trim()}`;
+			if (header.trim() === "") {
+				indicator = `Column ${header_index + 1}`;
+			}
 
 			if (activeSort && activeSort.header_index === header_index) {
-				indicator = `${header.trim() + this.getSortIndicator(activeSort.sort_direction)}`;
+				indicator = `${indicator + this.getSortIndicator(activeSort.sort_direction)}`;
 				direction = activeSort.sort_direction;
 			}
 

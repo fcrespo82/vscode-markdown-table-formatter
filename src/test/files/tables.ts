@@ -1,3 +1,4 @@
+import { MarkdownTableFormatterGlobalColumnSizes, MarkdownTableFormatterDelimiterRowPadding } from "../../formatter/MarkdownTableFormatterProvider";
 
 export let testTables = [
 	{
@@ -17,8 +18,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -42,8 +43,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -67,8 +68,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -92,8 +93,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -117,8 +118,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -142,8 +143,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: true,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -167,8 +168,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: true,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -192,8 +193,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: true,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -217,8 +218,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -242,8 +243,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -267,8 +268,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -292,8 +293,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -317,8 +318,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -342,8 +343,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -365,8 +366,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -388,8 +389,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -411,8 +412,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -435,8 +436,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -457,8 +458,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -479,8 +480,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -580,8 +581,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -609,8 +610,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -638,8 +639,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -667,8 +668,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same table size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -698,8 +699,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same table size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -729,8 +730,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same table size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -764,8 +765,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same table size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -783,8 +784,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 	{
@@ -804,8 +805,8 @@ export let testTables = [
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnPadding: false,
 			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: 'Same column size',
-			delimiterRowPadding: 'None'
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 		}
 	},
 ];

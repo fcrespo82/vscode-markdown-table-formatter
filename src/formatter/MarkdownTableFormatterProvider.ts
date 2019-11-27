@@ -2,12 +2,21 @@ import * as vscode from 'vscode';
 import { getExtensionTables, setExtensionTables } from '../extension';
 import { MarkdownTable } from '../MarkdownTable';
 import { discoverMaxColumnSizes, discoverMaxTableSizes, padding, swidth, tablesIn } from '../MarkdownTableUtils';
-import { MarkdownTableFormatterDelimiterRowPadding } from './MarkdownTableFormatterDelimiterRowPadding';
 import MarkdownTableFormatterSettings from './MarkdownTableFormatterSettings';
 import { addTailPipes, fixJustification, joinCells, tableJustification } from './MarkdownTableFormatterUtils';
 import MarkdownTableFormatterSettingsImpl from './MarkdownTableFormatterSettingsImpl';
-import { MarkdownTableFormatterGlobalColumnSizes } from './MarkdownTableFormatterGlobalColumnSizes';
 
+export enum MarkdownTableFormatterDelimiterRowPadding {
+	None = "None",
+	FollowSpacePadding = "Follow space padding",
+	SingleApaceAlways = "Single space always",
+	AlignmentMarker = "Alignment marker"
+}
+export enum MarkdownTableFormatterGlobalColumnSizes {
+	Disabled = "Disabled",
+	SameColumnSize = "Same Column Size",
+	SameTableSize = "Same Table Size"
+}
 export class MarkdownTableFormatterProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider {
 
 	public disposables: vscode.Disposable[] = [];
@@ -87,7 +96,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		}
 		let tables: MarkdownTable[] = setExtensionTables(tablesIn(document, range));
 
-		if (this.config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameColumnSize.valueOf()) {
+		if (this.config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameColumnSize) {
 			let maxSize = discoverMaxColumnSizes(tables);
 			tables.forEach(table => {
 				table.columnSizes = maxSize;

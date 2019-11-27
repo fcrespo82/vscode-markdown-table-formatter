@@ -16,8 +16,6 @@ export let padding = (len: number, str: string = ' ') => {
 	return str.repeat(len);
 };
 
-
-
 export let columnSizes = (header: string[], body: string[][]) => {
 	return [header, ...body].map((line, i, a) => {
 		return line.map((column, ci, ca) => {
@@ -33,8 +31,6 @@ export let columnSizes = (header: string[], body: string[][]) => {
 		});
 	});
 };
-
-
 
 export let sumArray = (array: number[]): number => {
 	return array.reduce((p, c) => p + c);
@@ -68,7 +64,7 @@ export let discoverMaxTableSizes = (tables: MarkdownTable[], padding: number): n
 	});
 
 	let maxTableSize = tableInfo.reduce((p, c) => {
-		return sumArray(p.columnSizes) > sumArray(c.columnSizes) ? p : c;
+		return sumArray(p.columnSizes) + (p.columns * padding) > sumArray(c.columnSizes) + (c.columns * padding) ? p : c;
 	});
 
 	return tableInfo.map(info => {

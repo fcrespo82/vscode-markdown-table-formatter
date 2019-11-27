@@ -1,7 +1,6 @@
 import { WorkspaceConfiguration, workspace } from "vscode";
-import { MarkdownTableFormatterGlobalColumnSizes } from "./MarkdownTableFormatterGlobalColumnSizes";
-import { MarkdownTableFormatterDelimiterRowPadding } from "./MarkdownTableFormatterDelimiterRowPadding";
 import MarkdownTableFormatterSettings from "./MarkdownTableFormatterSettings";
+import { MarkdownTableFormatterGlobalColumnSizes, MarkdownTableFormatterDelimiterRowPadding } from "./MarkdownTableFormatterProvider";
 
 export default class MarkdownTableFormatterSettingsImpl implements MarkdownTableFormatterSettings {
 
@@ -33,10 +32,10 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 	get removeColonsIfSameAsDefault(): boolean {
 		return this.config.get<boolean>('removeColonsIfSameAsDefault', false);
 	}
-	get globalColumnSizes(): string {
-		return this.config.get<string>('globalColumnSizes', MarkdownTableFormatterGlobalColumnSizes.Disabled);
+	get globalColumnSizes(): MarkdownTableFormatterGlobalColumnSizes {
+		return this.config.get<MarkdownTableFormatterGlobalColumnSizes>('globalColumnSizes', MarkdownTableFormatterGlobalColumnSizes.Disabled);
 	}
-	get delimiterRowPadding(): string {
-		return this.config.get<string>('delimiterRowPadding', MarkdownTableFormatterDelimiterRowPadding.None);
+	get delimiterRowPadding(): MarkdownTableFormatterDelimiterRowPadding {
+		return this.config.get<MarkdownTableFormatterDelimiterRowPadding>('delimiterRowPadding', MarkdownTableFormatterDelimiterRowPadding.None);
 	}
 }

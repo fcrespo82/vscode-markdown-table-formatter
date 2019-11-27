@@ -5,7 +5,7 @@ import * as vscode from 'vscode';
 import MarkdownTableFormatterSettings from '../../formatter/MarkdownTableFormatterSettings';
 import { discoverMaxColumnSizes, discoverMaxTableSizes, pad, tablesIn } from '../../MarkdownTableUtils';
 import { testTables } from '../files/tables';
-import { MarkdownTableFormatterProvider } from '../../formatter/MarkdownTableFormatterProvider';
+import { MarkdownTableFormatterProvider, MarkdownTableFormatterGlobalColumnSizes, MarkdownTableFormatterDelimiterRowPadding } from '../../formatter/MarkdownTableFormatterProvider';
 
 suite('Extension Test Suite', () => {
 
@@ -26,8 +26,8 @@ suite('Extension Test Suite', () => {
 		markdownGrammarScopes: ['markdown'],
 		limitLastColumnPadding: false,
 		removeColonsIfSameAsDefault: false,
-		globalColumnSizes: 'Same column size',
-		delimiterRowPadding: 'None'
+		globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+		delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
 	};
 
 	let formatterProvider = new MarkdownTableFormatterProvider();
@@ -41,12 +41,12 @@ suite('Extension Test Suite', () => {
 			let uri = vscode.Uri.parse('test-table:' + i);
 			return vscode.workspace.openTextDocument(uri).then(doc => {
 				let tables = tablesIn(doc, doc.validateRange(new vscode.Range(0, 0, doc.lineCount + 1, 0)));
-				if (testSettings.globalColumnSizes === 'Same column size') {
+				if (testSettings.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameColumnSize) {
 					let maxSize = discoverMaxColumnSizes(tables);
 					tables.forEach(table => {
 						table.columnSizes = maxSize;
 					});
-				} if (testSettings.globalColumnSizes === 'Same table size') {
+				} if (testSettings.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameTableSize) {
 					let tableSizes = discoverMaxTableSizes(tables, testSettings.spacePadding);
 					tables.forEach((table, i) => {
 						table.columnSizes = tableSizes[i];

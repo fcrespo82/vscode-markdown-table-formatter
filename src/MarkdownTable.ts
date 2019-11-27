@@ -91,8 +91,6 @@ export class MarkdownTable {
 			firstLine += 1;
 		});
 
-		this.defaultBody = this.body;
-
 		if (regexpArray.groups.header) {
 			this._columnSizes = columnSizes(this.header, this.body);
 		} else {
@@ -100,7 +98,8 @@ export class MarkdownTable {
 		}
 
 		var header = this.header.reduce((acc, val) => acc += val.trim(), "");
-		var body = this.body.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc += val.trim(), "");
+		// FIXME: Improve
+		var body = this.body.length;//.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc += val.trim(), "");
 		this._id = md5(header + body);
 	}
 

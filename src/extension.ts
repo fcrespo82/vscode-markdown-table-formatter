@@ -5,9 +5,11 @@ import { MarkdownTableFormatterProvider } from './formatter/MarkdownTableFormatt
 import { MarkdownTable } from './MarkdownTable';
 import { tablesIn } from './MarkdownTableUtils';
 import { MarkdownTableSortCodeLensProvider } from "./sorter/MarkdownTableSortCodeLensProvider";
+import { MarkdownTableDecorationProvider } from './decoration/MarkdownTableDecorationProvider';
 
 export const markdownTableFormatterProvider = new MarkdownTableFormatterProvider();
 export const markdownTableCodeLensProvider = new MarkdownTableSortCodeLensProvider();
+export const markdownTableDecorationProvider = new MarkdownTableDecorationProvider();
 
 var _extensionTables: MarkdownTable[];
 
@@ -28,43 +30,13 @@ export function getTable(id: string): MarkdownTable | undefined {
 	});
 }
 
-let decorationsEnabled = false;
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext): Promise<boolean> {
 
-	const markdownTableDecoration = vscode.window.createTextEditorDecorationType({
-		backgroundColor: 'orange',
-		rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
-		overviewRulerColor: 'orange',
-		overviewRulerLane: vscode.OverviewRulerLane.Full,
-		light: {
-			// this color will be used in light color themes
-			backgroundColor: 'darkorange'
-		},
-		dark: {
-			// this color will be used in dark color themes
-			backgroundColor: 'darkorange'
-		}
-	});
-
-	vscode.commands.registerTextEditorCommand("markdown-table-formatter.toggleDebug", (editor, edit) => {
-		decorationsEnabled = !decorationsEnabled;
-		if (decorationsEnabled) {
-			let fullDocumentRange = editor.document.validateRange(new vscode.Range(0, 0, editor.document.lineCount + 1, 0));
-
-			let tables = tablesIn(editor.document, fullDocumentRange);
-			let ranges = tables.map(t => {
-				return t.range;
-			});
-			editor.setDecorations(markdownTableDecoration, ranges);
-		} else {
-			editor.setDecorations(markdownTableDecoration, []);
-		}
-	});
-
 	markdownTableFormatterProvider.register();
 	markdownTableCodeLensProvider.register();
+	markdownTableDecorationProvider.register();
 
 	vscode.workspace.onDidChangeConfiguration(changeConfigurationEvent => {
 		if (changeConfigurationEvent.affectsConfiguration('markdown-table-formatter')) {

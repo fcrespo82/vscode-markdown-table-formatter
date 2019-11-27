@@ -8,7 +8,11 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 
 	constructor() {
 		this.config = workspace.getConfiguration('markdown-table-formatter');
-
+		workspace.onDidChangeConfiguration((changeEvent) => {
+			if (changeEvent.affectsConfiguration('markdown-table-formatter')) {
+				this.config = workspace.getConfiguration('markdown-table-formatter');
+			}
+		});
 	}
 
 	get enable(): boolean {

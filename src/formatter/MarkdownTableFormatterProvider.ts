@@ -8,9 +8,9 @@ import MarkdownTableFormatterSettingsImpl from './MarkdownTableFormatterSettings
 
 export enum MarkdownTableFormatterDelimiterRowPadding {
 	None = "None",
-	FollowSpacePadding = "Follow space padding",
-	SingleApaceAlways = "Single space always",
-	AlignmentMarker = "Alignment marker"
+	FollowSpacePadding = "Follow Space Padding",
+	SingleApaceAlways = "Single Space Always",
+	AlignmentMarker = "Alignment Marker"
 }
 export enum MarkdownTableFormatterGlobalColumnSizes {
 	Disabled = "Disabled",
@@ -25,6 +25,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	constructor() {
 		// this.config = vscode.workspace.getConfiguration('markdown-table-formatter');
 		this.config = new MarkdownTableFormatterSettingsImpl();
+
 	}
 
 	dispose() {
@@ -197,13 +198,13 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 						}
 						switch (justifySwitch) {
 							case '::':
-								line = `${spacePadding}${front}${padding(table.columnSizes[i] + (settings.spacePadding * 2) - 4, '-')}${back}${spacePadding}`;
+								line = `${spacePadding}${front}${padding(table.columnSizes[i] - 2, '-')}${back}${spacePadding}`;
 								break;
 							case '-:':
-								line = `${spacePadding}${front}${padding(table.columnSizes[i] + (settings.spacePadding * 2) - 3, '-')}${back}`;
+								line = `${spacePadding}${front}${padding(table.columnSizes[i] - 2 + settings.spacePadding, '-')}${back}`;
 								break;
 							case ':-':
-								line = `${front}${padding(table.columnSizes[i] + (settings.spacePadding * 2) - 3, '-')}${back}${spacePadding}`;
+								line = `${front}${padding(table.columnSizes[i] - 2 + settings.spacePadding, '-')}${back}${spacePadding}`;
 								break;
 						}
 						break;

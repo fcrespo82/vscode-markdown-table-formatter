@@ -104,8 +104,9 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 				command: 'sortTable',
 				arguments: [table.id, header_index, direction]
 			});
-		}).concat(
-			new vscode.CodeLens(table.range, { title: table.id.toString(), command: '' }));
+		});
+			// .concat(
+			// new vscode.CodeLens(table.range, { title: table.id.toString(), command: '' }));
 	}
 
 	public sortTable(table: MarkdownTable, headerIndex: number, sortDirection: MarkdownTableSortDirection) {

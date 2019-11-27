@@ -4,7 +4,7 @@ import { MarkdownTable } from '../MarkdownTable';
 import MarkdownTableFormatterSettings from '../formatter/MarkdownTableFormatterSettings';
 import MarkdownTableSortOptions from './MarkdownTableSortOptions';
 import { cleanSortIndicator, sortIndicator } from './MarkdownTableSortUtils';
-import { getSettings, tablesIn } from '../MarkdownTableUtils';
+import { tablesIn } from '../MarkdownTableUtils';
 import MarkdownTableSortCommandArguments from './MarkdownTableSortCommandArguments';
 import { MarkdownTableSortDirection } from './MarkdownTableSortDirection';
 
@@ -106,7 +106,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 			new vscode.CodeLens(table.range, { title: table.id.toString(), command: '' }));
 	}
 
-	public sortTable(table: MarkdownTable, headerIndex: number, sortDirection: MarkdownTableSortDirection, settings: MarkdownTableFormatterSettings) {
+	public sortTable(table: MarkdownTable, headerIndex: number, sortDirection: MarkdownTableSortDirection) {
 		table.header.forEach((header, i) => {
 			if (i !== headerIndex) {
 				table.header[i] = cleanSortIndicator(header);
@@ -159,7 +159,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 			this.setActiveSort(editor.document, id, index, sort);
 
 			editor.edit(editBuilder => {
-				editBuilder.replace(table!.range, this.sortTable(table!, index, sort, getSettings()));
+				editBuilder.replace(table!.range, this.sortTable(table!, index, sort));
 			});
 		}
 
@@ -175,7 +175,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 
 			editor.edit(editBuilder => {
 				// FIXME: Reset should do what?
-				editBuilder.replace(table!.range, this.sortTable(table!, 0, MarkdownTableSortDirection.None, getSettings()));
+				editBuilder.replace(table!.range, this.sortTable(table!, 0, MarkdownTableSortDirection.None));
 			});
 		}
 	}

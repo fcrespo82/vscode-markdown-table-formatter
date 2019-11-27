@@ -1,19 +1,21 @@
 import * as vscode from 'vscode';
 import { getExtensionTables, setExtensionTables } from '../extension';
-import { addTailPipes, fixJustification, joinCells, tableJustification } from './MarkdownTableFormatterUtils';
 import { MarkdownTable } from '../MarkdownTable';
-import MarkdownTableFormatterSettings from './MarkdownTableFormatterSettings';
-import { discoverMaxColumnSizes, discoverMaxTableSizes, getSettings, padding, swidth, tablesIn } from '../MarkdownTableUtils';
-import { MarkdownTableFormatterGlobalColumnSizes } from './MarkdownTableFormatterGlobalColumnSizes';
+import { discoverMaxColumnSizes, discoverMaxTableSizes, padding, swidth, tablesIn } from '../MarkdownTableUtils';
 import { MarkdownTableFormatterDelimiterRowPadding } from './MarkdownTableFormatterDelimiterRowPadding';
+import MarkdownTableFormatterSettings from './MarkdownTableFormatterSettings';
+import { addTailPipes, fixJustification, joinCells, tableJustification } from './MarkdownTableFormatterUtils';
+import MarkdownTableFormatterSettingsImpl from './MarkdownTableFormatterSettingsImpl';
+import { MarkdownTableFormatterGlobalColumnSizes } from './MarkdownTableFormatterGlobalColumnSizes';
 
 export class MarkdownTableFormatterProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider {
 
 	public disposables: vscode.Disposable[] = [];
-	private config: vscode.WorkspaceConfiguration;
+	private config: MarkdownTableFormatterSettings;
 
 	constructor() {
-		this.config = vscode.workspace.getConfiguration('markdown-table-formatter');
+		// this.config = vscode.workspace.getConfiguration('markdown-table-formatter');
+		this.config = new MarkdownTableFormatterSettingsImpl();
 	}
 
 	dispose() {
@@ -22,8 +24,8 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	}
 
 	public register() {
-		if (this.config.get<boolean>("enable", true)) {
-			const scopes = this.config.get<string[]>('markdownGrammarScopes', []);
+		if (this.config.enable) {
+			const scopes = this.config.markdownGrammarScopes;
 			scopes.forEach(scope => {
 				this.registerFormatterForScope(scope);
 			});
@@ -79,25 +81,25 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	private formatDocument(document: vscode.TextDocument, range: vscode.Range): vscode.TextEdit[] {
 		let edits: vscode.TextEdit[] = [];
 		// This check is in case some grammar is removed and VSCode is not reloaded yet
-		if (!getSettings().markdownGrammarScopes.includes(document.languageId)) {
+		if (!this.config.markdownGrammarScopes.includes(document.languageId)) {
 			vscode.window.showWarningMessage(`Markdown table formatter is not enabled for '${document.languageId}' language!`);
 			return edits;
 		}
 		let tables: MarkdownTable[] = setExtensionTables(tablesIn(document, range));
 
-		if (getSettings().globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameColumnSize) {
+		if (this.config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameColumnSize.valueOf()) {
 			let maxSize = discoverMaxColumnSizes(tables);
 			tables.forEach(table => {
 				table.columnSizes = maxSize;
 			});
-		} if (getSettings().globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameTableSize) {
-			let tableSizes = discoverMaxTableSizes(tables, getSettings().spacePadding);
+		} if (this.config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameTableSize) {
+			let tableSizes = discoverMaxTableSizes(tables, this.config.spacePadding);
 			tables.forEach((table, i) => {
 				table.columnSizes = tableSizes[i];
 			});
 		}
 		tables.forEach(table => {
-			edits.push(new vscode.TextEdit(table.range, this.formatTable(table, getSettings())));
+			edits.push(new vscode.TextEdit(table.range, this.formatTable(table, this.config)));
 		});
 		return edits;
 	}
@@ -220,10 +222,10 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	// vscode.Commands
 	// vscode.Command
 	private enableForCurrentScopeCommand = (editor: vscode.TextEditor, edit: vscode.TextEditorEdit) => {
-		const scopes = this.config.get<string[]>('markdownGrammarScopes', []);
+		const scopes = this.config.markdownGrammarScopes;
 		if (!scopes.includes(editor.document.languageId)) {
 			scopes.push(editor.document.languageId);
-			this.config.update("markdownGrammarScopes", scopes, true);
+			vscode.workspace.getConfiguration('markdown-table-formatter').update("markdownGrammarScopes", scopes, true);
 			this.registerFormatterForScope(editor.document.languageId);
 			vscode.window.showInformationMessage(`Markdown table formatter enabled for '${editor.document.languageId}' language!`);
 		}
@@ -233,6 +235,9 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	private moveColumnRightCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
 		let tables = getExtensionTables(editor.selection);
 		let header = this.getColumnIndexFromRange(tables[0], editor.selection);
+		if (header < 0) {
+			return;
+		}
 		var leftHeaderIndex = header;
 		if ((leftHeaderIndex + 1) >= tables[0].columns) {
 			return;
@@ -246,6 +251,9 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	private moveColumnLeftCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
 		let tables = getExtensionTables(editor.selection);
 		let header = this.getColumnIndexFromRange(tables[0], editor.selection);
+		if (header < 0) {
+			return;
+		}
 		var leftHeaderIndex = header - 1;
 		if (leftHeaderIndex < 0) {
 			return;

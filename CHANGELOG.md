@@ -1,3 +1,8 @@
+## 2.0.1
+
+* [FIX] Various bugs
+
+
 ## 2.0.0
 
 * [NEW] Global column sizes - options: Disabled, Same column size, Same table size (default: Disabled)

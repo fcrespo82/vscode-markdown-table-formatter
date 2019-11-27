@@ -66,23 +66,23 @@ export class MarkdownTable {
 		}
 
 		this.format = splitCells(stripHeaderTailPipes(regexpArray.groups.format));
-		this.format.forEach((format, index) => {
-			var length = format.length;
-			var start = regexpArray.groups.format.indexOf(format);
-			if (!this.ranges.has(index)) {
-				this.ranges.set(index, []);
-			}
-			this.ranges.get(index)!.push(new Range(new Position(firstLine, start), new Position(firstLine, start + length)));
-		});
+		// this.format.forEach((format, index) => {
+		// 	var length = format.length;
+		// 	var start = regexpArray.groups.format.indexOf(format);
+		// 	if (!this.ranges.has(index)) {
+		// 		this.ranges.set(index, []);
+		// 	}
+		// 	this.ranges.get(index)!.push(new Range(new Position(firstLine, start), new Position(firstLine, start + length)));
+		// });
 		firstLine += 1;
 
 		this.body = regexpArray.groups.body.replace(/^\r?\n+|\r?\n+$/g, '').split(/\r?\n/).map((lineBody: string) => {
 			return splitCells(stripHeaderTailPipes(lineBody));
 		});
-		this.body.forEach((line: string[]) => {
+		this.body.forEach((line: string[], line_index) => {
 			line.forEach((h, index) => {
 				var length = h.length;
-				var start = regexpArray.groups.body.indexOf(h);
+				var start = regexpArray.groups.body.split(/\r?\n/)[line_index].indexOf(h);
 				if (!this.ranges.has(index)) {
 					this.ranges.set(index, []);
 				}

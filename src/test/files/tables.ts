@@ -10,6 +10,7 @@ export let testTables = [
 | --- | --- |
 | Baz | Qux |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -34,6 +35,7 @@ export let testTables = [
 | Line:2 Col:A    | Line:2 Col:B    | Line:2 Col:C    | Line:2 Col:D    |
 | L:3 C:A         | L:3 C:B         | L:3 C:C         | L:3 C:D         |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -58,6 +60,7 @@ export let testTables = [
 | Line:2 Col:A    |  Line:2 Col:B   |    Line:2 Col:C | Line:2 Col:D    |
 | L:3 C:A         |     L:3 C:B     |         L:3 C:C | L:3 C:D         |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -82,6 +85,7 @@ export let testTables = [
 | Line:2 Col:A    |  Line:2 Col:B   |    Line:2 Col:C |  Line:2 Col:D   |
 | L:3 C:A         |     L:3 C:B     |         L:3 C:C |     L:3 C:D     |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Center',
@@ -106,6 +110,7 @@ export let testTables = [
 | Line:2 Col:A    |  Line:2 Col:B   |    Line:2 Col:C |    Line:2 Col:D |
 | L:3 C:A         |     L:3 C:B     |         L:3 C:C |         L:3 C:D |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Right',
@@ -130,6 +135,7 @@ export let testTables = [
 | Line:2 Col:A    |  Line:2 Col:B   |    Line:2 Col:C | Line:2 Col:D    |
 | L:3 C:A         |     L:3 C:B     |         L:3 C:C | L:3 C:D         |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -154,6 +160,7 @@ export let testTables = [
 | Line:2 Col:A    |  Line:2 Col:B   |    Line:2 Col:C |  Line:2 Col:D   |
 | L:3 C:A         |     L:3 C:B     |         L:3 C:C |     L:3 C:D     |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Center',
@@ -178,6 +185,7 @@ export let testTables = [
 | Line:2 Col:A    |  Line:2 Col:B   |    Line:2 Col:C |    Line:2 Col:D |
 | L:3 C:A         |     L:3 C:B     |         L:3 C:C |         L:3 C:D |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Right',
@@ -202,6 +210,7 @@ export let testTables = [
 |  Line:2 Col:A     |   Line:2 Col:B    |     Line:2 Col:C  |  Line:2 Col:D     |
 |  L:3 C:A          |      L:3 C:B      |          L:3 C:C  |  L:3 C:D          |`,
 		settings: {
+			enable: true,
 			spacePadding: 2,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -226,6 +235,7 @@ export let testTables = [
 |  Line:2 Col:A     |   Line:2 Col:B    |     Line:2 Col:C  |   Line:2 Col:D    |
 |  L:3 C:A          |      L:3 C:B      |          L:3 C:C  |      L:3 C:D      |`,
 		settings: {
+			enable: true,
 			spacePadding: 2,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Center',
@@ -250,6 +260,7 @@ export let testTables = [
 |  Line:2 Col:A     |   Line:2 Col:B    |     Line:2 Col:C  |     Line:2 Col:D  |
 |  L:3 C:A          |      L:3 C:B      |          L:3 C:C  |          L:3 C:D  |`,
 		settings: {
+			enable: true,
 			spacePadding: 2,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Right',
@@ -274,6 +285,7 @@ export let testTables = [
  Line:2 Col:A    |  Line:2 Col:B   |    Line:2 Col:C | Line:2 Col:D    
  L:3 C:A         |     L:3 C:B     |         L:3 C:C | L:3 C:D         `,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: false,
 			defaultTableJustification: 'Left',
@@ -298,6 +310,7 @@ export let testTables = [
  Line:2 Col:A    |  Line:2 Col:B   |    Line:2 Col:C |  Line:2 Col:D   
  L:3 C:A         |     L:3 C:B     |         L:3 C:C |     L:3 C:D     `,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: false,
 			defaultTableJustification: 'Center',
@@ -322,6 +335,7 @@ export let testTables = [
  Line:2 Col:A    |  Line:2 Col:B   |    Line:2 Col:C |    Line:2 Col:D 
  L:3 C:A         |     L:3 C:B     |         L:3 C:C |         L:3 C:D `,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: false,
 			defaultTableJustification: 'Right',
@@ -344,6 +358,7 @@ export let testTables = [
 | column a 1 | column b 1 |
 | column a 2 | column b 2 |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -366,6 +381,7 @@ export let testTables = [
 | column a 1 |  column b 1 |
 | column a 2 | column b 20 |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -388,6 +404,7 @@ export let testTables = [
 | column a 1 | column b 1 |
 | column a 2 | column b 2 |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -411,6 +428,7 @@ export let testTables = [
 | Is source control used?    | \`NO\`      |       |
 | Are changes peer reviewed? | \`PARTIAL\` |       |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -432,6 +450,7 @@ export let testTables = [
 |--------------|--------|-------|
 | Is Iot used? | \`NO\`   |       |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -453,6 +472,7 @@ export let testTables = [
 |:---------|:--------|:--|
 | fdasdfas | x \`|\` y | z |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -553,6 +573,7 @@ export let testTables = [
 | SmoothStep        | \`asmoothstepb:c\` | \`smoothstep(b,c,a)\` |
 | LinearInterpolate | \`amixb:c\`        | \`mix(b,c,a)\`        |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -581,6 +602,7 @@ export let testTables = [
 |:----------------|:----------------|
 | Line:1 Column:A | Line:1 Column:B |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -609,6 +631,7 @@ export let testTables = [
 |:----------------|:----------------|
 | Line:1 Column:A | Line:1 Column:B |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -637,6 +660,7 @@ export let testTables = [
 |:----------------|:----------------|
 | Line:1 Column:A | Line:1 Column:B |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -667,6 +691,7 @@ export let testTables = [
 |:-------------------------|:------------------|
 | Is Iot used?             | NO                |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -697,6 +722,7 @@ export let testTables = [
 |:----------------------------|:---------------------|
 |  Is Iot used?               |  NO                  |`,
 		settings: {
+			enable: true,
 			spacePadding: 2,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -731,6 +757,7 @@ export let testTables = [
 | Is source control used?             | NO              |               |
 | Are changes peer reviewed?          | PARTIAL         |               |`,
 		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -749,6 +776,7 @@ export let testTables = [
 |------------|------------|
 | 1234567890 | 1234567890 |`,
 				settings: {
+					enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -769,6 +797,7 @@ export let testTables = [
 |------------|------------|
 | 1234567890 | 1234567890 |`,
 				settings: {
+					enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',

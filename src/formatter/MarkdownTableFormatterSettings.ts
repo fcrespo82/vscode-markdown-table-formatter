@@ -1,4 +1,7 @@
+import { WorkspaceConfiguration } from "vscode";
+
 export default interface MarkdownTableFormatterSettings {
+	enable: boolean;
     spacePadding: number;
     keepFirstAndLastPipes: boolean;
     defaultTableJustification: string;
@@ -6,5 +9,7 @@ export default interface MarkdownTableFormatterSettings {
     limitLastColumnPadding: boolean;
     removeColonsIfSameAsDefault: boolean;
     globalColumnSizes: string;
-    delimiterRowPadding: string;
+	delimiterRowPadding: string;
+	
+	
 }

@@ -19,6 +19,7 @@ suite('Extension Test Suite', () => {
 	});
 
 	let settings: MarkdownTableFormatterSettings = {
+		enable: true,
 		spacePadding: 1,
 		keepFirstAndLastPipes: true,
 		defaultTableJustification: 'Left',

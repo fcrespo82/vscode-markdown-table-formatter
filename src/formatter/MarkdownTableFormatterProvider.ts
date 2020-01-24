@@ -186,7 +186,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 						line = front + padding(table.columnSizes[i] + (settings.spacePadding * 2) - 2, '-') + back;
 						break;
 					case MarkdownTableFormatterDelimiterRowPadding.FollowSpacePadding:
-						line = `${spacePadding}${front}${padding(table.columnSizes[i] - 2, '-')}${back}${spacePadding}`;
+						line = `${spacePadding}${front}${padding(table.columnSizes[i] - 2, '-')}${table.columnSizes[i]===1?'':back}${spacePadding}`;
 						break;
 					case MarkdownTableFormatterDelimiterRowPadding.SingleApaceAlways:
 						line = ` ${front}${padding(table.columnSizes[i] + (settings.spacePadding * 2) - 4, '-')}${back} `;

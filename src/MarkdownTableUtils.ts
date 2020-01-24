@@ -13,7 +13,9 @@ export let swidth = (str: string) => {
 };
 
 export let padding = (len: number, str: string = ' ') => {
-	return str.repeat(len);
+	var r = len >= 0 ? str.repeat(len) : "";
+	// var r = str.repeat(len);
+	return r;
 };
 
 export let columnSizes = (header: string[], body: string[][]) => {

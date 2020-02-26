@@ -139,7 +139,8 @@
                     "enum": [
                         "Disabled",
                         "Same Column Size",
-                        "Same Table Size"
+                        "Same Table Size",
+                        "Fixed"
                     ],
                     "default": "Disabled"
                 },
@@ -154,6 +155,11 @@
                         "Alignment Marker"
                     ],
                     "default": "None"
+                },
+                "markdown-table-formatter.limitTableSize": {
+                    "title": "Limit table size",
+                    "type": "integer",
+                    "default": 80
                 }
             }
         }

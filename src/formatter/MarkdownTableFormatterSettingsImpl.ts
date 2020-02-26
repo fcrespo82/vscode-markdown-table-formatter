@@ -42,4 +42,7 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 	get delimiterRowPadding(): MarkdownTableFormatterDelimiterRowPadding {
 		return this.config.get<MarkdownTableFormatterDelimiterRowPadding>('delimiterRowPadding', MarkdownTableFormatterDelimiterRowPadding.None);
 	}
+	get limitTableSize(): number {
+		return this.config.get<number>('limitTableSize', 80);
+	}
 }

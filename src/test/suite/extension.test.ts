@@ -27,7 +27,8 @@ suite('Extension Test Suite', () => {
 		limitLastColumnPadding: false,
 		removeColonsIfSameAsDefault: false,
 		globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-		delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
+		delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
+		limitTableSize: 80
 	};
 
 	let formatterProvider = new MarkdownTableFormatterProvider();

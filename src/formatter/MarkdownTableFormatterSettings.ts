@@ -10,4 +10,5 @@ export default interface MarkdownTableFormatterSettings {
 	removeColonsIfSameAsDefault: boolean;
 	globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes;
 	delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding;
+	limitTableSize?: number;
 }

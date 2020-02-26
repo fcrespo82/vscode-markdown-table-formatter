@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { getExtensionTables, setExtensionTables } from '../extension';
 import { MarkdownTable } from '../MarkdownTable';
-import { discoverMaxColumnSizes, discoverMaxTableSizes, padding, swidth, tablesIn } from '../MarkdownTableUtils';
+import { discoverMaxColumnSizes, discoverMaxTableSizes, padding, swidth, tablesIn, sumArray } from '../MarkdownTableUtils';
 import MarkdownTableFormatterSettings from './MarkdownTableFormatterSettings';
 import { addTailPipes, fixJustification, joinCells, tableJustification } from './MarkdownTableFormatterUtils';
 import MarkdownTableFormatterSettingsImpl from './MarkdownTableFormatterSettingsImpl';
@@ -15,7 +15,8 @@ export enum MarkdownTableFormatterDelimiterRowPadding {
 export enum MarkdownTableFormatterGlobalColumnSizes {
 	Disabled = "Disabled",
 	SameColumnSize = "Same Column Size",
-	SameTableSize = "Same Table Size"
+	SameTableSize = "Same Table Size",
+	Fixed = "Fixed"
 }
 export class MarkdownTableFormatterProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider {
 
@@ -102,10 +103,21 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			tables.forEach(table => {
 				table.columnSizes = maxSize;
 			});
-		} if (this.config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameTableSize) {
+		}
+		if (this.config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameTableSize) {
 			let tableSizes = discoverMaxTableSizes(tables, this.config.spacePadding);
 			tables.forEach((table, i) => {
 				table.columnSizes = tableSizes[i];
+			});
+		}
+		if (this.config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.Fixed) {
+			tables.forEach((table, i) => {
+				let total = sumArray(table.columnSizes);
+				table.columnSizes.forEach((size, ii) => {
+					let number = this.config.limitTableSize !== undefined ? this.config.limitTableSize : 80
+					number = number - ((table.columns * this.config.spacePadding * 2) + table.columns + 1)
+					table.columnSizes[ii] = (table.columnSizes[ii] * number) / total;
+				})
 			});
 		}
 		tables.forEach(table => {

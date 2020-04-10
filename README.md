@@ -18,7 +18,6 @@ Uses VSCode `Format Document` and `Format Selection`
 
 - **enable**: Enable or disable the formatter;
 - **enableSort**: Enable or disable table sorter;
-
 - **spacePadding**: How many spaces between left and right of each column content;
 - **keepFirstAndLastPipes**: Keep first and last pipes "|" in table formatting. Tables are easier to format when pipes are kept;
 - **defaultTableJustification**: Defines the default justification for tables that have only "-" on the formatting line;

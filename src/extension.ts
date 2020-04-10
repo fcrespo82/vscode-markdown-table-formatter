@@ -70,6 +70,7 @@ export function activate(context: vscode.ExtensionContext): Promise<boolean> {
 export function deactivate(): Promise<boolean> {
 	markdownTableFormatterProvider.dispose();
 	markdownTableCodeLensProvider.dispose();
-
+	markdownTableDecorationProvider.dispose();
+	
 	return Promise.resolve(true);
 }

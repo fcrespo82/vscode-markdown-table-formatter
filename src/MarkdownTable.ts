@@ -44,6 +44,10 @@ export class MarkdownTable {
 		this._columnSizes = value;
 	}
 
+	get startLine() {
+		return this.start.line
+	}
+	
 	constructor(offset: number, start: Position, end: Position, regexpArray: XRegExpExecArray) {
 		this.offset = offset;
 		this.start = start;

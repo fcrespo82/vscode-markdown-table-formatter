@@ -1,3 +1,7 @@
+## 2.0.4
+
+* [CHANGED] Better error message when the header and body have different column numbers #24
+
 ## 2.0.3
 
 * [FIX] Fix bug #19 where the extension would fail to format a table with columns header and lines with 1 character

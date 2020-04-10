@@ -1,3 +1,4 @@
+import * as assert from 'assert';
 import * as vscode from 'vscode';
 import { getExtensionTables, setExtensionTables } from '../extension';
 import { MarkdownTable } from '../MarkdownTable';
@@ -158,6 +159,13 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	}
 
 	public formatTable(table: MarkdownTable, settings: MarkdownTableFormatterSettings) {
+
+		table.body.forEach((line, i) => {
+			if (table.header.length !== line.length) {
+				vscode.window.showErrorMessage(`Table at line ${table.startLine + 1} has a line with different column number as the header. | Header columns: ${table.header.length} | Body line ${table.startLine + i + 3} columns: ${line.length}`)
+			}
+		});
+
 		let addTailPipesIfNeeded = settings.keepFirstAndLastPipes
 			? addTailPipes
 			: (x: string) => x;
@@ -186,7 +194,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 						line = front + padding(table.columnSizes[i] + (settings.spacePadding * 2) - 2, '-') + back;
 						break;
 					case MarkdownTableFormatterDelimiterRowPadding.FollowSpacePadding:
-						line = `${spacePadding}${front}${padding(table.columnSizes[i] - 2, '-')}${table.columnSizes[i]===1?'':back}${spacePadding}`;
+						line = `${spacePadding}${front}${padding(table.columnSizes[i] - 2, '-')}${table.columnSizes[i] === 1 ? '' : back}${spacePadding}`;
 						break;
 					case MarkdownTableFormatterDelimiterRowPadding.SingleApaceAlways:
 						line = ` ${front}${padding(table.columnSizes[i] + (settings.spacePadding * 2) - 4, '-')}${back} `;

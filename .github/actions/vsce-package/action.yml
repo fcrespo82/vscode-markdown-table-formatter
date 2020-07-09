@@ -1,0 +1,10 @@
+# action.yml
+name: 'Visual Studio code vsce package action'
+description: 'Runs vsce package on the repository'
+
+outputs:
+  package_name: # id of output
+    description: 'Filename of the package'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

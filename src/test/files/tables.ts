@@ -3,6 +3,27 @@ import { MarkdownTableFormatterGlobalColumnSizes, MarkdownTableFormatterDelimite
 export let testTables = [
 	{
 		input: `\
+| Text | Result |
+|----------|-------------------|
+| \`\` $\` \`\` | text before match |`,
+		expected: `\
+| Text     | Result            |
+|----------|-------------------|
+| \`\` $\` \`\` | text before match |`,
+		settings: {
+			enable: true,
+			spacePadding: 1,
+			keepFirstAndLastPipes: true,
+			defaultTableJustification: 'Left',
+			markdownGrammarScopes: ['markdown'],
+			limitLastColumnPadding: false,
+			removeColonsIfSameAsDefault: false,
+			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
+		}
+	},
+	{
+		input: `\
 | Foo | Bar |
 | - | - |
 |Baz|Qux|`,
@@ -776,8 +797,8 @@ export let testTables = [
 		expected: `\
 |------------|------------|
 | 1234567890 | 1234567890 |`,
-				settings: {
-					enable: true,
+		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
@@ -797,8 +818,8 @@ export let testTables = [
 |            |            |
 |------------|------------|
 | 1234567890 | 1234567890 |`,
-				settings: {
-					enable: true,
+		settings: {
+			enable: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',

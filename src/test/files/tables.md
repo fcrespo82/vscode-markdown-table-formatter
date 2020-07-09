@@ -1,3 +1,8 @@
+| Text     | Result            |
+|----------|-------------------|
+| `` $` `` | text before match |
+| `` $|` `` | text before match |
+
 |header a|header b|
 |------------|------------|
 |column a 1|column b 1|

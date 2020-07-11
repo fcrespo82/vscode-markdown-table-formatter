@@ -26,7 +26,7 @@
         "Formatters"
     ],
     "activationEvents": [
-        "*"
+        "onLanguage:markdown"
     ],
     "main": "./dist/extension",
     "contributes": {
@@ -161,12 +161,13 @@
         "webpack": "webpack --mode development",
         "webpack-dev": "webpack --mode development --watch",
         "test-compile": "tsc -p ./",
-        "lint": "tslint -p ./"
+        "lint": "tslint -p ./",
+        "test": "node ./out/test/runTest.js"
     },
     "dependencies": {
         "md5": "^2.2.1",
         "wcwidth": "1.*",
-        "xregexp": "^4.2.4"
+        "xregexp": "^4.3.0"
     },
     "devDependencies": {
         "@types/glob": "7.1.1",
@@ -174,7 +175,7 @@
         "@types/node": "^7.10.9",
         "@types/vscode": "^1.34.0",
         "@types/wcwidth": "^1.0.0",
-        "@types/xregexp": "^3.0.30",
+        "@types/xregexp": "^4.3.0",
         "mocha": "^6.2.2",
         "ts-loader": "^6.2.1",
         "tslint": "^5.20.1",

@@ -32,11 +32,6 @@
     "contributes": {
         "commands": [
             {
-                "command": "markdown-table-formatter.enableForCurrentScope",
-                "category": "Markdown Table Formatter",
-                "title": "Enable for current language"
-            },
-            {
                 "command": "markdown-table-formatter.sortTable",
                 "category": "Markdown Table Formatter",
                 "title": "Sort table by header"
@@ -152,6 +147,12 @@
                         "Alignment Marker"
                     ],
                     "default": "None"
+                },
+                "markdown-table-formatter.limitLastColumnWidth": {
+                    "title": "Limit last column width",
+                    "description": "Do not extend last column to more than your editor's wordWrapColumn setting.",
+                    "type": "boolean",
+                    "default": false
                 }
             }
         }

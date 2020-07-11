@@ -4,6 +4,7 @@ import MarkdownTableFormatterSettings from './formatter/MarkdownTableFormatterSe
 import { tableRegex } from './MarkdownTableRegex';
 import wcswidth = require('wcwidth');
 import XRegExp = require('xregexp');
+import MarkdownTableFormatterSettingsImpl from './formatter/MarkdownTableFormatterSettingsImpl';
 
 export let swidth = (str: string) => {
 	// zero-width Unicode characters that we should ignore for purposes of computing string "display" width
@@ -14,12 +15,11 @@ export let swidth = (str: string) => {
 
 export let padding = (len: number, str: string = ' ') => {
 	var r = len >= 0 ? str.repeat(len) : "";
-	// var r = str.repeat(len);
 	return r;
 };
 
 export let columnSizes = (header: string[], body: string[][]) => {
-	return [header, ...body].map((line, i, a) => {
+	var columnSizes = [header, ...body].map((line, i, a) => {
 		return line.map((column, ci, ca) => {
 			return swidth(column.trim());
 		});
@@ -32,6 +32,25 @@ export let columnSizes = (header: string[], body: string[][]) => {
 			}
 		});
 	});
+
+	// TODO: Improve settings loading
+	var config = new MarkdownTableFormatterSettingsImpl();
+	const preferredLineLength = <number>workspace.getConfiguration('editor').get('wordWrapColumn');
+	
+	const limitLastColumnWidth = config.limitLastColumnWidth
+	const padding = config.spacePadding
+	const keepFirstAndLast = config.keepFirstAndLastPipes
+	const otherColumnsSum = sumArray(columnSizes.slice(0, -1));
+	const dividers = keepFirstAndLast ? columnSizes.length + 1 : columnSizes.length - 1
+	const allPadding = columnSizes.length * 2 * padding
+
+	if (limitLastColumnWidth && (columnSizes.reduce((x, y) => x + y) + dividers + allPadding) > preferredLineLength) {
+		columnSizes[columnSizes.length - 1] = Math.max(
+			preferredLineLength - (otherColumnsSum + dividers + allPadding),
+			3,
+		);
+	}
+	return columnSizes
 };
 
 export let sumArray = (array: number[]): number => {

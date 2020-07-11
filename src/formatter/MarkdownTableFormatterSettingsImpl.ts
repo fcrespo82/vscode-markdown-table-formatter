@@ -6,6 +6,7 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 
 	private config: WorkspaceConfiguration;
 
+	// TODO: Change to singleton or other pattern
 	constructor() {
 		this.config = workspace.getConfiguration('markdown-table-formatter');
 		workspace.onDidChangeConfiguration((changeEvent) => {
@@ -14,9 +15,12 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 			}
 		});
 	}
-
+	
 	get enable(): boolean {
 		return this.config.get<boolean>('enable', true);
+	}
+	get enableSort(): boolean {
+		return this.config.get<boolean>('enableSort', true);
 	}
 	get spacePadding(): number {
 		return this.config.get<number>('spacePadding', 1);
@@ -27,19 +31,19 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 	get defaultTableJustification(): string {
 		return this.config.get<string>('defaultTableJustification', 'Left');
 	}
-	get markdownGrammarScopes(): string[] {
-		return this.config.get<string[]>('markdownGrammarScopes', ['markdown']);
-	}
-	get limitLastColumnPadding(): boolean {
-		return this.config.get<boolean>('limitLastColumnPadding', false);
-	}
 	get removeColonsIfSameAsDefault(): boolean {
 		return this.config.get<boolean>('removeColonsIfSameAsDefault', false);
+	}
+	get markdownGrammarScopes(): string[] {
+		return this.config.get<string[]>('markdownGrammarScopes', ['markdown']);
 	}
 	get globalColumnSizes(): MarkdownTableFormatterGlobalColumnSizes {
 		return this.config.get<MarkdownTableFormatterGlobalColumnSizes>('globalColumnSizes', MarkdownTableFormatterGlobalColumnSizes.Disabled);
 	}
 	get delimiterRowPadding(): MarkdownTableFormatterDelimiterRowPadding {
 		return this.config.get<MarkdownTableFormatterDelimiterRowPadding>('delimiterRowPadding', MarkdownTableFormatterDelimiterRowPadding.None);
+	}
+	get limitLastColumnWidth(): boolean {
+		return this.config.get<boolean>('limitLastColumnWidth', false);
 	}
 }

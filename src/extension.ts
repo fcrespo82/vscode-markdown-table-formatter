@@ -7,10 +7,6 @@ import { tablesIn } from './MarkdownTableUtils';
 import { MarkdownTableSortCodeLensProvider } from "./sorter/MarkdownTableSortCodeLensProvider";
 import { MarkdownTableDecorationProvider } from './decoration/MarkdownTableDecorationProvider';
 
-export const markdownTableFormatterProvider = new MarkdownTableFormatterProvider();
-export const markdownTableCodeLensProvider = new MarkdownTableSortCodeLensProvider();
-export const markdownTableDecorationProvider = new MarkdownTableDecorationProvider();
-
 var _extensionTables: MarkdownTable[];
 
 export function setExtensionTables(tables: MarkdownTable[]): MarkdownTable[] {
@@ -33,6 +29,14 @@ export function getTable(id: string): MarkdownTable | undefined {
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext): Promise<boolean> {
+
+	const markdownTableFormatterProvider = new MarkdownTableFormatterProvider();
+	const markdownTableCodeLensProvider = new MarkdownTableSortCodeLensProvider();
+	const markdownTableDecorationProvider = new MarkdownTableDecorationProvider();
+	
+	context.subscriptions.push(markdownTableFormatterProvider);
+	context.subscriptions.push(markdownTableCodeLensProvider);
+	context.subscriptions.push(markdownTableDecorationProvider);
 
 	markdownTableFormatterProvider.register();
 	markdownTableCodeLensProvider.register();
@@ -68,9 +72,5 @@ export function activate(context: vscode.ExtensionContext): Promise<boolean> {
 
 // this method is called when your extension is deactivated
 export function deactivate(): Promise<boolean> {
-	markdownTableFormatterProvider.dispose();
-	markdownTableCodeLensProvider.dispose();
-	markdownTableDecorationProvider.dispose();
-	
 	return Promise.resolve(true);
 }

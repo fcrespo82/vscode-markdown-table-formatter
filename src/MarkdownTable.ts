@@ -14,7 +14,7 @@ export class MarkdownTable {
 	private end: Position;
 	readonly header!: string[];
 	readonly ranges: Map<number, Range[]> = new Map();
-	readonly format: string[] = [];
+	format: string[] = [];
 	readonly body: string[][] = [];
 	readonly defaultBody: string[][] = [];
 	readonly range: Range;
@@ -105,6 +105,10 @@ export class MarkdownTable {
 		// FIXME: Improve
 		var body = this.body.length;//.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc += val.trim(), "");
 		this._id = md5(header + body);
+	}
+
+	updateSizes = () => {
+		this._columnSizes = columnSizes(this.header, this.body);
 	}
 
 	notFormatted = () => {

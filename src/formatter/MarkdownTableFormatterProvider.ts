@@ -24,9 +24,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	private config: MarkdownTableFormatterSettings;
 
 	constructor() {
-		// this.config = vscode.workspace.getConfiguration('markdown-table-formatter');
 		this.config = new MarkdownTableFormatterSettingsImpl();
-
 	}
 
 	dispose() {

@@ -1,27 +1,8 @@
 import { MarkdownTableFormatterGlobalColumnSizes, MarkdownTableFormatterDelimiterRowPadding } from "../../formatter/MarkdownTableFormatterProvider";
+import MarkdownTableFormatterSettings from "../../formatter/MarkdownTableFormatterSettings";
+import MarkdownTableFormatterSettingsImpl from "../../formatter/MarkdownTableFormatterSettingsImpl";
 
-export let testTables = [
-	{
-		input: `\
-| Text | Result |
-|----------|-------------------|
-| \`\` $\` \`\` | text before match |`,
-		expected: `\
-| Text     | Result            |
-|----------|-------------------|
-| \`\` $\` \`\` | text before match |`,
-		settings: {
-			enable: true,
-			spacePadding: 1,
-			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
-			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
-		}
-	},
+export let testTables: { input: string, expected: string, settings?: MarkdownTableFormatterSettings }[] = [
 	{
 		input: `\
 | Foo | Bar |
@@ -33,14 +14,15 @@ export let testTables = [
 | Baz | Qux |`,
 		settings: {
 			enable: true,
+			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
+			defaultTableJustification: 'Center',
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
+			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.FollowSpacePadding
 		}
 	},
 	{
@@ -55,18 +37,7 @@ export let testTables = [
 |-----------------|-----------------|-----------------|-----------------|
 | Line:1 Column:A | Line:1 Column:B | Line:1 Column:C | Line:1 Column:D |
 | Line:2 Col:A    | Line:2 Col:B    | Line:2 Col:C    | Line:2 Col:D    |
-| L:3 C:A         | L:3 C:B         | L:3 C:C         | L:3 C:D         |`,
-		settings: {
-			enable: true,
-			spacePadding: 1,
-			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
-			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
-		}
+| L:3 C:A         | L:3 C:B         | L:3 C:C         | L:3 C:D         |`
 	},
 	{
 		input: `\
@@ -80,18 +51,7 @@ export let testTables = [
 |:----------------|:---------------:|----------------:|-----------------|
 | Line:1 Column:A | Line:1 Column:B | Line:1 Column:C | Line:1 Column:D |
 | Line:2 Col:A    |  Line:2 Col:B   |    Line:2 Col:C | Line:2 Col:D    |
-| L:3 C:A         |     L:3 C:B     |         L:3 C:C | L:3 C:D         |`,
-		settings: {
-			enable: true,
-			spacePadding: 1,
-			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
-			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
-		}
+| L:3 C:A         |     L:3 C:B     |         L:3 C:C | L:3 C:D         |`
 	},
 	{
 		input: `\
@@ -108,11 +68,12 @@ export let testTables = [
 | L:3 C:A         |     L:3 C:B     |         L:3 C:C |     L:3 C:D     |`,
 		settings: {
 			enable: true,
+			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Center',
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
+			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
@@ -133,11 +94,12 @@ export let testTables = [
 | L:3 C:A         |     L:3 C:B     |         L:3 C:C |         L:3 C:D |`,
 		settings: {
 			enable: true,
+			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Right',
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
+			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
@@ -158,11 +120,12 @@ export let testTables = [
 | L:3 C:A         |     L:3 C:B     |         L:3 C:C | L:3 C:D         |`,
 		settings: {
 			enable: true,
+			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
+			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: true,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
@@ -183,11 +146,12 @@ export let testTables = [
 | L:3 C:A         |     L:3 C:B     |         L:3 C:C |     L:3 C:D     |`,
 		settings: {
 			enable: true,
+			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Center',
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
+			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: true,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
@@ -208,11 +172,12 @@ export let testTables = [
 | L:3 C:A         |     L:3 C:B     |         L:3 C:C |         L:3 C:D |`,
 		settings: {
 			enable: true,
+			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Right',
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
+			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: true,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
@@ -233,11 +198,12 @@ export let testTables = [
 |  L:3 C:A          |      L:3 C:B      |          L:3 C:C  |  L:3 C:D          |`,
 		settings: {
 			enable: true,
+			enableSort: true,
 			spacePadding: 2,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
+			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
@@ -258,11 +224,12 @@ export let testTables = [
 |  L:3 C:A          |      L:3 C:B      |          L:3 C:C  |      L:3 C:D      |`,
 		settings: {
 			enable: true,
+			enableSort: true,
 			spacePadding: 2,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Center',
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
+			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
@@ -283,11 +250,12 @@ export let testTables = [
 |  L:3 C:A          |      L:3 C:B      |          L:3 C:C  |          L:3 C:D  |`,
 		settings: {
 			enable: true,
+			enableSort: true,
 			spacePadding: 2,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Right',
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
+			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
@@ -308,11 +276,12 @@ export let testTables = [
  L:3 C:A         |     L:3 C:B     |         L:3 C:C | L:3 C:D         `,
 		settings: {
 			enable: true,
+			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: false,
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
+			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
@@ -333,11 +302,12 @@ export let testTables = [
  L:3 C:A         |     L:3 C:B     |         L:3 C:C |     L:3 C:D     `,
 		settings: {
 			enable: true,
+			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: false,
 			defaultTableJustification: 'Center',
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
+			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
@@ -358,11 +328,12 @@ export let testTables = [
  L:3 C:A         |     L:3 C:B     |         L:3 C:C |         L:3 C:D `,
 		settings: {
 			enable: true,
+			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: false,
 			defaultTableJustification: 'Right',
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
+			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
@@ -378,18 +349,7 @@ export let testTables = [
 | header a   | header b   |
 |:-----------|------------|
 | column a 1 | column b 1 |
-| column a 2 | column b 2 |`,
-		settings: {
-			enable: true,
-			spacePadding: 1,
-			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
-			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
-		}
+| column a 2 | column b 2 |`
 	},
 	{
 		input: `\
@@ -401,18 +361,7 @@ export let testTables = [
 | header a   |    header b |
 |:-----------|------------:|
 | column a 1 |  column b 1 |
-| column a 2 | column b 20 |`,
-		settings: {
-			enable: true,
-			spacePadding: 1,
-			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
-			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
-		}
+| column a 2 | column b 20 |`
 	},
 	{
 		input: `\
@@ -424,18 +373,7 @@ export let testTables = [
 | header a   |  header b  |
 |:-----------|:----------:|
 | column a 1 | column b 1 |
-| column a 2 | column b 2 |`,
-		settings: {
-			enable: true,
-			spacePadding: 1,
-			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
-			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
-		}
+| column a 2 | column b 2 |`
 	},
 	{
 		input: `\
@@ -448,18 +386,7 @@ export let testTables = [
 | Topic                      | Status    | Notes |
 |----------------------------|-----------|-------|
 | Is source control used?    | \`NO\`      |       |
-| Are changes peer reviewed? | \`PARTIAL\` |       |`,
-		settings: {
-			enable: true,
-			spacePadding: 1,
-			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
-			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
-		}
+| Are changes peer reviewed? | \`PARTIAL\` |       |`
 	},
 	{
 		input: `\
@@ -470,18 +397,7 @@ export let testTables = [
 		expected: `\
 | Topic        | Status | Notes |
 |--------------|--------|-------|
-| Is Iot used? | \`NO\`   |       |`,
-		settings: {
-			enable: true,
-			spacePadding: 1,
-			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
-			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
-		}
+| Is Iot used? | \`NO\`   |       |`
 	},
 	{
 		input: `\
@@ -492,18 +408,7 @@ export let testTables = [
 		expected: `\
 | a        | b       | c |
 |:---------|:--------|:--|
-| fdasdfas | x \`|\` y | z |`,
-		settings: {
-			enable: true,
-			spacePadding: 1,
-			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
-			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
-		}
+| fdasdfas | x \`|\` y | z |`
 	},
 	{
 		input: `\
@@ -593,18 +498,7 @@ export let testTables = [
 | Clamp             | \`aclampb:c\`      | \`clamp(b,c,a)\`      |
 | Step              | \`astepb\`         | \`step(b,a)\`         |
 | SmoothStep        | \`asmoothstepb:c\` | \`smoothstep(b,c,a)\` |
-| LinearInterpolate | \`amixb:c\`        | \`mix(b,c,a)\`        |`,
-		settings: {
-			enable: true,
-			spacePadding: 1,
-			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
-			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
-		}
+| LinearInterpolate | \`amixb:c\`        | \`mix(b,c,a)\`        |`
 	},
 	{
 		input: `\
@@ -622,18 +516,7 @@ export let testTables = [
 
 | Large header a  | Large header b  |
 |:----------------|:----------------|
-| Line:1 Column:A | Line:1 Column:B |`,
-		settings: {
-			enable: true,
-			spacePadding: 1,
-			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
-			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
-		}
+| Line:1 Column:A | Line:1 Column:B |`
 	},
 	{
 		input: `\
@@ -651,18 +534,7 @@ export let testTables = [
 
 | Large header a  | Large header b  |
 |:----------------|:----------------|
-| Line:1 Column:A | Line:1 Column:B |`,
-		settings: {
-			enable: true,
-			spacePadding: 1,
-			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
-			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
-		}
+| Line:1 Column:A | Line:1 Column:B |`
 	},
 	{
 		input: `\
@@ -683,11 +555,12 @@ export let testTables = [
 | Line:1 Column:A | Line:1 Column:B |`,
 		settings: {
 			enable: true,
+			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
+			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
@@ -714,11 +587,12 @@ export let testTables = [
 | Is Iot used?             | NO                |`,
 		settings: {
 			enable: true,
+			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
+			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
@@ -745,11 +619,12 @@ export let testTables = [
 |  Is Iot used?               |  NO                  |`,
 		settings: {
 			enable: true,
+			enableSort: true,
 			spacePadding: 2,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
+			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
@@ -780,11 +655,12 @@ export let testTables = [
 | Are changes peer reviewed?          | PARTIAL         |               |`,
 		settings: {
 			enable: true,
+			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: 'Left',
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
+			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
@@ -794,20 +670,9 @@ export let testTables = [
 		input: `\
 |------------|---------------|
 | 1234567890 | 1234567890 |`,
-		expected: `\
+		expected: `\reduce
 |------------|------------|
-| 1234567890 | 1234567890 |`,
-		settings: {
-			enable: true,
-			spacePadding: 1,
-			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
-			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
-		}
+| 1234567890 | 1234567890 |`
 	},
 	{
 		input: `\
@@ -817,17 +682,16 @@ export let testTables = [
 		expected: `\
 |            |            |
 |------------|------------|
-| 1234567890 | 1234567890 |`,
-		settings: {
-			enable: true,
-			spacePadding: 1,
-			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
-			markdownGrammarScopes: ['markdown'],
-			limitLastColumnPadding: false,
-			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
-		}
+| 1234567890 | 1234567890 |`
+	},
+	{
+		input: `\
+| Text | Result |
+|----------|-------------------|
+| \`\` $\` \`\` | text before match |`,
+		expected: `\
+| Text     | Result            |
+|----------|-------------------|
+| \`\` $\` \`\` | text before match |`
 	},
 ];

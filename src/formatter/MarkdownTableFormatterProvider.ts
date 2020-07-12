@@ -18,6 +18,9 @@ export enum MarkdownTableFormatterGlobalColumnSizes {
 	SameColumnSize = "Same Column Size",
 	SameTableSize = "Same Table Size"
 }
+
+const MarkdownLanguageId = "markdown"
+
 export class MarkdownTableFormatterProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider {
 
 	public disposables: vscode.Disposable[] = [];
@@ -34,18 +37,16 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 	public register() {
 		if (this.config.enable) {
-			const scopes = this.config.markdownGrammarScopes;
-			scopes.forEach(scope => {
-				this.registerFormatterForScope(scope);
-			});
-			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.enableForCurrentScope", this.enableForCurrentScopeCommand, this));
+			this.registerFormatterForScope(MarkdownLanguageId);
 
 			vscode.workspace.onDidOpenTextDocument(document => {
+				if (document.languageId !== MarkdownLanguageId) { return }
 				let fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
 				setExtensionTables(tablesIn(document, fullDocumentRange));
 			});
 
 			vscode.workspace.onDidChangeTextDocument(change => {
+				if (change.document.languageId !== MarkdownLanguageId) { return }
 				let fullDocumentRange = change.document.validateRange(new vscode.Range(0, 0, change.document.lineCount + 1, 0));
 				setExtensionTables(tablesIn(change.document, fullDocumentRange));
 			});
@@ -112,8 +113,6 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		});
 		return edits;
 	}
-
-
 
 	private registerFormatterForScope(scope: vscode.DocumentSelector) {
 		this.disposables.push(vscode.languages.registerDocumentFormattingEditProvider(scope, this));
@@ -249,6 +248,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 	// vscode.Commands
 	private moveColumnRightCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+		if (editor.document.languageId !== MarkdownLanguageId) { return }
 		let tables = getExtensionTables(editor.selection);
 		let header = this.getColumnIndexFromRange(tables[0], editor.selection);
 		if (header < 0) {
@@ -265,6 +265,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 	// vscode.Commands
 	private moveColumnLeftCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+		if (editor.document.languageId !== MarkdownLanguageId) { return }
 		let tables = getExtensionTables(editor.selection);
 		let header = this.getColumnIndexFromRange(tables[0], editor.selection);
 		if (header < 0) {

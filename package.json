@@ -167,6 +167,7 @@
     },
     "dependencies": {
         "md5": "^2.2.1",
+        "vscode-extension-telemetry": "^0.1.6",
         "wcwidth": "1.*",
         "xregexp": "^4.3.0"
     },

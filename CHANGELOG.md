@@ -5,10 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
-## [2.1.0] - 2020-07-11
+## [2.1.0] - 2020-07-12
 
 ### Added
-- Limit last column width: Don't let the last column expand more than the wordWrapColumn.
+- [It is back] Limit last column width: Don't let the last column expand more than the wordWrapColumn.
 
 ### Changed
 - Activation event for the extension, it should activate only for markdown files
@@ -18,7 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 - Case where backticks were not interpreted corectly if near a pipe sign '|'
-- Fix [#26](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/26) where in some cases the extension got stuck during activation
+- Fix [#26](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/26) where in some cases the extension got when in files not related to markdown
 
 ## [2.0.5] - 2020-07-09
 

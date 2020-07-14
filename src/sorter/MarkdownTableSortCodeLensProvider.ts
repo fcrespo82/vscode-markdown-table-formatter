@@ -7,14 +7,9 @@ import MarkdownTableSortOptions from './MarkdownTableSortOptions';
 import { cleanSortIndicator, sortIndicator } from './MarkdownTableSortUtils';
 import MarkdownTableFormatterSettingsImpl from '../formatter/MarkdownTableFormatterSettingsImpl';
 
-export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvider {
+export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvider, vscode.Disposable {
 
-	public disposables: vscode.Disposable[] = [];
-	private config: vscode.WorkspaceConfiguration;
-
-	constructor() {
-		this.config = vscode.workspace.getConfiguration('markdown-table-formatter');
-	}
+	private disposables: vscode.Disposable[] = [];
 
 	dispose() {
 		this.disposables.map(d => d.dispose());
@@ -24,16 +19,24 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 	public register() {
 		let config = MarkdownTableFormatterSettingsImpl.shared;
 		if (config.enableSort) {
+			this.registerCodeLensForScope('markdown');
+			this.disposables.push(
+				vscode.commands.registerTextEditorCommand('sortTable', this.sortCommand, this)
+			);
 
-			vscode.workspace.onDidOpenTextDocument(document => {
-				let fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
-				setExtensionTables(tablesIn(document, fullDocumentRange));
-			});
+			this.disposables.push(
+				vscode.workspace.onDidOpenTextDocument(document => {
+					let fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
+					setExtensionTables(tablesIn(document, fullDocumentRange));
+				})
+			);
 
-			vscode.workspace.onDidChangeTextDocument(change => {
-				let fullDocumentRange = change.document.validateRange(new vscode.Range(0, 0, change.document.lineCount + 1, 0));
-				setExtensionTables(tablesIn(change.document, fullDocumentRange));
-			});
+			this.disposables.push(
+				vscode.workspace.onDidChangeTextDocument(change => {
+					let fullDocumentRange = change.document.validateRange(new vscode.Range(0, 0, change.document.lineCount + 1, 0));
+					setExtensionTables(tablesIn(change.document, fullDocumentRange));
+				})
+			);
 
 		}
 	}
@@ -101,8 +104,6 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 				arguments: [table.id, header_index, direction]
 			});
 		});
-			// .concat(
-			// new vscode.CodeLens(table.range, { title: table.id.toString(), command: '' }));
 	}
 
 	public sortTable(table: MarkdownTable, headerIndex: number, sortDirection: MarkdownTableSortDirection) {

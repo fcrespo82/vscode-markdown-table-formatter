@@ -1,4 +1,3 @@
-import * as assert from 'assert';
 import * as vscode from 'vscode';
 import { getExtensionTables, setExtensionTables } from '../extension';
 import { MarkdownTable } from '../MarkdownTable';
@@ -21,14 +20,9 @@ export enum MarkdownTableFormatterGlobalColumnSizes {
 
 const MarkdownLanguageId = "markdown"
 
-export class MarkdownTableFormatterProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider {
+export class MarkdownTableFormatterProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider, vscode.Disposable {
 
-	public disposables: vscode.Disposable[] = [];
-	private config: MarkdownTableFormatterSettings;
-
-	constructor() {
-		this.config = new MarkdownTableFormatterSettingsImpl();
-	}
+	private disposables: vscode.Disposable[] = [];
 
 	dispose() {
 		this.disposables.map(d => d.dispose());
@@ -237,16 +231,6 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	}
 
 	// vscode.Commands
-	// vscode.Command
-	private enableForCurrentScopeCommand = (editor: vscode.TextEditor, edit: vscode.TextEditorEdit) => {
-		const scopes = this.config.markdownGrammarScopes;
-		if (!scopes.includes(editor.document.languageId)) {
-			scopes.push(editor.document.languageId);
-			vscode.workspace.getConfiguration('markdown-table-formatter').update("markdownGrammarScopes", scopes, true);
-			this.registerFormatterForScope(editor.document.languageId);
-			vscode.window.showInformationMessage(`Markdown table formatter enabled for '${editor.document.languageId}' language!`);
-		}
-	}
 
 	// vscode.Commands
 	private moveColumnRightCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {

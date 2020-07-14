@@ -153,6 +153,12 @@
                     "description": "Do not extend last column to more than your editor's wordWrapColumn setting.",
                     "type": "boolean",
                     "default": false
+                },
+                "markdown-table-formatter.telemetry": {
+                    "title": "Send usage statistics",
+                    "description": "Send usage statistics to azure server.",
+                    "type": "boolean",
+                    "default": true
                 }
             }
         }

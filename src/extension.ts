@@ -5,7 +5,7 @@ import { MarkdownTableFormatterProvider } from './formatter/MarkdownTableFormatt
 import { MarkdownTable } from './MarkdownTable';
 import { tablesIn } from './MarkdownTableUtils';
 import { MarkdownTableSortCodeLensProvider } from "./sorter/MarkdownTableSortCodeLensProvider";
-import { MarkdownTableDecorationProvider } from './decoration/MarkdownTableDecorationProvider';
+import { MTFReporter } from './telemetry/MTFReporter';
 
 var _extensionTables: MarkdownTable[];
 
@@ -29,7 +29,7 @@ export function getTable(id: string): MarkdownTable | undefined {
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext): Promise<boolean> {
-
+	const reporter = new MTFReporter(context, config.telemetry);
 	const markdownTableFormatterProvider = new MarkdownTableFormatterProvider();
 	const markdownTableCodeLensProvider = new MarkdownTableSortCodeLensProvider();
 	const markdownTableDecorationProvider = new MarkdownTableDecorationProvider();

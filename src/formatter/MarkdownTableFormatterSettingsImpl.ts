@@ -9,7 +9,7 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 	private static instance: MarkdownTableFormatterSettings;
 
 	public static get shared(): MarkdownTableFormatterSettings {
-		if (this.instance === null) {
+		if (this.instance == null) {
 			this.instance = new MarkdownTableFormatterSettingsImpl();
 		}
 		return this.instance;

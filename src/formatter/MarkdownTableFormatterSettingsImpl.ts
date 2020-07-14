@@ -6,8 +6,16 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 
 	private config: WorkspaceConfiguration;
 
-	// TODO: Change to singleton or other pattern
-	constructor() {
+	private static instance: MarkdownTableFormatterSettings;
+
+	public static get shared(): MarkdownTableFormatterSettings {
+		if (this.instance === null) {
+			this.instance = new MarkdownTableFormatterSettingsImpl();
+		}
+		return this.instance;
+	};
+
+	private constructor() {
 		this.config = workspace.getConfiguration('markdown-table-formatter');
 		workspace.onDidChangeConfiguration((changeEvent) => {
 			if (changeEvent.affectsConfiguration('markdown-table-formatter')) {

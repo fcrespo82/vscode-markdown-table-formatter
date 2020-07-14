@@ -36,7 +36,8 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	}
 
 	public register() {
-		if (this.config.enable) {
+		let config = MarkdownTableFormatterSettingsImpl.shared;
+		if (config.enable) {
 			this.registerFormatterForScope(MarkdownLanguageId);
 
 			vscode.workspace.onDidOpenTextDocument(document => {
@@ -89,27 +90,28 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	}
 
 	private formatDocument(document: vscode.TextDocument, range: vscode.Range): vscode.TextEdit[] {
+		let config = MarkdownTableFormatterSettingsImpl.shared;
 		let edits: vscode.TextEdit[] = [];
 		// This check is in case some grammar is removed and VSCode is not reloaded yet
-		if (!this.config.markdownGrammarScopes.includes(document.languageId)) {
+		if (!config.markdownGrammarScopes.includes(document.languageId)) {
 			vscode.window.showWarningMessage(`Markdown table formatter is not enabled for '${document.languageId}' language!`);
 			return edits;
 		}
 		let tables: MarkdownTable[] = setExtensionTables(tablesIn(document, range));
 
-		if (this.config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameColumnSize) {
+		if (config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameColumnSize) {
 			let maxSize = discoverMaxColumnSizes(tables);
 			tables.forEach(table => {
 				table.columnSizes = maxSize;
 			});
-		} if (this.config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameTableSize) {
-			let tableSizes = discoverMaxTableSizes(tables, this.config.spacePadding);
+		} if (config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameTableSize) {
+			let tableSizes = discoverMaxTableSizes(tables, config.spacePadding);
 			tables.forEach((table, i) => {
 				table.columnSizes = tableSizes[i];
 			});
 		}
 		tables.forEach(table => {
-			edits.push(new vscode.TextEdit(table.range, this.formatTable(table, this.config)));
+			edits.push(new vscode.TextEdit(table.range, this.formatTable(table, config)));
 		});
 		return edits;
 	}

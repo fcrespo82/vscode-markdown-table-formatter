@@ -5,6 +5,7 @@ import { tablesIn } from '../MarkdownTableUtils';
 import { MarkdownTableSortDirection } from './MarkdownTableSortDirection';
 import MarkdownTableSortOptions from './MarkdownTableSortOptions';
 import { cleanSortIndicator, sortIndicator } from './MarkdownTableSortUtils';
+import MarkdownTableFormatterSettingsImpl from '../formatter/MarkdownTableFormatterSettingsImpl';
 
 export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvider {
 
@@ -21,13 +22,8 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 	}
 
 	public register() {
-		if (this.config.get<boolean>("enableSort", true)) {
-			const scopes = this.config.get<string[]>('markdownGrammarScopes', []);
-			scopes.forEach(scope => {
-				this.registerCodeLensForScope(scope);
-			});
-			this.disposables.push(vscode.commands.registerTextEditorCommand('sortTable', this.sortCommand, this));
-			// this.disposables.push(vscode.commands.registerTextEditorCommand('resetTable', resetCommand));
+		let config = MarkdownTableFormatterSettingsImpl.shared;
+		if (config.enableSort) {
 
 			vscode.workspace.onDidOpenTextDocument(document => {
 				let fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));

@@ -3,9 +3,9 @@
 import * as vscode from 'vscode';
 import { MarkdownTableFormatterProvider } from './formatter/MarkdownTableFormatterProvider';
 import { MarkdownTable } from './MarkdownTable';
-import { tablesIn } from './MarkdownTableUtils';
 import { MarkdownTableSortCodeLensProvider } from "./sorter/MarkdownTableSortCodeLensProvider";
 import { MTFReporter } from './telemetry/MTFReporter';
+import MarkdownTableFormatterSettingsImpl from './formatter/MarkdownTableFormatterSettingsImpl';
 
 var _extensionTables: MarkdownTable[];
 
@@ -29,6 +29,7 @@ export function getTable(id: string): MarkdownTable | undefined {
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext): Promise<boolean> {
+	let config = MarkdownTableFormatterSettingsImpl.shared;
 	const reporter = new MTFReporter(context, config.telemetry);
 	const markdownTableFormatterProvider = new MarkdownTableFormatterProvider();
 	const markdownTableCodeLensProvider = new MarkdownTableSortCodeLensProvider();
@@ -44,11 +45,8 @@ export function activate(context: vscode.ExtensionContext): Promise<boolean> {
 
 	vscode.workspace.onDidChangeConfiguration(changeConfigurationEvent => {
 		if (changeConfigurationEvent.affectsConfiguration('markdown-table-formatter')) {
-			let config = vscode.workspace.getConfiguration('markdown-table-formatter');
-			if (config.get<boolean>("enable", true)) {
-				if (markdownTableFormatterProvider.disposables.length === 0) {
+			if (config.enable) {
 					markdownTableFormatterProvider.register();
-				}
 			} else {
 				markdownTableFormatterProvider.dispose();
 			}
@@ -56,11 +54,9 @@ export function activate(context: vscode.ExtensionContext): Promise<boolean> {
 	});
 	vscode.workspace.onDidChangeConfiguration(changeConfigurationEvent => {
 		if (changeConfigurationEvent.affectsConfiguration('markdown-table-formatter')) {
-			let config = vscode.workspace.getConfiguration('markdown-table-formatter');
-			if (config.get<boolean>("enableSort", true)) {
-				if (markdownTableCodeLensProvider.disposables.length === 0) {
+			let config = MarkdownTableFormatterSettingsImpl.shared;
+			if (config.enable) {
 					markdownTableCodeLensProvider.register();
-				}
 			} else {
 				markdownTableCodeLensProvider.dispose();
 			}

@@ -1,14 +1,17 @@
 # Markdown table formatter
 
 ![Installs](https://vsmarketplacebadge.apphb.com/installs-short/fcrespo82.markdown-table-formatter.svg)
+![Downloads](https://vsmarketplacebadge.apphb.com/downloads-short/fcrespo82.markdown-table-formatter.svg)
 ![Rating](https://vsmarketplacebadge.apphb.com/rating-star/fcrespo82.markdown-table-formatter.svg)
 
-A simple markdown plugin to format tables.
-
-Based on the awesome [Improved Markdown table commands for TextMate](http://www.leancrew.com/all-this/2012/03/improved-markdown-table-commands-for-textmate/) work from [Dr. Drang (@drdrang)](https://twitter.com/drdrang)
+A (not so) simple markdown plugin to format tables and other features.
 
 [Changelog](https://github.com/fcrespo82/vscode-markdown-table-formatter/blob/master/CHANGELOG.md)
 
+##  Features
+- Format markdown tables
+- Sort tables
+- Organize columns moving it left/right
 
 ## Usage
 
@@ -22,14 +25,10 @@ Uses VSCode `Format Document` and `Format Selection`
 - **keepFirstAndLastPipes**: Keep first and last pipes "|" in table formatting. Tables are easier to format when pipes are kept;
 - **defaultTableJustification**: Defines the default justification for tables that have only "-" on the formatting line;
 - **removeColonsIfSameAsDefault**: Remove colons from the format line if the justification is the same as default;
-- **markdownGrammarScopes**: File language grammar that will be considered Markdown by this package.
-- **globalColumnSizes**: Format tables locally, with same column sizes or same table size.
-
-## Tips
-
-### Enable Markdown Table Formatter for the current file type
-
-To enable Markdown Table Formatter for your current file type: put your cursor in the file, open the Command Palette <kbd>^ (CONTROL)</kbd>+<kbd>⇧ (SHIFT)</kbd>+<kbd>P</kbd> (<kbd>⌘ (CMD)</kbd>+<kbd>⇧ (SHIFT)</kbd>+<kbd>P</kbd> for mac), and run the `Markdown Table Formatter: Enable for current language` command. This will add language grammar from current editor to the list of languages in the settings for the Markdown Table Formatter package. You can edit this setting manually later if you want to.
+- **globalColumnSizes**: Format tables locally, with same column sizes or same table size;
+- **delimiterRowPadding**: Calculates the column sizes based on all tables on the document;
+- **limitLastColumnWidth**: Do not extend last column to more than your editor's wordWrapColumn setting;
+- **telemetry**: Send usage statistics.
 
 - - -
 

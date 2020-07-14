@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { MarkdownTableDecorationProvider } from './decoration/MarkdownTableDecorationProvider';
 import { MarkdownTableFormatterProvider } from './formatter/MarkdownTableFormatterProvider';
 import { MarkdownTable } from './MarkdownTable';
 import { MarkdownTableSortCodeLensProvider } from "./sorter/MarkdownTableSortCodeLensProvider";
@@ -34,7 +35,7 @@ export function activate(context: vscode.ExtensionContext): Promise<boolean> {
 	const markdownTableFormatterProvider = new MarkdownTableFormatterProvider();
 	const markdownTableCodeLensProvider = new MarkdownTableSortCodeLensProvider();
 	const markdownTableDecorationProvider = new MarkdownTableDecorationProvider();
-	
+
 	context.subscriptions.push(markdownTableFormatterProvider);
 	context.subscriptions.push(markdownTableCodeLensProvider);
 	context.subscriptions.push(markdownTableDecorationProvider);
@@ -46,7 +47,7 @@ export function activate(context: vscode.ExtensionContext): Promise<boolean> {
 	vscode.workspace.onDidChangeConfiguration(changeConfigurationEvent => {
 		if (changeConfigurationEvent.affectsConfiguration('markdown-table-formatter')) {
 			if (config.enable) {
-					markdownTableFormatterProvider.register();
+				markdownTableFormatterProvider.register();
 			} else {
 				markdownTableFormatterProvider.dispose();
 			}
@@ -56,7 +57,7 @@ export function activate(context: vscode.ExtensionContext): Promise<boolean> {
 		if (changeConfigurationEvent.affectsConfiguration('markdown-table-formatter')) {
 			let config = MarkdownTableFormatterSettingsImpl.shared;
 			if (config.enable) {
-					markdownTableCodeLensProvider.register();
+				markdownTableCodeLensProvider.register();
 			} else {
 				markdownTableCodeLensProvider.dispose();
 			}

@@ -1,28 +1,19 @@
 import * as vscode from 'vscode';
 import { tablesIn } from '../MarkdownTableUtils';
 
+export class MarkdownTableDecorationProvider implements vscode.Disposable {
 
-interface MarkdownTableDecoration {
-	id: string;
-	range: vscode.Range;
-}
-
-export class MarkdownTableDecorationProvider {
-
-	public disposables: vscode.Disposable[] = [];
+	private disposables: vscode.Disposable[] = [];
 
 	private decorationsEnabled = false;
 
-	private decorations: MarkdownTableDecoration[] = [];
+	private decorations: vscode.DecorationOptions[] = [];
 
 	private decorationType = vscode.window.createTextEditorDecorationType({
 		backgroundColor: 'grey',
 		rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
 		overviewRulerColor: 'grey',
-		overviewRulerLane: vscode.OverviewRulerLane.Full,
-		after: {
-			backgroundColor: 'grey'
-		}
+		overviewRulerLane: vscode.OverviewRulerLane.Full
 	});
 
 	dispose() {
@@ -31,41 +22,50 @@ export class MarkdownTableDecorationProvider {
 	}
 
 	public register() {
-		this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.toggleDebug", this.toggleDebug, this));
-		vscode.workspace.onDidChangeTextDocument((changeEvent) => {
-			this.decorations = this.createDecorations(changeEvent.document);
-		}, this);
+		this.disposables.push(
+			vscode.commands.registerTextEditorCommand("markdown-table-formatter.toggleDebug", this.toggleDebug, this)
+		);
+		this.disposables.push(
+			vscode.workspace.onDidChangeTextDocument((changeEvent) => {
+				this.addDecorations(vscode.window.activeTextEditor!);
+			}, this)
+		);
 	}
 
-	private createDecorations(document: vscode.TextDocument): MarkdownTableDecoration[] {
+	private createDecorations(document: vscode.TextDocument): vscode.DecorationOptions[] {
 		let fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
 		let tables = tablesIn(document, fullDocumentRange);
-
-		return tables.map(t => {
-			return { id: t.id, range: t.range };
+		let fullDecoration: vscode.DecorationOptions[] = tables.map(t => {
+			return {
+				range: t.range,
+				hoverMessage: `ID: ${t.id}`,
+				renderOptions: {}
+			};
 		});
+		let headerDecoration: vscode.DecorationOptions[] = tables.map(t => {
+			return {
+				range: t.headerRange,
+				renderOptions: {
+					after: { contentText: ` ID: ${t.id}` }
+				}
+			};
+		});
+		return fullDecoration.concat(headerDecoration);
 	}
 
 	private addDecorations(editor: vscode.TextEditor) {
-		editor.setDecorations(this.decorationType, []);
-		this.decorations = this.createDecorations(editor.document);
-		this.decorations.forEach(i => {
-			editor.setDecorations(this.decorationType, [{
-				range: i.range,
-				renderOptions: { after: { contentText: `${i.id}` } }
-			}]);
-		});
+		this.cleanDecorations(editor);
+		if (this.decorationsEnabled) {
+			this.decorations = this.createDecorations(editor.document);
+			editor.setDecorations(this.decorationType, this.decorations);
+		}
 	}
 
-	private removeDecorations(editor: vscode.TextEditor) {
+	private cleanDecorations(editor: vscode.TextEditor) {
 		editor.setDecorations(this.decorationType, []);
 	}
 	private toggleDebug(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
 		this.decorationsEnabled = !this.decorationsEnabled;
-		if (this.decorationsEnabled) {
-			this.addDecorations(editor);
-		} else {
-			this.removeDecorations(editor);
-		}
+		this.addDecorations(editor);
 	}
 }

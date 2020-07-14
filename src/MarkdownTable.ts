@@ -18,6 +18,7 @@ export class MarkdownTable {
 	readonly body: string[][] = [];
 	readonly defaultBody: string[][] = [];
 	readonly range: Range;
+	readonly headerRange: Range;
 	private _columnSizes: number[] = [];
 
 	get id(): string {
@@ -54,6 +55,8 @@ export class MarkdownTable {
 		this.end = end;
 
 		this.range = new Range(this.start, this.end);
+		
+		this.headerRange = new Range(this.start, new Position(this.start.line, regexpArray.groups.header.length));
 
 		var firstLine = this.start.line;
 		if (regexpArray.groups.header) {
@@ -113,7 +116,7 @@ export class MarkdownTable {
 			joined = [this.header, this.format, ...this.body].map(joinCells).map(addTailPipes);
 		}
 		return joined.join('\n');
-	}
+	};
 
 	notFormattedDefault = () => {
 		let joined = [this.format, ...this.defaultBody].map(joinCells).map(addTailPipes);
@@ -121,7 +124,7 @@ export class MarkdownTable {
 			joined = [this.header, this.format, ...this.defaultBody].map(joinCells).map(addTailPipes);
 		}
 		return joined.join('\n');
-	}
+	};
 
 }
 

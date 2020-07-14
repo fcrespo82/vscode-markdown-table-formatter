@@ -30,19 +30,19 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	}
 
 	public register() {
-		let config = MarkdownTableFormatterSettingsImpl.shared;
+		const config = MarkdownTableFormatterSettingsImpl.shared;
 		if (config.enable) {
 			this.registerFormatterForScope(MarkdownLanguageId);
 
 			vscode.workspace.onDidOpenTextDocument(document => {
 				if (document.languageId !== MarkdownLanguageId) { return }
-				let fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
+				const fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
 				setExtensionTables(tablesIn(document, fullDocumentRange));
 			});
 
 			vscode.workspace.onDidChangeTextDocument(change => {
 				if (change.document.languageId !== MarkdownLanguageId) { return }
-				let fullDocumentRange = change.document.validateRange(new vscode.Range(0, 0, change.document.lineCount + 1, 0));
+				const fullDocumentRange = change.document.validateRange(new vscode.Range(0, 0, change.document.lineCount + 1, 0));
 				setExtensionTables(tablesIn(change.document, fullDocumentRange));
 			});
 
@@ -54,17 +54,17 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 	private flipColumn(table: MarkdownTable, leftIndex: number, rightIndex: number): MarkdownTable {
 		if (table.header) {
-			let header = table.header[rightIndex];
+			const header = table.header[rightIndex];
 			table.header[rightIndex] = table.header[leftIndex];
 			table.header[leftIndex] = header;
 		}
 
-		let format = table.format[rightIndex];
+		const format = table.format[rightIndex];
 		table.format[rightIndex] = table.format[leftIndex];
 		table.format[leftIndex] = format;
 
 		table.body.forEach((_, i) => {
-			let body = table.body[i][rightIndex];
+			const body = table.body[i][rightIndex];
 			table.body[i][rightIndex] = table.body[i][leftIndex];
 			table.body[i][leftIndex] = body;
 		});
@@ -84,22 +84,22 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	}
 
 	private formatDocument(document: vscode.TextDocument, range: vscode.Range): vscode.TextEdit[] {
-		let config = MarkdownTableFormatterSettingsImpl.shared;
-		let edits: vscode.TextEdit[] = [];
+		const config = MarkdownTableFormatterSettingsImpl.shared;
+		const edits: vscode.TextEdit[] = [];
 		// This check is in case some grammar is removed and VSCode is not reloaded yet
 		if (!config.markdownGrammarScopes.includes(document.languageId)) {
 			vscode.window.showWarningMessage(`Markdown table formatter is not enabled for '${document.languageId}' language!`);
 			return edits;
 		}
-		let tables: MarkdownTable[] = setExtensionTables(tablesIn(document, range));
+		const tables: MarkdownTable[] = setExtensionTables(tablesIn(document, range));
 
 		if (config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameColumnSize) {
-			let maxSize = discoverMaxColumnSizes(tables);
+			const maxSize = discoverMaxColumnSizes(tables);
 			tables.forEach(table => {
 				table.columnSizes = maxSize;
 			});
 		} if (config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameTableSize) {
-			let tableSizes = discoverMaxTableSizes(tables, config.spacePadding);
+			const tableSizes = discoverMaxTableSizes(tables, config.spacePadding);
 			tables.forEach((table, i) => {
 				table.columnSizes = tableSizes[i];
 			});
@@ -117,9 +117,9 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 	private formatLine(line: string[], format: string[], size: number[], settings: MarkdownTableFormatterSettings) {
 		line = line.map((column, index, _) => {
-			let columnSize = size[index];
-			let columnJustification = format[index];
-			let text = this.justify(column, columnJustification, columnSize, settings);
+			const columnSize = size[index];
+			const columnJustification = format[index];
+			const text = this.justify(column, columnJustification, columnSize, settings);
 			return text;
 		});
 		return line;
@@ -159,29 +159,29 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			}
 		});
 
-		let addTailPipesIfNeeded = settings.keepFirstAndLastPipes
+		const addTailPipesIfNeeded = settings.keepFirstAndLastPipes
 			? addTailPipes
 			: (x: string) => x;
 
 		let header: string[] = [];
 		if (table.header) {
 			header = this.formatLines([table.header], table.format, table.columnSizes, settings).map(line => {
-				let cellPadding = padding(settings.spacePadding);
+				const cellPadding = padding(settings.spacePadding);
 				return line.map((cell, i) => {
 					return `${cellPadding}${cell}${cellPadding}`;
 				});
 			}).map(joinCells).map(addTailPipesIfNeeded);
 		}
 
-		let formatLine = this.formatLines([table.format], table.format, table.columnSizes, settings).map(line => {
+		const formatLine = this.formatLines([table.format], table.format, table.columnSizes, settings).map(line => {
 			return line.map((cell, i) => {
-				let line: string = "";
+				let line = "";
 				let [front, back] = fixJustification(cell);
 				if (settings.removeColonsIfSameAsDefault && (fixJustification(cell) === tableJustification[settings.defaultTableJustification])) {
 					front = back = '-';
 				}
 
-				let spacePadding = padding(settings.spacePadding, ' ');
+				const spacePadding = padding(settings.spacePadding, ' ');
 				switch (settings.delimiterRowPadding) {
 					case MarkdownTableFormatterDelimiterRowPadding.None:
 						line = front + padding(table.columnSizes[i] + (settings.spacePadding * 2) - 2, '-') + back;
@@ -192,7 +192,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 					case MarkdownTableFormatterDelimiterRowPadding.SingleApaceAlways:
 						line = ` ${front}${padding(table.columnSizes[i] + (settings.spacePadding * 2) - 4, '-')}${back} `;
 						break;
-					case MarkdownTableFormatterDelimiterRowPadding.AlignmentMarker:
+					case MarkdownTableFormatterDelimiterRowPadding.AlignmentMarker: {
 						let justifySwitch = fixJustification(cell);
 						if (justifySwitch === "--") {
 							justifySwitch = tableJustification[settings.defaultTableJustification];
@@ -209,14 +209,15 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 								break;
 						}
 						break;
+					}
 				}
 
 				return line;
 			});
 		}).map(joinCells).map(addTailPipesIfNeeded);
 
-		let body = this.formatLines(table.body, table.format, table.columnSizes, settings).map(line => {
-			let cellPadding = padding(settings.spacePadding);
+		const body = this.formatLines(table.body, table.format, table.columnSizes, settings).map(line => {
+			const cellPadding = padding(settings.spacePadding);
 			return line.map((cell, i) => {
 				return `${cellPadding}${cell}${cellPadding}`;
 			});
@@ -235,40 +236,40 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	// vscode.Commands
 	private moveColumnRightCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
 		if (editor.document.languageId !== MarkdownLanguageId) { return }
-		let tables = getExtensionTables(editor.selection);
-		let header = this.getColumnIndexFromRange(tables[0], editor.selection);
+		const tables = getExtensionTables(editor.selection);
+		const header = this.getColumnIndexFromRange(tables[0], editor.selection);
 		if (header < 0) {
 			return;
 		}
-		var leftHeaderIndex = header;
+		const leftHeaderIndex = header;
 		if ((leftHeaderIndex + 1) >= tables[0].columns) {
 			return;
 		}
-		var rightHeaderIndex = header + 1;
-		let table = this.flipColumn(tables[0], leftHeaderIndex, rightHeaderIndex);
+		const rightHeaderIndex = header + 1;
+		const table = this.flipColumn(tables[0], leftHeaderIndex, rightHeaderIndex);
 		edit.replace(table.range, table.notFormatted());
 	}
 
 	// vscode.Commands
 	private moveColumnLeftCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
 		if (editor.document.languageId !== MarkdownLanguageId) { return }
-		let tables = getExtensionTables(editor.selection);
-		let header = this.getColumnIndexFromRange(tables[0], editor.selection);
+		const tables = getExtensionTables(editor.selection);
+		const header = this.getColumnIndexFromRange(tables[0], editor.selection);
 		if (header < 0) {
 			return;
 		}
-		var leftHeaderIndex = header - 1;
+		const leftHeaderIndex = header - 1;
 		if (leftHeaderIndex < 0) {
 			return;
 		}
-		var rightHeaderIndex = header;
-		let table = this.flipColumn(tables[0], leftHeaderIndex, rightHeaderIndex);
+		const rightHeaderIndex = header;
+		const table = this.flipColumn(tables[0], leftHeaderIndex, rightHeaderIndex);
 		edit.replace(table.range, table.notFormatted());
 	}
 
 	// vscode.DocumentFormattingEditProvider implementation
 	provideDocumentFormattingEdits(document: vscode.TextDocument, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
-		let fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
+		const fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
 		return this.formatDocument(document, fullDocumentRange);
 	}
 

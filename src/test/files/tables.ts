@@ -1,8 +1,7 @@
-import { MarkdownTableFormatterGlobalColumnSizes, MarkdownTableFormatterDelimiterRowPadding } from "../../formatter/MarkdownTableFormatterProvider";
+import { MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes } from "../../formatter/MarkdownTableFormatterProvider";
 import MarkdownTableFormatterSettings from "../../formatter/MarkdownTableFormatterSettings";
-import MarkdownTableFormatterSettingsImpl from "../../formatter/MarkdownTableFormatterSettingsImpl";
 
-export let testTables: { input: string, expected: string, settings?: MarkdownTableFormatterSettings }[] = [
+export const testTables: { input: string, expected: string, settings?: MarkdownTableFormatterSettings }[] = [
 	{
 		input: `\
 | Foo | Bar |
@@ -22,7 +21,8 @@ export let testTables: { input: string, expected: string, settings?: MarkdownTab
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.FollowSpacePadding
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.FollowSpacePadding,
+			telemetry: false
 		}
 	},
 	{
@@ -76,7 +76,8 @@ export let testTables: { input: string, expected: string, settings?: MarkdownTab
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
+			telemetry: false
 		}
 	},
 	{
@@ -102,7 +103,8 @@ export let testTables: { input: string, expected: string, settings?: MarkdownTab
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
+			telemetry: false
 		}
 	},
 	{
@@ -128,7 +130,8 @@ export let testTables: { input: string, expected: string, settings?: MarkdownTab
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: true,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
+			telemetry: false
 		}
 	},
 	{
@@ -154,7 +157,8 @@ export let testTables: { input: string, expected: string, settings?: MarkdownTab
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: true,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
+			telemetry: false
 		}
 	},
 	{
@@ -180,7 +184,8 @@ export let testTables: { input: string, expected: string, settings?: MarkdownTab
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: true,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
+			telemetry: false
 		}
 	},
 	{
@@ -206,7 +211,8 @@ export let testTables: { input: string, expected: string, settings?: MarkdownTab
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
+			telemetry: false
 		}
 	},
 	{
@@ -232,7 +238,8 @@ export let testTables: { input: string, expected: string, settings?: MarkdownTab
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
+			telemetry: false
 		}
 	},
 	{
@@ -258,7 +265,8 @@ export let testTables: { input: string, expected: string, settings?: MarkdownTab
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
+			telemetry: false
 		}
 	},
 	{
@@ -284,7 +292,8 @@ export let testTables: { input: string, expected: string, settings?: MarkdownTab
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
+			telemetry: false
 		}
 	},
 	{
@@ -310,7 +319,8 @@ export let testTables: { input: string, expected: string, settings?: MarkdownTab
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
+			telemetry: false
 		}
 	},
 	{
@@ -336,7 +346,8 @@ export let testTables: { input: string, expected: string, settings?: MarkdownTab
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
+			telemetry: false
 		}
 	},
 	{
@@ -563,7 +574,8 @@ export let testTables: { input: string, expected: string, settings?: MarkdownTab
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
+			telemetry: false
 		}
 	},
 	{
@@ -595,7 +607,8 @@ export let testTables: { input: string, expected: string, settings?: MarkdownTab
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
+			telemetry: false
 		}
 	},
 	{
@@ -627,7 +640,8 @@ export let testTables: { input: string, expected: string, settings?: MarkdownTab
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
+			telemetry: false
 		}
 	},
 	{
@@ -663,7 +677,8 @@ export let testTables: { input: string, expected: string, settings?: MarkdownTab
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
+			telemetry: false
 		}
 	},
 	{

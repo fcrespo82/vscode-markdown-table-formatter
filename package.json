@@ -11,7 +11,7 @@
         "url": "https://github.com/fcrespo82/vscode-markdown-table-formatter/issues"
     },
     "license": "MIT",
-    "version": "2.0.5-telemetry",
+    "version": "2.0.5",
     "publisher": "fcrespo82",
     "icon": "resources/icon.png",
     "keywords": [
@@ -168,7 +168,7 @@
         "webpack": "webpack --mode development",
         "webpack-dev": "webpack --mode development --watch",
         "test-compile": "tsc -p ./",
-        "lint": "tslint -p ./",
+        "lint": "eslint .",
         "test": "node ./out/test/runTest.js"
     },
     "dependencies": {
@@ -179,14 +179,17 @@
     },
     "devDependencies": {
         "@types/glob": "7.1.1",
+        "@types/md5": "^2.2.0",
         "@types/mocha": "^7.0.2",
         "@types/node": "^7.10.9",
         "@types/vscode": "^1.34.0",
         "@types/wcwidth": "^1.0.0",
         "@types/xregexp": "^4.3.0",
+        "@typescript-eslint/eslint-plugin": "^3.6.1",
+        "@typescript-eslint/parser": "^3.6.1",
+        "eslint": "^7.4.0",
         "mocha": "^8.0.1",
         "ts-loader": "^6.2.1",
-        "tslint": "^6.1.2",
         "typescript": "^3.7.2",
         "vscode-test": "^1.4.0",
         "webpack": "^4.43.0",

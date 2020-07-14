@@ -16,33 +16,33 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 		overviewRulerLane: vscode.OverviewRulerLane.Full
 	});
 
-	dispose() {
+	dispose(): void {
 		this.disposables.map(d => d.dispose());
 		this.disposables = [];
 	}
 
-	public register() {
+	public register(): void {
 		this.disposables.push(
 			vscode.commands.registerTextEditorCommand("markdown-table-formatter.toggleDebug", this.toggleDebug, this)
 		);
 		this.disposables.push(
-			vscode.workspace.onDidChangeTextDocument((changeEvent) => {
+			vscode.workspace.onDidChangeTextDocument(() => {
 				this.addDecorations(vscode.window.activeTextEditor!);
 			}, this)
 		);
 	}
 
 	private createDecorations(document: vscode.TextDocument): vscode.DecorationOptions[] {
-		let fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
-		let tables = tablesIn(document, fullDocumentRange);
-		let fullDecoration: vscode.DecorationOptions[] = tables.map(t => {
+		const fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
+		const tables = tablesIn(document, fullDocumentRange);
+		const fullDecoration: vscode.DecorationOptions[] = tables.map(t => {
 			return {
 				range: t.range,
 				hoverMessage: `ID: ${t.id}`,
 				renderOptions: {}
 			};
 		});
-		let headerDecoration: vscode.DecorationOptions[] = tables.map(t => {
+		const headerDecoration: vscode.DecorationOptions[] = tables.map(t => {
 			return {
 				range: t.headerRange,
 				renderOptions: {
@@ -57,12 +57,12 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 		this.cleanDecorations(editor);
 		if (this.decorationsEnabled) {
 			this.decorations = this.createDecorations(editor.document);
-			editor.setDecorations(this.decorationType, this.decorations);
+			editor?.setDecorations(this.decorationType, this.decorations);
 		}
 	}
 
-	private cleanDecorations(editor: vscode.TextEditor) {
-		editor.setDecorations(this.decorationType, []);
+	private cleanDecorations(editor?: vscode.TextEditor) {
+		editor?.setDecorations(this.decorationType, []);
 	}
 	private toggleDebug(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
 		this.decorationsEnabled = !this.decorationsEnabled;

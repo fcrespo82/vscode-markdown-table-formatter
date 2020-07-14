@@ -8,7 +8,7 @@ import { MarkdownTableSortCodeLensProvider } from "./sorter/MarkdownTableSortCod
 import { MTFReporter } from './telemetry/MTFReporter';
 import MarkdownTableFormatterSettingsImpl from './formatter/MarkdownTableFormatterSettingsImpl';
 
-var _extensionTables: MarkdownTable[];
+let _extensionTables: MarkdownTable[];
 
 export function setExtensionTables(tables: MarkdownTable[]): MarkdownTable[] {
 	_extensionTables = tables;
@@ -30,7 +30,7 @@ export function getTable(id: string): MarkdownTable | undefined {
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext): Promise<boolean> {
-	let config = MarkdownTableFormatterSettingsImpl.shared;
+	const config = MarkdownTableFormatterSettingsImpl.shared;
 	const reporter = new MTFReporter(context, config.telemetry);
 	const markdownTableFormatterProvider = new MarkdownTableFormatterProvider();
 	const markdownTableCodeLensProvider = new MarkdownTableSortCodeLensProvider();
@@ -55,7 +55,7 @@ export function activate(context: vscode.ExtensionContext): Promise<boolean> {
 	});
 	vscode.workspace.onDidChangeConfiguration(changeConfigurationEvent => {
 		if (changeConfigurationEvent.affectsConfiguration('markdown-table-formatter')) {
-			let config = MarkdownTableFormatterSettingsImpl.shared;
+			const config = MarkdownTableFormatterSettingsImpl.shared;
 			if (config.enable) {
 				markdownTableCodeLensProvider.register();
 			} else {

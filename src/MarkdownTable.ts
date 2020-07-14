@@ -1,7 +1,7 @@
 import { Position, Range } from "vscode";
 import { addTailPipes, joinCells, splitCells, stripHeaderTailPipes } from "./formatter/MarkdownTableFormatterUtils";
 import { columnSizes } from "./MarkdownTableUtils";
-var md5 = require("md5");
+import md5 = require("md5");
 
 export interface XRegExpExecArray extends RegExpExecArray {
 	groups: any;
@@ -22,52 +22,52 @@ export class MarkdownTable {
 	private _columnSizes: number[] = [];
 
 	get id(): string {
-		// Improve
+		// TODO: Improve
 		return this._id;
 	}
 
-	get columns() {
+	get columns(): number {
 		return this.body[0].length;
 	}
 
-	get bodyLines() {
+	get bodyLines(): number {
 		return this.body.length;
 	}
 
-	get totalLines() {
+	get totalLines(): number {
 		return this.bodyLines + 2;
 	}
 
-	get columnSizes() {
+	get columnSizes(): number[] {
 		return this._columnSizes;
 	}
-	set columnSizes(value) {
+	set columnSizes(value: number[]) {
 		this._columnSizes = value;
 	}
 
-	get startLine() {
-		return this.start.line
+	get startLine(): number {
+		return this.start.line;
 	}
-	
+
 	constructor(offset: number, start: Position, end: Position, regexpArray: XRegExpExecArray) {
 		this.offset = offset;
 		this.start = start;
 		this.end = end;
 
 		this.range = new Range(this.start, this.end);
-		
+
 		this.headerRange = new Range(this.start, new Position(this.start.line, regexpArray.groups.header.length));
 
-		var firstLine = this.start.line;
+		let firstLine = this.start.line;
 		if (regexpArray.groups.header) {
 			this.header = splitCells(stripHeaderTailPipes(regexpArray.groups.header));
 			this.header.forEach((header, index) => {
-				var length = header.length;
-				var start = regexpArray.groups.header.indexOf(header);
+				const length = header.length;
+				const start = regexpArray.groups.header.indexOf(header);
 				if (!this.ranges.has(index)) {
 					this.ranges.set(index, []);
 				}
-				this.ranges.get(index)!.push(new Range(new Position(firstLine, start), new Position(firstLine, start + length)));
+				this.ranges.get(index)?.push(new Range(new Position(firstLine, start), new Position(firstLine, start + length)));
 			});
 			firstLine += 1;
 		}
@@ -88,12 +88,12 @@ export class MarkdownTable {
 		});
 		this.body.forEach((line: string[], line_index) => {
 			line.forEach((h, index) => {
-				var length = h.length;
-				var start = regexpArray.groups.body.split(/\r?\n/)[line_index].indexOf(h);
+				const length = h.length;
+				const start = regexpArray.groups.body.split(/\r?\n/)[line_index].indexOf(h);
 				if (!this.ranges.has(index)) {
 					this.ranges.set(index, []);
 				}
-				this.ranges.get(index)!.push(new Range(new Position(firstLine, start), new Position(firstLine, start + length)));
+				this.ranges.get(index)?.push(new Range(new Position(firstLine, start), new Position(firstLine, start + length)));
 			});
 			firstLine += 1;
 		});
@@ -104,13 +104,13 @@ export class MarkdownTable {
 			this._columnSizes = columnSizes(this.body[0], this.body);
 		}
 
-		var header = this.header.reduce((acc, val) => acc += val.trim(), "");
+		const header = this.header.reduce((acc, val) => acc += val.trim(), "");
 		// FIXME: Improve
-		var body = this.body.length;//.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc += val.trim(), "");
+		const body = this.body.length;//.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc += val.trim(), "");
 		this._id = md5(header + body);
 	}
 
-	notFormatted = () => {
+	notFormatted = (): string => {
 		let joined = [this.format, ...this.body].map(joinCells).map(addTailPipes);
 		if (this.header) {
 			joined = [this.header, this.format, ...this.body].map(joinCells).map(addTailPipes);
@@ -118,7 +118,7 @@ export class MarkdownTable {
 		return joined.join('\n');
 	};
 
-	notFormattedDefault = () => {
+	notFormattedDefault = (): string => {
 		let joined = [this.format, ...this.defaultBody].map(joinCells).map(addTailPipes);
 		if (this.header) {
 			joined = [this.header, this.format, ...this.defaultBody].map(joinCells).map(addTailPipes);

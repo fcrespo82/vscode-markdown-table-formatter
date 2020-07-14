@@ -11,13 +11,13 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 
 	private disposables: vscode.Disposable[] = [];
 
-	dispose() {
+	dispose(): void {
 		this.disposables.map(d => d.dispose());
 		this.disposables = [];
 	}
 
-	public register() {
-		let config = MarkdownTableFormatterSettingsImpl.shared;
+	public register(): void {
+		const config = MarkdownTableFormatterSettingsImpl.shared;
 		if (config.enableSort) {
 			this.registerCodeLensForScope('markdown');
 			this.disposables.push(
@@ -26,14 +26,14 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 
 			this.disposables.push(
 				vscode.workspace.onDidOpenTextDocument(document => {
-					let fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
+					const fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
 					setExtensionTables(tablesIn(document, fullDocumentRange));
 				})
 			);
 
 			this.disposables.push(
 				vscode.workspace.onDidChangeTextDocument(change => {
-					let fullDocumentRange = change.document.validateRange(new vscode.Range(0, 0, change.document.lineCount + 1, 0));
+					const fullDocumentRange = change.document.validateRange(new vscode.Range(0, 0, change.document.lineCount + 1, 0));
 					setExtensionTables(tablesIn(change.document, fullDocumentRange));
 				})
 			);
@@ -45,7 +45,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 		this.disposables.push(vscode.languages.registerCodeLensProvider(scope, this));
 	}
 
-	public setActiveSort(document: vscode.TextDocument, table_id: string, header_index: number | undefined, sort_direction: MarkdownTableSortDirection | undefined) {
+	public setActiveSort(document: vscode.TextDocument, table_id: string, header_index: number | undefined, sort_direction: MarkdownTableSortDirection | undefined): void {
 
 		if (!this._activeSortPerDocumentAndTable) {
 			this._activeSortPerDocumentAndTable = {};
@@ -85,10 +85,10 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 		return table.header.map((header, header_index) => {
 
 			// FIXME: Improve
-			let activeSort = this.getActiveSort(document, table.id, header_index);
+			const activeSort = this.getActiveSort(document, table.id, header_index);
 			let direction = undefined;
 
-			var indicator = `${header.trim()}`;
+			let indicator = `${header.trim()}`;
 			if (header.trim() === "") {
 				indicator = `Column ${header_index + 1}`;
 			}
@@ -106,7 +106,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 		});
 	}
 
-	public sortTable(table: MarkdownTable, headerIndex: number, sortDirection: MarkdownTableSortDirection) {
+	public sortTable(table: MarkdownTable, headerIndex: number, sortDirection: MarkdownTableSortDirection): string {
 		table.header.forEach((header, i) => {
 			if (i !== headerIndex) {
 				table.header[i] = cleanSortIndicator(header);
@@ -114,7 +114,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 		});
 		switch (sortDirection) {
 			case MarkdownTableSortDirection.Asc:
-				table.body.sort((a: any, b: any) => {
+				table.body.sort((a: string[], b: string[]) => {
 					if (a[headerIndex].trim() === b[headerIndex].trim()) {
 						return 0;
 					}
@@ -124,7 +124,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 				});
 				break;
 			case MarkdownTableSortDirection.Desc:
-				table.body.sort((a: any, b: any) => {
+				table.body.sort((a: string[], b: string[]) => {
 					if (a[headerIndex].trim() === b[headerIndex].trim()) {
 						return 0;
 					}
@@ -140,11 +140,11 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 	// vscode.Commands
 	// vscode.Command
 	private sortCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit, ...args: any[]) {
-		let id = args[0];
-		let index = args[1];
-		let direction = args[2];
+		const id = args[0];
+		const index = args[1];
+		const direction = args[2];
 
-		let table = getTable(id);
+		const table = getTable(id);
 		if (table) {
 
 			let sort = MarkdownTableSortDirection.None;
@@ -159,7 +159,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 			this.setActiveSort(editor.document, id, index, sort);
 
 			editor.edit(editBuilder => {
-				editBuilder.replace(table!.range, this.sortTable(table!, index, sort));
+				editBuilder.replace(table.range, this.sortTable(table, index, sort));
 			});
 		}
 
@@ -167,25 +167,25 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 
 	// vscode.Command
 	private resetCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit, ...args: any[]) {
-		let id = args[0];
+		const id = args[0];
 
-		let table = getTable(id);
+		const table = getTable(id);
 		if (table) {
 			this.setActiveSort(editor.document, id, undefined, MarkdownTableSortDirection.None);
 
 			editor.edit(editBuilder => {
 				// FIXME: Reset should do what?
-				editBuilder.replace(table!.range, this.sortTable(table!, 0, MarkdownTableSortDirection.None));
+				editBuilder.replace(table.range, this.sortTable(table, 0, MarkdownTableSortDirection.None));
 			});
 		}
 	}
 
 	// vscode.CodeLensProvider implementation
 	provideCodeLenses(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
-		let fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
-		let tables: MarkdownTable[] = setExtensionTables(tablesIn(document, fullDocumentRange));
+		const fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
+		const tables: MarkdownTable[] = setExtensionTables(tablesIn(document, fullDocumentRange));
 
-		let lenses = tables.filter(table => {
+		const lenses = tables.filter(table => {
 			return table.bodyLines > 1;
 		}).map((table, table_index) => {
 			if (table.header === undefined) {

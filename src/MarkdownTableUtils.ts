@@ -1,30 +1,29 @@
 import { Range, TextDocument, workspace } from 'vscode';
+import MarkdownTableFormatterSettingsImpl from './formatter/MarkdownTableFormatterSettingsImpl';
 import { MarkdownTable, XRegExpExecArray } from './MarkdownTable';
-import MarkdownTableFormatterSettings from './formatter/MarkdownTableFormatterSettings';
 import { tableRegex } from './MarkdownTableRegex';
 import wcswidth = require('wcwidth');
 import XRegExp = require('xregexp');
-import MarkdownTableFormatterSettingsImpl from './formatter/MarkdownTableFormatterSettingsImpl';
 
-export let swidth = (str: string) => {
+export const swidth = (str: string): number => {
 	// zero-width Unicode characters that we should ignore for purposes of computing string "display" width
 	const zwcrx = /[\u200B-\u200D\uFEFF\u00AD]/g;
 	const match = str.match(zwcrx);
 	return wcswidth(str) - (match ? match.length : 0);
 };
 
-export let padding = (len: number, str: string = ' ') => {
-	var r = len >= 0 ? str.repeat(len) : "";
+export const padding = (len: number, str = ' '): string => {
+	const r = len >= 0 ? str.repeat(len) : "";
 	return r;
 };
 
-export let columnSizes = (header: string[], body: string[][]) => {
-	var columnSizes = [header, ...body].map((line, i, a) => {
-		return line.map((column, ci, ca) => {
+export const columnSizes = (header: string[], body: string[][]): number[] => {
+	const columnSizes = [header, ...body].map((line) => {
+		return line.map((column) => {
 			return swidth(column.trim());
 		});
-	}).reduce((previous, current, i, a) => {
-		return previous.map((column, index, a) => {
+	}).reduce((previous, current) => {
+		return previous.map((column, index) => {
 			if (column > current[index]) {
 				return column;
 			} else {
@@ -34,7 +33,7 @@ export let columnSizes = (header: string[], body: string[][]) => {
 	});
 
 	// TODO: Improve settings loading
-	var config = new MarkdownTableFormatterSettingsImpl();
+	const config = MarkdownTableFormatterSettingsImpl.shared;
 	const preferredLineLength = <number>workspace.getConfiguration('editor').get('wordWrapColumn');
 	
 	const limitLastColumnWidth = config.limitLastColumnWidth
@@ -53,17 +52,17 @@ export let columnSizes = (header: string[], body: string[][]) => {
 	return columnSizes
 };
 
-export let sumArray = (array: number[]): number => {
+export const sumArray = (array: number[]): number => {
 	return array.reduce((p, c) => p + c);
 };
 
-export let discoverMaxColumnSizes = (tables: MarkdownTable[]): number[] => {
+export const discoverMaxColumnSizes = (tables: MarkdownTable[]): number[] => {
 	return tables.map(table => {
 		return table.columnSizes;
 	}).reduce((p, c) => {
-		let length = p.length > c.length ? p.length : c.length;
-		let previousBigger = p.length > c.length;
-		let result = p.length > c.length ? p : c;
+		const length = p.length > c.length ? p.length : c.length;
+		const previousBigger = p.length > c.length;
+		const result = p.length > c.length ? p : c;
 		for (let index = 0; index < length; index++) {
 			if (previousBigger) {
 				if (c[index] > p[index]) {
@@ -79,20 +78,20 @@ export let discoverMaxColumnSizes = (tables: MarkdownTable[]): number[] => {
 	});
 };
 
-export let discoverMaxTableSizes = (tables: MarkdownTable[], padding: number): number[][] => {
-	let tableInfo = tables.map(table => {
+export const discoverMaxTableSizes = (tables: MarkdownTable[], padding: number): number[][] => {
+	const tableInfo = tables.map(table => {
 		return { columnSizes: table.columnSizes, columns: table.columns };
 	});
 
-	let maxTableSize = tableInfo.reduce((p, c) => {
+	const maxTableSize = tableInfo.reduce((p, c) => {
 		return sumArray(p.columnSizes) + (p.columns * padding) > sumArray(c.columnSizes) + (c.columns * padding) ? p : c;
 	});
 
 	return tableInfo.map(info => {
-		let totalCharsMaxTable = sumArray(maxTableSize.columnSizes) + (maxTableSize.columns * padding * 2) + (maxTableSize.columns + 1);
-		let totalCharsCurrentTable = sumArray(info.columnSizes) + (info.columns * padding * 2) + (info.columns + 1);
+		const totalCharsMaxTable = sumArray(maxTableSize.columnSizes) + (maxTableSize.columns * padding * 2) + (maxTableSize.columns + 1);
+		const totalCharsCurrentTable = sumArray(info.columnSizes) + (info.columns * padding * 2) + (info.columns + 1);
 		let missingAdjustment = Math.floor(totalCharsMaxTable - totalCharsCurrentTable);
-		let remainder = missingAdjustment % info.columns;
+		const remainder = missingAdjustment % info.columns;
 		if (sumArray(info.columnSizes) !== sumArray(maxTableSize.columnSizes)) {
 
 			for (; missingAdjustment > 0;) {
@@ -104,7 +103,7 @@ export let discoverMaxTableSizes = (tables: MarkdownTable[], padding: number): n
 				});
 			}
 			if (sumArray(info.columnSizes) + (info.columns * padding * 2) + (info.columns + 1) < totalCharsMaxTable) {
-				let rev = info.columnSizes.reverse();
+				const rev = info.columnSizes.reverse();
 				rev[0] += remainder;
 				info.columnSizes = rev.reverse();
 			}
@@ -113,22 +112,23 @@ export let discoverMaxTableSizes = (tables: MarkdownTable[], padding: number): n
 	});
 };
 
-export let pad = (text: string, columns: number): string => {
+export const pad = (text: string, columns: number): string => {
 	return (' '.repeat(columns) + text).slice(-columns);
 };
 
-export let tablesIn = (document: TextDocument, range: Range): MarkdownTable[] => {
-	var items: MarkdownTable[] = [];
+export const tablesIn = (document: TextDocument, range: Range): MarkdownTable[] => {
+	const items: MarkdownTable[] = [];
 
 	const text = document.getText(range);
-	var pos = 0, match;
+	let pos = 0;
+	let match;
 	while ((match = XRegExp.exec(text, tableRegex, pos, false))) {
 		pos = match.index + match[0].length;
-		let offset = document.offsetAt(range.start);
-		let start = document.positionAt(offset + match.index);
-		let text = match[0].replace(/^\n+|\n+$/g, '');
-		let end = document.positionAt(offset + match.index + text.length);
-		let table = new MarkdownTable(offset, start, end, match as XRegExpExecArray);
+		const offset = document.offsetAt(range.start);
+		const start = document.positionAt(offset + match.index);
+		const text = match[0].replace(/^\n+|\n+$/g, '');
+		const end = document.positionAt(offset + match.index + text.length);
+		const table = new MarkdownTable(offset, start, end, match as XRegExpExecArray);
 		items.push(table);
 	}
 	return items;

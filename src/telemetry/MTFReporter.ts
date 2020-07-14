@@ -2,7 +2,7 @@ import { ExtensionContext } from "vscode";
 import { Reporter } from "./Reporter";
 
 export class MTFReporter extends Reporter {
-    constructor(context: ExtensionContext, enabled: boolean = true) {
+    constructor(context: ExtensionContext, enabled = true) {
         // following key just allows you to send events to azure insights API
         // so it does not need to be protected
         // but obfuscating anyways - bots scan github for keys, but if you want my key you better work for it, damnit!

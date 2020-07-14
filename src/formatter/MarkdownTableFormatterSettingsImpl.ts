@@ -13,7 +13,7 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 			this.instance = new MarkdownTableFormatterSettingsImpl();
 		}
 		return this.instance;
-	};
+	}
 
 	private constructor() {
 		this.config = workspace.getConfiguration('markdown-table-formatter');

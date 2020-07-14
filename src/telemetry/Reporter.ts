@@ -8,27 +8,27 @@ export class Reporter implements Disposable {
     private enabled: boolean
     private lastStackTrace?: string
 
-    constructor(extensionId: string, instrumentationKey: string, context: ExtensionContext, enabled: boolean = true) {
-        let extensionMetadata = extensions.getExtension(extensionId)!
-        let extensionVersion = extensionMetadata?.packageJSON.version
+    constructor(extensionId: string, instrumentationKey: string, context: ExtensionContext, enabled = true) {
+        const extensionMetadata = extensions.getExtension(extensionId)
+        const extensionVersion = extensionMetadata?.packageJSON.version
         this.enabled = enabled;
         this.telemetry = new TelemetryReporter(extensionId, extensionVersion, instrumentationKey)
         context.subscriptions.push(this.telemetry)
     }
 
-    dispose() {
+    dispose(): void {
         // This will ensure all pending events get flushed
         this.telemetry.dispose();
     }
 
-    sendTelemetryEvent(eventName: string, properties: { [key: string]: string; } | undefined, measurements: { [key: string]: number; } | undefined) {
+    sendTelemetryEvent(eventName: string, properties: { [key: string]: string; } | undefined, measurements: { [key: string]: number; } | undefined): void {
         console.log
         if (this.enabled) {
             this.telemetry.sendTelemetryEvent(eventName, properties, measurements)
         }
     }
 
-    sendError(error: Error, code: number = 0, category = 'typescript') {
+    sendError(error: Error, code = 0, category = 'typescript'): void {
         console.error(`${category} error: ${error.name} code ${code}\n${error.stack}`)
         if (this.enabled) {
 
@@ -46,7 +46,7 @@ export class Reporter implements Disposable {
         }
     }
 
-    sendTelemetryException(error: Error, properties: { [key: string]: string; } | undefined, measurements: { [key: string]: number; } | undefined) {
+    sendTelemetryException(error: Error, properties: { [key: string]: string; } | undefined, measurements: { [key: string]: number; } | undefined): void {
         if (this.enabled) {
             this.telemetry.sendTelemetryException(error, properties, measurements)
         }
@@ -55,7 +55,7 @@ export class Reporter implements Disposable {
     /**
      * replace username with anon
      */
-    anonymizePaths(input?: string) {
+    anonymizePaths(input?: string): string | undefined {
         if (input == null) return input
         return input.replace(new RegExp('\\' + sep + userInfo().username, 'g'), sep + 'anon')
     }

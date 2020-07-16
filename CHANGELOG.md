@@ -10,11 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 - Limit last column width: Don't let the last column expand more than the wordWrapColumn. [#20](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/20)
 - Telemetry: send usage statistics. This will help in future development of this extension, but you can turn it of in settings and no personal data is ever sent.
-
+- Format tables even if lines have less columns than header. [#24](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/24)
 
 ### Fixed
-- Case where backticks were not interpreted corectly if near a pipe sign '|'
-- Fix [#26](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/26) where in some cases the extension got when in files not related to markdown
+- Case where backticks were not interpreted corectly if near a pipe sign '|'. [#26](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/26)
+- Some cases the extension got stuck when in files not related to markdown. [#27](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/27)
 
 ## [2.0.5] - 2020-07-09
 

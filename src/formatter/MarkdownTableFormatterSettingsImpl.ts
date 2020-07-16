@@ -62,6 +62,9 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 	get limitLastColumnWidth(): boolean {
 		return this.config.get<boolean>('limitLastColumnWidth', false);
 	}
+	get allowEmptyRows(): boolean {
+		return this.config.get<boolean>('allowEmptyRows', true);
+	}
 	get telemetry(): boolean {
 		return this.config.get<boolean>('telemetry', true);
 	}

@@ -21,6 +21,7 @@ export default interface MarkdownTableFormatterSettings {
 	globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes;
 	delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding;
 	limitLastColumnWidth: boolean;
+	allowEmptyRows: boolean;
 	telemetry: boolean;
 	toString(): string;
 }

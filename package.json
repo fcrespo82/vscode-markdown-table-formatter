@@ -154,6 +154,12 @@
                     "type": "boolean",
                     "default": false
                 },
+                "markdown-table-formatter.allowEmptyLines": {
+                    "title": "Allow empty lines",
+                    "description": "Format tables even if lines have less columns than header.",
+                    "type": "boolean",
+                    "default": true
+                },
                 "markdown-table-formatter.telemetry": {
                     "title": "Send usage statistics",
                     "description": "Send usage statistics.",

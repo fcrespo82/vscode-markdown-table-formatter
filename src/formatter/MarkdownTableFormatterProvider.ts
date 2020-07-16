@@ -231,7 +231,8 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			tableId: table.id,
 			settings: settings.toString()
 		}, {
-			timeTakenMilliseconds: (endDate - startDate)
+			timeTakenMilliseconds: (endDate - startDate),
+			table_lineCount: table.totalLines
 		});
 		return formatted.join('\n');
 	}
@@ -289,7 +290,9 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.ProviderResult<vscode.TextEdit[]> {
 		this.reporter?.sendTelemetryEvent("formatter", {
 			type: "full",
-		}, {});
+		}, {
+			file_lineCount: document.lineCount
+		});
 		const fullDocumentRange = new vscode.Range(0, 0, document.lineCount + 1, 0);
 		return this.formatDocument(document, fullDocumentRange);
 	}
@@ -299,7 +302,9 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		this.reporter?.sendTelemetryEvent("formatter", {
 			type: "range",
 			range: range.toString()
-		}, {});
+		}, {
+			range_lineCount: range.end.line - range.start.line
+		});
 		return this.formatDocument(document, range);
 	}
 }

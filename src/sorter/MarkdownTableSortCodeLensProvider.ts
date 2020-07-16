@@ -150,6 +150,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 		const endDate = new Date().getTime();
 		this.reporter?.sendTelemetryEvent("function", {
 			name: "sortTable",
+			table_id: table.id
 		}, {
 			timeTakenMilliseconds: (endDate - startDate)
 		})
@@ -216,10 +217,11 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 		});
 		const endDate = new Date().getTime();
 		this.reporter?.sendTelemetryEvent("provider", {
-			"name": "CodeLensProvider",
-			"method": "provideCodeLenses",
+			name: "CodeLensProvider",
+			method: "provideCodeLenses",
 		}, {
-			"timeTakenMilliseconds": (endDate - startDate)
+			timeTakenMilliseconds: (endDate - startDate),
+			file_lineCount: document.lineCount
 		});
 		return lenses.reduce((acc, val) => acc.concat(val), []);
 	}

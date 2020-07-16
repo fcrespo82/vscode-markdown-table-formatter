@@ -32,9 +32,10 @@ export function getTable(id: string): MarkdownTable | undefined {
 export function activate(context: vscode.ExtensionContext): Promise<boolean> {
 	const config = MarkdownTableFormatterSettingsImpl.shared;
 	const reporter = new MTFReporter(context, config.telemetry);
-	const markdownTableFormatterProvider = new MarkdownTableFormatterProvider();
-	const markdownTableCodeLensProvider = new MarkdownTableSortCodeLensProvider();
-	const markdownTableDecorationProvider = new MarkdownTableDecorationProvider();
+
+	const markdownTableFormatterProvider = new MarkdownTableFormatterProvider(config, reporter);
+	const markdownTableCodeLensProvider = new MarkdownTableSortCodeLensProvider(config, reporter);
+	const markdownTableDecorationProvider = new MarkdownTableDecorationProvider(config, reporter);
 
 	context.subscriptions.push(markdownTableFormatterProvider);
 	context.subscriptions.push(markdownTableCodeLensProvider);

@@ -1,14 +1,19 @@
-import { extensions, ExtensionContext, Disposable } from "vscode";
+import { extensions, ExtensionContext, Disposable, env, ExtensionMode } from "vscode";
 import TelemetryReporter from "vscode-extension-telemetry";
 import { userInfo } from "os";
 import { sep } from "path";
 
 export class Reporter implements Disposable {
     private telemetry!: TelemetryReporter;
-    private enabled: boolean
-    private lastStackTrace?: string
+    private enabled: boolean;
+    private lastStackTrace?: string;
+    // TODO: Leave it that way until I can see some versions of the vscode of my users
+    // After that use engine ^1.47 extensionMode on context
+    private readonly inDevelopmentMode: boolean = false; // env.sessionId === "someValue.sessionId";
+
 
     constructor(extensionId: string, instrumentationKey: string, context: ExtensionContext, enabled = true) {
+        this.inDevelopmentMode = context.extensionMode === ExtensionMode.Development;
         const extensionMetadata = extensions.getExtension(extensionId)
         const extensionVersion = extensionMetadata?.packageJSON.version
         this.enabled = enabled;
@@ -23,14 +28,14 @@ export class Reporter implements Disposable {
 
     sendTelemetryEvent(eventName: string, properties: { [key: string]: string; } | undefined, measurements: { [key: string]: number; } | undefined): void {
         console.log
-        if (this.enabled) {
+        if (this.enabled && !this.inDevelopmentMode) {
             this.telemetry.sendTelemetryEvent(eventName, properties, measurements)
         }
     }
 
     sendError(error: Error, code = 0, category = 'typescript'): void {
         console.error(`${category} error: ${error.name} code ${code}\n${error.stack}`)
-        if (this.enabled) {
+        if (this.enabled && !this.inDevelopmentMode) {
 
             error.stack = this.anonymizePaths(error.stack)
 
@@ -47,7 +52,7 @@ export class Reporter implements Disposable {
     }
 
     sendTelemetryException(error: Error, properties: { [key: string]: string; } | undefined, measurements: { [key: string]: number; } | undefined): void {
-        if (this.enabled) {
+        if (this.enabled && !this.inDevelopmentMode) {
             this.telemetry.sendTelemetryException(error, properties, measurements)
         }
     }

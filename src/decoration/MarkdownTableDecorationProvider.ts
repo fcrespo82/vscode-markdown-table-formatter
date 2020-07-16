@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
+import MarkdownTableFormatterSettings from '../formatter/MarkdownTableFormatterSettings';
 import { checkLanguage, tablesIn } from '../MarkdownTableUtils';
+import { Reporter } from '../telemetry/Reporter';
 
 export class MarkdownTableDecorationProvider implements vscode.Disposable {
 
@@ -15,6 +17,15 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 		overviewRulerColor: 'grey',
 		overviewRulerLane: vscode.OverviewRulerLane.Full
 	});
+
+	private config: MarkdownTableFormatterSettings
+
+	private reporter?: Reporter
+
+	constructor(config: MarkdownTableFormatterSettings, reporter?: Reporter) {
+		this.reporter = reporter;
+		this.config = config;
+	}
 
 	dispose(): void {
 		this.disposables.map(d => d.dispose());
@@ -39,6 +50,7 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 	}
 
 	private createDecorations(document: vscode.TextDocument): vscode.DecorationOptions[] {
+		const startDate = new Date().getTime();
 		const fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
 		const tables = tablesIn(document, fullDocumentRange);
 		const fullDecoration: vscode.DecorationOptions[] = tables.map(t => {
@@ -56,6 +68,13 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 				}
 			};
 		});
+		const endDate = new Date().getTime();
+		this.reporter?.sendTelemetryEvent("function", {
+			name: "createDecorations",
+			languageId: document.languageId
+		}, {
+			timeTakenMilliseconds: (endDate - startDate)
+		})
 		return fullDecoration.concat(headerDecoration);
 	}
 
@@ -71,8 +90,15 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 	private cleanDecorations(editor?: vscode.TextEditor) {
 		editor?.setDecorations(this.decorationType, []);
 	}
+
+	private toggleDebug(editor: vscode.TextEditor) {
 		if (checkLanguage(editor.document.languageId, this.config)) { return }
 		this.decorationsEnabled = !this.decorationsEnabled;
+		this.reporter?.sendTelemetryEvent("command", {
+			name: "toggleDebug",
+			languageId: editor.document.languageId,
+			enabled: this.decorationsEnabled.toString()
+		}, {})
 		this.addDecorations(editor);
 	}
 }

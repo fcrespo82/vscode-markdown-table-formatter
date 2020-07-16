@@ -2,43 +2,47 @@ import * as vscode from 'vscode';
 import { getExtensionTables, setExtensionTables } from '../extension';
 import { MarkdownTable } from '../MarkdownTable';
 import { checkLanguage, discoverMaxColumnSizes, discoverMaxTableSizes, padding, swidth, tablesIn } from '../MarkdownTableUtils';
+import { Reporter } from '../telemetry/Reporter';
+import MarkdownTableFormatterSettings, { MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes } from './MarkdownTableFormatterSettings';
 import MarkdownTableFormatterSettingsImpl from './MarkdownTableFormatterSettingsImpl';
-
-export enum MarkdownTableFormatterDelimiterRowPadding {
-	None = "None",
-	FollowSpacePadding = "Follow Space Padding",
-	SingleApaceAlways = "Single Space Always",
-	AlignmentMarker = "Alignment Marker"
-}
-export enum MarkdownTableFormatterGlobalColumnSizes {
-	Disabled = "Disabled",
-	SameColumnSize = "Same Column Size",
-	SameTableSize = "Same Table Size"
-}
-
-const MarkdownLanguageId = "markdown"
+import { addTailPipes, fixJustification, joinCells, tableJustification } from './MarkdownTableFormatterUtils';
 
 export class MarkdownTableFormatterProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider, vscode.Disposable {
 
 	private disposables: vscode.Disposable[] = [];
 
-	dispose() {
+	private config: MarkdownTableFormatterSettings
+
+	private reporter?: Reporter
+
+	constructor(config: MarkdownTableFormatterSettings, reporter?: Reporter) {
+		this.reporter = reporter;
+		this.config = config;
+	}
+
+	dispose(): void {
 		this.disposables.map(d => d.dispose());
 		this.disposables = [];
 	}
 
-	public register() {
-		const config = MarkdownTableFormatterSettingsImpl.shared;
-		if (config.enable) {
-			this.registerFormatterForScope(MarkdownLanguageId);
+	public register(): void {
+		this.config = MarkdownTableFormatterSettingsImpl.shared;
+		if (this.config.enable) {
+			this.config.markdownGrammarScopes.forEach((scope) => {
+				this.registerFormatterForScope(scope);
+			})
 
+			this.disposables.push(vscode.workspace.onDidOpenTextDocument(document => {
 				if (checkLanguage(document.languageId, this.config)) { return }
+				const fullDocumentRange = new vscode.Range(0, 0, document.lineCount + 1, 0);
 				setExtensionTables(tablesIn(document, fullDocumentRange));
-			});
+			}));
 
+			this.disposables.push(vscode.workspace.onDidChangeTextDocument(change => {
 				if (checkLanguage(change.document.languageId, this.config)) { return }
+				const fullDocumentRange = new vscode.Range(0, 0, change.document.lineCount + 1, 0);
 				setExtensionTables(tablesIn(change.document, fullDocumentRange));
-			});
+			}));
 
 			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnRight", this.moveColumnRightCommand, this));
 			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnLeft", this.moveColumnLeftCommand, this));
@@ -110,7 +114,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	}
 
 	private formatLine(line: string[], format: string[], size: number[], settings: MarkdownTableFormatterSettings) {
-		line = line.map((column, index, _) => {
+		line = line.map((column, index) => {
 			const columnSize = size[index];
 			const columnJustification = format[index];
 			const text = this.justify(column, columnJustification, columnSize, settings);
@@ -145,8 +149,8 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		}
 	}
 
-	public formatTable(table: MarkdownTable, settings: MarkdownTableFormatterSettings) {
-
+	public formatTable(table: MarkdownTable, settings: MarkdownTableFormatterSettings): string {
+		const startDate = new Date().getTime();
 		table.body.forEach((line, i) => {
 			if (table.header.length !== line.length) {
 				vscode.window.showErrorMessage(`Table at line ${table.startLine + 1} has a line with different column number as the header. | Header columns: ${table.header.length} | Body line ${table.startLine + i + 3} columns: ${line.length}`)
@@ -161,7 +165,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		if (table.header) {
 			header = this.formatLines([table.header], table.format, table.columnSizes, settings).map(line => {
 				const cellPadding = padding(settings.spacePadding);
-				return line.map((cell, i) => {
+				return line.map((cell) => {
 					return `${cellPadding}${cell}${cellPadding}`;
 				});
 			}).map(joinCells).map(addTailPipesIfNeeded);
@@ -212,7 +216,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 		const body = this.formatLines(table.body, table.format, table.columnSizes, settings).map(line => {
 			const cellPadding = padding(settings.spacePadding);
-			return line.map((cell, i) => {
+			return line.map((cell) => {
 				return `${cellPadding}${cell}${cellPadding}`;
 			});
 		}).map(joinCells).map(addTailPipesIfNeeded);
@@ -221,14 +225,21 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		if (table.header) {
 			formatted = [header, formatLine, ...body];
 		}
-
+		const endDate = new Date().getTime();
+		this.reporter?.sendTelemetryEvent("function", {
+			name: "formatTable",
+			tableId: table.id,
+			settings: settings.toString()
+		}, {
+			timeTakenMilliseconds: (endDate - startDate)
+		});
 		return formatted.join('\n');
 	}
 
 	// vscode.Commands
-
 	// vscode.Commands
 	private moveColumnRightCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+		const startDate = new Date().getTime();
 		if (checkLanguage(editor.document.languageId, this.config)) { return }
 		const tables = getExtensionTables(editor.selection);
 		const header = this.getColumnIndexFromRange(tables[0], editor.selection);
@@ -242,10 +253,17 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		const rightHeaderIndex = header + 1;
 		const table = this.flipColumn(tables[0], leftHeaderIndex, rightHeaderIndex);
 		edit.replace(table.range, table.notFormatted());
+		const endDate = new Date().getTime();
+		this.reporter?.sendTelemetryEvent("command", {
+			name: "moveColumnRightCommand",
+		}, {
+			timeTakenMilliseconds: (endDate - startDate)
+		});
 	}
 
 	// vscode.Commands
 	private moveColumnLeftCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+		const startDate = new Date().getTime();
 		if (checkLanguage(editor.document.languageId, this.config)) { return }
 		const tables = getExtensionTables(editor.selection);
 		const header = this.getColumnIndexFromRange(tables[0], editor.selection);
@@ -259,16 +277,29 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		const rightHeaderIndex = header;
 		const table = this.flipColumn(tables[0], leftHeaderIndex, rightHeaderIndex);
 		edit.replace(table.range, table.notFormatted());
+		const endDate = new Date().getTime();
+		this.reporter?.sendTelemetryEvent("command", {
+			name: "moveColumnLeftCommand",
+		}, {
+			timeTakenMilliseconds: (endDate - startDate)
+		});
 	}
 
 	// vscode.DocumentFormattingEditProvider implementation
-	provideDocumentFormattingEdits(document: vscode.TextDocument, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
-		const fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
+	provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.ProviderResult<vscode.TextEdit[]> {
+		this.reporter?.sendTelemetryEvent("formatter", {
+			type: "full",
+		}, {});
+		const fullDocumentRange = new vscode.Range(0, 0, document.lineCount + 1, 0);
 		return this.formatDocument(document, fullDocumentRange);
 	}
 
 	// vscode.DocumentRangeFormattingEditProvider implementation
-	provideDocumentRangeFormattingEdits(document: vscode.TextDocument, range: vscode.Range, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
+	provideDocumentRangeFormattingEdits(document: vscode.TextDocument, range: vscode.Range): vscode.ProviderResult<vscode.TextEdit[]> {
+		this.reporter?.sendTelemetryEvent("formatter", {
+			type: "range",
+			range: range.toString()
+		}, {});
 		return this.formatDocument(document, range);
 	}
 }

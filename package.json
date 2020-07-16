@@ -26,7 +26,7 @@
         "Formatters"
     ],
     "activationEvents": [
-        "onLanguage:markdown"
+        "*"
     ],
     "main": "./dist/extension",
     "contributes": {
@@ -156,7 +156,7 @@
                 },
                 "markdown-table-formatter.telemetry": {
                     "title": "Send usage statistics",
-                    "description": "Send usage statistics to azure server.",
+                    "description": "Send usage statistics.",
                     "type": "boolean",
                     "default": true
                 }

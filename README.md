@@ -30,6 +30,12 @@ Uses VSCode `Format Document` and `Format Selection`
 - **limitLastColumnWidth**: Do not extend last column to more than your editor's wordWrapColumn setting;
 - **telemetry**: Send usage statistics.
 
+## Tips
+
+### Enable Markdown Table Formatter for the current file type
+
+To enable Markdown Table Formatter for your current file type: put your cursor in the file, open the Command Palette <kbd>^ (CONTROL)</kbd>+<kbd>⇧ (SHIFT)</kbd>+<kbd>P</kbd> (<kbd>⌘ (CMD)</kbd>+<kbd>⇧ (SHIFT)</kbd>+<kbd>P</kbd> for mac), and run the `Markdown Table Formatter: Enable for current language` command. This will add language grammar from current editor to the list of languages in the settings for the Markdown Table Formatter package. You can edit this setting manually later if you want to.
+
 - - -
 
 

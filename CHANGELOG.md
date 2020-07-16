@@ -8,14 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [2.1.0] - 2020-07-12
 
 ### Added
-- [It's back] Limit last column width: Don't let the last column expand more than the wordWrapColumn. [#20](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/20)
-- Telemetry: send usage statistics to azure. This will help in future development of this extension, but you can turn it of in settings.
+- Limit last column width: Don't let the last column expand more than the wordWrapColumn. [#20](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/20)
+- Telemetry: send usage statistics. This will help in future development of this extension, but you can turn it of in settings and no personal data is ever sent.
 
-### Changed
-- Activation event for the extension, it should activate only for markdown files
-
-### Removed
-- Command to add this formatter to other languages (filetypes)
 
 ### Fixed
 - Case where backticks were not interpreted corectly if near a pipe sign '|'

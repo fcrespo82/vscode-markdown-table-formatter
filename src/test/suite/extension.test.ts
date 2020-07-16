@@ -1,7 +1,8 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes, MarkdownTableFormatterProvider } from '../../formatter/MarkdownTableFormatterProvider';
-import MarkdownTableFormatterSettings from '../../formatter/MarkdownTableFormatterSettings';
+import { MarkdownTableFormatterProvider } from '../../formatter/MarkdownTableFormatterProvider';
+import MarkdownTableFormatterSettings, { MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes } from '../../formatter/MarkdownTableFormatterSettings';
+import MarkdownTableFormatterSettingsImpl from '../../formatter/MarkdownTableFormatterSettingsImpl';
 import { discoverMaxColumnSizes, discoverMaxTableSizes, pad, tablesIn } from '../../MarkdownTableUtils';
 import { testTables } from '../files/tables';
 
@@ -16,7 +17,7 @@ suite('Extension Test Suite', () => {
 		vscode.window.showInformationMessage('Finalizing all tests.');
 	});
 
-	const settings: MarkdownTableFormatterSettings = {
+	const defaultTestSettings: MarkdownTableFormatterSettings = {
 		enable: true,
 		enableSort: true,
 		spacePadding: 1,
@@ -30,15 +31,12 @@ suite('Extension Test Suite', () => {
 		telemetry: false
 	};
 
-
 	testTables.forEach((testTable, i) => {
-		const formatterProvider = new MarkdownTableFormatterProvider()
+		const testSettings: MarkdownTableFormatterSettings = MarkdownTableFormatterSettingsImpl.create(testTable.settings || defaultTestSettings);
 
-		const testSettings: MarkdownTableFormatterSettings = testTable.settings || settings;
+		const formatterProvider = new MarkdownTableFormatterProvider(testSettings)
 
-		const testSettingsString = `{ defaultTableJustification=${pad(testSettings.defaultTableJustification, 6)}, keepFirstAndLastPipes=${pad(String(testSettings.keepFirstAndLastPipes), 5)}, limitLastColumnWidth=${pad(String(testSettings.limitLastColumnWidth), 5)}, removeColonsIfSameAsDefault=${pad(String(testSettings.removeColonsIfSameAsDefault), 5)}, spacePadding=${testSettings.spacePadding} }, globalColumnSizes=${testSettings.globalColumnSizes} }`;
-
-		test(`Should format correctly table ${pad(String(i), 2)} with ${testSettingsString}`, () => {
+		test(`Should format correctly table ${pad(String(i), 2)} with ${testSettings}`, () => {
 			const uri = vscode.Uri.parse('test-table:' + i);
 			return vscode.workspace.openTextDocument(uri).then(doc => {
 				const tables = tablesIn(doc, doc.validateRange(new vscode.Range(0, 0, doc.lineCount + 1, 0)));
@@ -54,7 +52,7 @@ suite('Extension Test Suite', () => {
 					});
 				}
 				const formattedTables = tables.map(table => {
-					return formatterProvider.formatTable(table, testTable.settings || settings);
+					return formatterProvider.formatTable(table, testTable.settings || defaultTestSettings);
 				}).join('\n\n');
 				assert.equal(formattedTables, testTable.expected);
 			});

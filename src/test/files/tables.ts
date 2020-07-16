@@ -1,5 +1,4 @@
-import { MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes } from "../../formatter/MarkdownTableFormatterProvider";
-import MarkdownTableFormatterSettings from "../../formatter/MarkdownTableFormatterSettings";
+import MarkdownTableFormatterSettings, { MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes } from "../../formatter/MarkdownTableFormatterSettings";
 
 export const testTables: { input: string, expected: string, settings?: MarkdownTableFormatterSettings }[] = [
 	{

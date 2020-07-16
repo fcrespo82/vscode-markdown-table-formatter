@@ -1,4 +1,14 @@
-import { MarkdownTableFormatterGlobalColumnSizes, MarkdownTableFormatterDelimiterRowPadding } from "./MarkdownTableFormatterProvider";
+export enum MarkdownTableFormatterDelimiterRowPadding {
+	None = "None",
+	FollowSpacePadding = "Follow Space Padding",
+	SingleApaceAlways = "Single Space Always",
+	AlignmentMarker = "Alignment Marker"
+}
+export enum MarkdownTableFormatterGlobalColumnSizes {
+	Disabled = "Disabled",
+	SameColumnSize = "Same Column Size",
+	SameTableSize = "Same Table Size"
+}
 
 export default interface MarkdownTableFormatterSettings {
 	enable: boolean;
@@ -12,4 +22,5 @@ export default interface MarkdownTableFormatterSettings {
 	delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding;
 	limitLastColumnWidth: boolean;
 	telemetry: boolean;
+	toString(): string;
 }

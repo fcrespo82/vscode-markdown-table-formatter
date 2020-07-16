@@ -1,6 +1,5 @@
-import { WorkspaceConfiguration, workspace } from "vscode";
-import MarkdownTableFormatterSettings from "./MarkdownTableFormatterSettings";
-import { MarkdownTableFormatterGlobalColumnSizes, MarkdownTableFormatterDelimiterRowPadding } from "./MarkdownTableFormatterProvider";
+import { workspace, WorkspaceConfiguration } from "vscode";
+import MarkdownTableFormatterSettings, { MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes } from "./MarkdownTableFormatterSettings";
 
 export default class MarkdownTableFormatterSettingsImpl implements MarkdownTableFormatterSettings {
 
@@ -15,6 +14,15 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 		return this.instance;
 	}
 
+	/**
+	 * Create a MarkdownTableFormatterSettings from a MarkdownTableFormatterSettings like object
+	 * @param options MarkdownTableFormatterSettings like object
+	 */
+	public static create(options: MarkdownTableFormatterSettings): MarkdownTableFormatterSettings {
+		options.toString = MarkdownTableFormatterSettingsImpl.prototype.toString
+		return options
+	}
+
 	private constructor() {
 		this.config = workspace.getConfiguration('markdown-table-formatter');
 		workspace.onDidChangeConfiguration((changeEvent) => {
@@ -23,7 +31,7 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 			}
 		});
 	}
-	
+
 	get enable(): boolean {
 		return this.config.get<boolean>('enable', true);
 	}
@@ -56,5 +64,9 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 	}
 	get telemetry(): boolean {
 		return this.config.get<boolean>('telemetry', true);
+	}
+
+	public toString(): string {
+		return `{ enable: ${this.enable}, enableSort: ${this.enableSort}, spacePadding: ${this.spacePadding}, keepFirstAndLastPipes: ${this.keepFirstAndLastPipes}, defaultTableJustification: ${this.defaultTableJustification}, removeColonsIfSameAsDefault: ${this.removeColonsIfSameAsDefault}, globalColumnSizes: ${this.globalColumnSizes}, delimiterRowPadding: ${this.delimiterRowPadding}, limitLastColumnWidth: ${this.limitLastColumnWidth},  telemetry: ${this.telemetry} }`;
 	}
 }

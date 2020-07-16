@@ -28,6 +28,7 @@ suite('Extension Test Suite', () => {
 		removeColonsIfSameAsDefault: false,
 		globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 		delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
+		allowEmptyRows: true,
 		telemetry: false
 	};
 
@@ -36,7 +37,7 @@ suite('Extension Test Suite', () => {
 
 		const formatterProvider = new MarkdownTableFormatterProvider(testSettings)
 
-		test(`Should format correctly table ${pad(String(i), 2)} with ${testSettings}`, () => {
+		test(`Should format correctly table ${pad(String(testTable.id), 2)} with ${testSettings}`, () => {
 			const uri = vscode.Uri.parse('test-table:' + i);
 			return vscode.workspace.openTextDocument(uri).then(doc => {
 				const tables = tablesIn(doc, doc.validateRange(new vscode.Range(0, 0, doc.lineCount + 1, 0)));

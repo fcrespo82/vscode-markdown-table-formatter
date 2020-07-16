@@ -91,6 +91,26 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		}
 		const tables: MarkdownTable[] = setExtensionTables(tablesIn(document, range));
 
+		// Fix sizes of empty row tables
+		tables.forEach(table => {
+			table.body.forEach((line, i) => {
+				if (table.header.length !== line.length) {
+					if (config.allowEmptyRows) {
+						const lineFixed = line.concat(Array(table.header.length - line.length).fill(""))
+						table.body[i] = lineFixed
+					}
+				}
+			});
+
+			if (table.header.length !== table.format.length) {
+				if (config.allowEmptyRows) {
+					table.format = table.format.concat(Array(table.header.length - table.format.length).fill("-"))
+				}
+			}
+
+			table.updateSizes();
+		});
+
 		if (config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameColumnSize) {
 			const maxSize = discoverMaxColumnSizes(tables);
 			tables.forEach(table => {
@@ -151,29 +171,19 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 	public formatTable(table: MarkdownTable, settings: MarkdownTableFormatterSettings): string {
 		const startDate = new Date().getTime();
-		const allowEmptyRows = settings.allowEmptyRows;
 		table.body.forEach((line, i) => {
 			if (table.header.length !== line.length) {
-				if (allowEmptyRows) {
-					const lineFixed = line.concat(Array(table.header.length - line.length).fill(""))
-					table.body[i] = lineFixed
-				} else {
-					vscode.window.showErrorMessage(`Table at line ${table.startLine + 1} has a line with different column number as the header. | Header columns: ${table.header.length} | Body at line ${table.startLine + i + 3} columns: ${line.length}`)
-					return table.notFormatted()
-				}
+				vscode.window.showErrorMessage(`Table at line ${table.startLine + 1} has a line with different column number as the header. | Header columns: ${table.header.length} | Body at line ${table.startLine + i + 3} columns: ${line.length}`)
+				return table.notFormatted()
+
 			}
 		});
-		
+
 		if (table.header.length !== table.format.length) {
-			if (allowEmptyRows) {
-				table.format = table.format.concat(Array(table.header.length - table.format.length).fill("-"))
-			} else {
-				vscode.window.showErrorMessage(`Table at line ${table.startLine + 1} has a line with different column number as the header. | Header columns: ${table.header.length} | Format line columns: ${table.format.length}`)
-				return table.notFormatted()
-			}
+			vscode.window.showErrorMessage(`Table at line ${table.startLine + 1} has a line with different column number as the header. | Header columns: ${table.header.length} | Format line columns: ${table.format.length}`)
+			return table.notFormatted()
+
 		}
-		
-		table.updateSizes()
 
 		const addTailPipesIfNeeded = settings.keepFirstAndLastPipes
 			? addTailPipes

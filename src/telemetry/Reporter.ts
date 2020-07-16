@@ -30,7 +30,7 @@ export class Reporter implements Disposable {
             this.telemetry.sendTelemetryEvent(eventName, properties, measurements)
         }
         if (this.inDevelopmentMode) {
-            console.log(eventName, properties, measurements);
+            console.log(JSON.stringify({ eventName, ...properties, ...measurements }, null, 4));
         }
     }
 
@@ -51,7 +51,7 @@ export class Reporter implements Disposable {
             this.lastStackTrace = error.stack
         }
         if (this.inDevelopmentMode) {
-            console.error(error, code, category);
+            console.error(JSON.stringify({ error, code, category }, null, 4));
         }
     }
 
@@ -60,7 +60,7 @@ export class Reporter implements Disposable {
             this.telemetry.sendTelemetryException(error, properties, measurements)
         }
         if (this.inDevelopmentMode) {
-            console.error(error, properties, measurements);
+            console.error(JSON.stringify({ error, ...properties, ...measurements }, null, 4));
         }
     }
 

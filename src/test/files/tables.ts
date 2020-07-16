@@ -1,7 +1,8 @@
 import MarkdownTableFormatterSettings, { MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes } from "../../formatter/MarkdownTableFormatterSettings";
 
-export const testTables: { input: string, expected: string, settings?: MarkdownTableFormatterSettings }[] = [
+export const testTables: { id: number, input: string, expected: string, settings?: MarkdownTableFormatterSettings }[] = [
 	{
+		id: 0,
 		input: `\
 | Foo | Bar |
 | - | - |
@@ -25,6 +26,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 		}
 	},
 	{
+		id: 1,
 		input: `\
 |Left header|Center header |Right header|Default header|
 |||||
@@ -39,6 +41,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 | L:3 C:A         | L:3 C:B         | L:3 C:C         | L:3 C:D         |`
 	},
 	{
+		id: 2,
 		input: `\
 |Left header|Center header |Right header|Default header|
 |:-|::|-:|-|
@@ -53,6 +56,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 | L:3 C:A         |     L:3 C:B     |         L:3 C:C | L:3 C:D         |`
 	},
 	{
+		id: 3,
 		input: `\
 |Left header|Center header |Right header|Default header|
 |:-|::|-:|-|
@@ -80,6 +84,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 		}
 	},
 	{
+		id: 4,
 		input: `\
 |Left header|Center header |Right header|Default header|
 |:-|::|-:|-|
@@ -107,6 +112,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 		}
 	},
 	{
+		id: 5,
 		input: `\
 |Left header|Center header |Right header|Default header|
 |:-|::|-:|-|
@@ -134,6 +140,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 		}
 	},
 	{
+		id: 6,
 		input: `\
 |Left header|Center header |Right header|Default header|
 |:-|::|-:|-|
@@ -161,6 +168,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 		}
 	},
 	{
+		id: 7,
 		input: `\
 |Left header|Center header |Right header|Default header|
 |:-|::|-:|-|
@@ -188,6 +196,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 		}
 	},
 	{
+		id: 8,
 		input: `\
 |Left header|Center header |Right header|Default header|
 |:-|::|-:|-|
@@ -215,6 +224,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 		}
 	},
 	{
+		id: 9,
 		input: `\
 |Left header|Center header |Right header|Default header|
 |:-|::|-:|-|
@@ -242,6 +252,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 		}
 	},
 	{
+		id: 10,
 		input: `\
 |Left header|Center header |Right header|Default header|
 |:-|::|-:|-|
@@ -269,6 +280,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 		}
 	},
 	{
+		id: 11,
 		input: `\
 |Left header|Center header |Right header|Default header|
 |:-|::|-:|-|
@@ -296,6 +308,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 		}
 	},
 	{
+		id: 12,
 		input: `\
 |Left header|Center header |Right header|Default header|
 |:-|::|-:|-|
@@ -323,6 +336,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 		}
 	},
 	{
+		id: 13,
 		input: `\
 |Left header|Center header |Right header|Default header|
 |:-|::|-:|-|
@@ -350,6 +364,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 		}
 	},
 	{
+		id: 14,
 		input: `\
 |header a       |header b|
 |:-|-|
@@ -362,6 +377,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 | column a 2 | column b 2 |`
 	},
 	{
+		id: 15,
 		input: `\
 |header a       |header b|
 |:-|-:|
@@ -374,6 +390,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 | column a 2 | column b 20 |`
 	},
 	{
+		id: 16,
 		input: `\
 |header a       |header b|
 |:-|::|
@@ -386,6 +403,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 | column a 2 | column b 2 |`
 	},
 	{
+		id: 17,
 		input: `\
 | Topic                      | Status    | Notes |
 |----------------------------|-----------|-------|
@@ -399,6 +417,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 | Are changes peer reviewed? | \`PARTIAL\` |       |`
 	},
 	{
+		id: 18,
 		input: `\
 | Topic        | Status | Notes |
 |--------------|--------|-------|
@@ -410,6 +429,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 | Is Iot used? | \`NO\`   |       |`
 	},
 	{
+		id: 19,
 		input: `\
 | a        | b | c |
 |:---------|:--|:--|
@@ -421,6 +441,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 | fdasdfas | x \`|\` y | z |`
 	},
 	{
+		id: 20,
 		input: `\
 |Name|Syntax|Equivalent GLSL|
 |-------------------|----------------------|-----------------------|
@@ -511,6 +532,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 | LinearInterpolate | \`amixb:c\`        | \`mix(b,c,a)\`        |`
 	},
 	{
+		id: 21,
 		input: `\
 |Small a|Small b|
 |:-|:-|
@@ -529,6 +551,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 | Line:1 Column:A | Line:1 Column:B |`
 	},
 	{
+		id: 22,
 		input: `\
 |Small a|Small b|Small c|
 |:-|:-|:-|
@@ -547,6 +570,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 | Line:1 Column:A | Line:1 Column:B |`
 	},
 	{
+		id: 23,
 		input: `\
 |Small a|Small b|Small c|
 |:-|:-|:-|
@@ -578,6 +602,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 		}
 	},
 	{
+		id: 24,
 		input: `\
 | Topic| Status| Notes |
 |:---|:----|:-|
@@ -611,6 +636,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 		}
 	},
 	{
+		id: 25,
 		input: `\
 | Topic| Status| Notes |
 |:---|:----|:-|
@@ -644,6 +670,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 		}
 	},
 	{
+		id: 26,
 		input: `\
 |1eft header|Center header |Right header|Default header|
 |:-|::|-:|-|
@@ -681,14 +708,18 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 		}
 	},
 	{
+		id: 27,
 		input: `\
+| a | b |
 |------------|---------------|
 | 1234567890 | 1234567890 |`,
-		expected: `\reduce
+		expected: `\
+| a          | b          |
 |------------|------------|
 | 1234567890 | 1234567890 |`
 	},
 	{
+		id: 28,
 		input: `\
 |  |  |
 |------------|---------------|
@@ -699,6 +730,7 @@ export const testTables: { input: string, expected: string, settings?: MarkdownT
 | 1234567890 | 1234567890 |`
 	},
 	{
+		id: 29,
 		input: `\
 | Text | Result |
 |----------|-------------------|

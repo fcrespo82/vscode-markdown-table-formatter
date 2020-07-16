@@ -73,7 +73,7 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 			name: "createDecorations",
 			languageId: document.languageId
 		}, {
-			timeTakenMilliseconds: (endDate - startDate)
+			timeTakenMilliseconds: endDate - startDate
 		})
 		return fullDecoration.concat(headerDecoration);
 	}

@@ -9,7 +9,6 @@ export class Reporter implements Disposable {
     private lastStackTrace?: string;
     // TODO: Leave it that way until I can see some versions of the vscode of my users
     // After that use engine ^1.47 extensionMode on context = context.extensionMode === ExtensionMode.Development;
-    // TODO: Print telemetry data on development insetead of sending it
     private readonly inDevelopmentMode: boolean = env.sessionId === "someValue.sessionId";
 
     constructor(extensionId: string, instrumentationKey: string, context: ExtensionContext, enabled = true) {
@@ -30,6 +29,9 @@ export class Reporter implements Disposable {
         if (this.enabled && !this.inDevelopmentMode) {
             this.telemetry.sendTelemetryEvent(eventName, properties, measurements)
         }
+        if (this.inDevelopmentMode) {
+            console.log(eventName, properties, measurements);
+        }
     }
 
     sendError(error: Error, code = 0, category = 'typescript'): void {
@@ -48,11 +50,17 @@ export class Reporter implements Disposable {
 
             this.lastStackTrace = error.stack
         }
+        if (this.inDevelopmentMode) {
+            console.error(error, code, category);
+        }
     }
 
     sendTelemetryException(error: Error, properties: { [key: string]: string; } | undefined, measurements: { [key: string]: number; } | undefined): void {
         if (this.enabled && !this.inDevelopmentMode) {
             this.telemetry.sendTelemetryException(error, properties, measurements)
+        }
+        if (this.inDevelopmentMode) {
+            console.error(error, properties, measurements);
         }
     }
 

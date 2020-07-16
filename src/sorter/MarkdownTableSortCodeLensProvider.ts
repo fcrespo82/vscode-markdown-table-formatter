@@ -152,7 +152,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 			name: "sortTable",
 			table_id: table.id
 		}, {
-			timeTakenMilliseconds: (endDate - startDate)
+			timeTakenMilliseconds: endDate - startDate
 		})
 		return table.notFormatted();
 	}
@@ -220,7 +220,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 			name: "CodeLensProvider",
 			method: "provideCodeLenses",
 		}, {
-			timeTakenMilliseconds: (endDate - startDate),
+			timeTakenMilliseconds: endDate - startDate,
 			file_lineCount: document.lineCount
 		});
 		return lenses.reduce((acc, val) => acc.concat(val), []);

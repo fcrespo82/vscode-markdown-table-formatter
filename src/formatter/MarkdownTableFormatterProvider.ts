@@ -231,7 +231,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			tableId: table.id,
 			settings: settings.toString()
 		}, {
-			timeTakenMilliseconds: (endDate - startDate),
+			timeTakenMilliseconds: endDate - startDate,
 			table_lineCount: table.totalLines
 		});
 		return formatted.join('\n');
@@ -258,7 +258,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		this.reporter?.sendTelemetryEvent("command", {
 			name: "moveColumnRightCommand",
 		}, {
-			timeTakenMilliseconds: (endDate - startDate)
+			timeTakenMilliseconds: endDate - startDate
 		});
 	}
 
@@ -282,29 +282,36 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		this.reporter?.sendTelemetryEvent("command", {
 			name: "moveColumnLeftCommand",
 		}, {
-			timeTakenMilliseconds: (endDate - startDate)
+			timeTakenMilliseconds: endDate - startDate
 		});
 	}
 
 	// vscode.DocumentFormattingEditProvider implementation
 	provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.ProviderResult<vscode.TextEdit[]> {
+		const startDate = new Date().getTime();
+		const fullDocumentRange = new vscode.Range(0, 0, document.lineCount + 1, 0);
+		const edits = this.formatDocument(document, fullDocumentRange);
+		const endDate = new Date().getTime();
 		this.reporter?.sendTelemetryEvent("formatter", {
 			type: "full",
 		}, {
+			timeTakenMilliseconds: endDate - startDate,
 			file_lineCount: document.lineCount
 		});
-		const fullDocumentRange = new vscode.Range(0, 0, document.lineCount + 1, 0);
-		return this.formatDocument(document, fullDocumentRange);
+		return edits;
 	}
 
 	// vscode.DocumentRangeFormattingEditProvider implementation
 	provideDocumentRangeFormattingEdits(document: vscode.TextDocument, range: vscode.Range): vscode.ProviderResult<vscode.TextEdit[]> {
+		const startDate = new Date().getTime();
+		const edits = this.formatDocument(document, range);
+		const endDate = new Date().getTime();
 		this.reporter?.sendTelemetryEvent("formatter", {
-			type: "range",
-			range: range.toString()
+			type: "range"
 		}, {
+			timeTakenMilliseconds: endDate - startDate,
 			range_lineCount: range.end.line - range.start.line
 		});
-		return this.formatDocument(document, range);
+		return edits;
 	}
 }

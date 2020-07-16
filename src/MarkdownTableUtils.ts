@@ -4,6 +4,7 @@ import { MarkdownTable, XRegExpExecArray } from './MarkdownTable';
 import { tableRegex } from './MarkdownTableRegex';
 import wcswidth = require('wcwidth');
 import XRegExp = require('xregexp');
+import MarkdownTableFormatterSettings from './formatter/MarkdownTableFormatterSettings';
 
 export const swidth = (str: string): number => {
 	// zero-width Unicode characters that we should ignore for purposes of computing string "display" width
@@ -117,6 +118,7 @@ export const pad = (text: string, columns: number): string => {
 };
 
 export const tablesIn = (document: TextDocument, range: Range): MarkdownTable[] => {
+	range = document.validateRange(range);
 	const items: MarkdownTable[] = [];
 
 	const text = document.getText(range);
@@ -133,3 +135,12 @@ export const tablesIn = (document: TextDocument, range: Range): MarkdownTable[] 
 	}
 	return items;
 };
+
+/**
+ * Check if a language is enabled in config.
+ * @param languageId The language id to check.
+ * @param config The config to check.
+ */
+export const checkLanguage = (languageId: string, config: MarkdownTableFormatterSettings): boolean => {
+	return config.markdownGrammarScopes.includes(languageId)
+}

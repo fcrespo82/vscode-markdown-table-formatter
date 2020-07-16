@@ -1,9 +1,7 @@
 import * as vscode from 'vscode';
 import { getExtensionTables, setExtensionTables } from '../extension';
 import { MarkdownTable } from '../MarkdownTable';
-import { discoverMaxColumnSizes, discoverMaxTableSizes, padding, swidth, tablesIn } from '../MarkdownTableUtils';
-import MarkdownTableFormatterSettings from './MarkdownTableFormatterSettings';
-import { addTailPipes, fixJustification, joinCells, tableJustification } from './MarkdownTableFormatterUtils';
+import { checkLanguage, discoverMaxColumnSizes, discoverMaxTableSizes, padding, swidth, tablesIn } from '../MarkdownTableUtils';
 import MarkdownTableFormatterSettingsImpl from './MarkdownTableFormatterSettingsImpl';
 
 export enum MarkdownTableFormatterDelimiterRowPadding {
@@ -34,15 +32,11 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		if (config.enable) {
 			this.registerFormatterForScope(MarkdownLanguageId);
 
-			vscode.workspace.onDidOpenTextDocument(document => {
-				if (document.languageId !== MarkdownLanguageId) { return }
-				const fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
+				if (checkLanguage(document.languageId, this.config)) { return }
 				setExtensionTables(tablesIn(document, fullDocumentRange));
 			});
 
-			vscode.workspace.onDidChangeTextDocument(change => {
-				if (change.document.languageId !== MarkdownLanguageId) { return }
-				const fullDocumentRange = change.document.validateRange(new vscode.Range(0, 0, change.document.lineCount + 1, 0));
+				if (checkLanguage(change.document.languageId, this.config)) { return }
 				setExtensionTables(tablesIn(change.document, fullDocumentRange));
 			});
 
@@ -87,7 +81,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		const config = MarkdownTableFormatterSettingsImpl.shared;
 		const edits: vscode.TextEdit[] = [];
 		// This check is in case some grammar is removed and VSCode is not reloaded yet
-		if (!config.markdownGrammarScopes.includes(document.languageId)) {
+		if (!checkLanguage(document.languageId, this.config)) {
 			vscode.window.showWarningMessage(`Markdown table formatter is not enabled for '${document.languageId}' language!`);
 			return edits;
 		}
@@ -235,7 +229,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 	// vscode.Commands
 	private moveColumnRightCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
-		if (editor.document.languageId !== MarkdownLanguageId) { return }
+		if (checkLanguage(editor.document.languageId, this.config)) { return }
 		const tables = getExtensionTables(editor.selection);
 		const header = this.getColumnIndexFromRange(tables[0], editor.selection);
 		if (header < 0) {
@@ -252,7 +246,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 	// vscode.Commands
 	private moveColumnLeftCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
-		if (editor.document.languageId !== MarkdownLanguageId) { return }
+		if (checkLanguage(editor.document.languageId, this.config)) { return }
 		const tables = getExtensionTables(editor.selection);
 		const header = this.getColumnIndexFromRange(tables[0], editor.selection);
 		if (header < 0) {

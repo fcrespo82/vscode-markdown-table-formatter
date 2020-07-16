@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { tablesIn } from '../MarkdownTableUtils';
+import { checkLanguage, tablesIn } from '../MarkdownTableUtils';
 
 export class MarkdownTableDecorationProvider implements vscode.Disposable {
 
@@ -26,10 +26,16 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 			vscode.commands.registerTextEditorCommand("markdown-table-formatter.toggleDebug", this.toggleDebug, this)
 		);
 		this.disposables.push(
-			vscode.workspace.onDidChangeTextDocument(() => {
-				this.addDecorations(vscode.window.activeTextEditor!);
-			}, this)
+			vscode.workspace.onDidChangeTextDocument(this.onDidChangeTextDocument, this)
 		);
+	}
+
+	private onDidChangeTextDocument(event: vscode.TextDocumentChangeEvent): void {
+		if (checkLanguage(event.document.languageId, this.config)) { return }
+		const editor = vscode.window.activeTextEditor;
+		if (editor != null) {
+			this.addDecorations(editor);
+		}
 	}
 
 	private createDecorations(document: vscode.TextDocument): vscode.DecorationOptions[] {
@@ -54,6 +60,7 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 	}
 
 	private addDecorations(editor: vscode.TextEditor) {
+		if (checkLanguage(editor.document.languageId, this.config)) { return }
 		this.cleanDecorations(editor);
 		if (this.decorationsEnabled) {
 			this.decorations = this.createDecorations(editor.document);
@@ -64,7 +71,7 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 	private cleanDecorations(editor?: vscode.TextEditor) {
 		editor?.setDecorations(this.decorationType, []);
 	}
-	private toggleDebug(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+		if (checkLanguage(editor.document.languageId, this.config)) { return }
 		this.decorationsEnabled = !this.decorationsEnabled;
 		this.addDecorations(editor);
 	}

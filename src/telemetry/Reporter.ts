@@ -1,19 +1,18 @@
-import { extensions, ExtensionContext, Disposable, env, ExtensionMode } from "vscode";
-import TelemetryReporter from "vscode-extension-telemetry";
 import { userInfo } from "os";
 import { sep } from "path";
+import { Disposable, env, ExtensionContext, extensions } from "vscode";
+import TelemetryReporter from "vscode-extension-telemetry";
 
 export class Reporter implements Disposable {
     private telemetry!: TelemetryReporter;
     private enabled: boolean;
     private lastStackTrace?: string;
     // TODO: Leave it that way until I can see some versions of the vscode of my users
-    // After that use engine ^1.47 extensionMode on context
-    private readonly inDevelopmentMode: boolean = false; // env.sessionId === "someValue.sessionId";
-
+    // After that use engine ^1.47 extensionMode on context = context.extensionMode === ExtensionMode.Development;
+    // TODO: Print telemetry data on development insetead of sending it
+    private readonly inDevelopmentMode: boolean = env.sessionId === "someValue.sessionId";
 
     constructor(extensionId: string, instrumentationKey: string, context: ExtensionContext, enabled = true) {
-        this.inDevelopmentMode = context.extensionMode === ExtensionMode.Development;
         const extensionMetadata = extensions.getExtension(extensionId)
         const extensionVersion = extensionMetadata?.packageJSON.version
         this.enabled = enabled;

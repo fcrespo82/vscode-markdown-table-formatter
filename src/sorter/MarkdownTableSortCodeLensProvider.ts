@@ -160,7 +160,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 	// vscode.Command
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	private sortCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit, ...args: any[]) {
-		if (checkLanguage(editor.document.languageId, this.config)) { return }
+		if (!checkLanguage(editor.document.languageId, this.config)) { return }
 		const id = args[0];
 		const index = args[1];
 		const direction = args[2];

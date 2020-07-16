@@ -10,12 +10,14 @@
             "args": [
                 "--disable-extensions",
                 "--extensionDevelopmentPath=${workspaceFolder}",
+                "${workspaceFolder}/src/test/files/tables.md",
+                "${workspaceFolder}/src/test/files/tables2.md",
                 "${workspaceFolder}/src/test/files/tables3.md"
             ],
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"
             ],
-            "preLaunchTask": "npm: webpack",
+            "preLaunchTask": "npm: webpack"
         },
         {
             "name": "Extension Tests",

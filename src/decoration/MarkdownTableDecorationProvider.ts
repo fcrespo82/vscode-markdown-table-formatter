@@ -42,7 +42,7 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 	}
 
 	private onDidChangeTextDocument(event: vscode.TextDocumentChangeEvent): void {
-		if (checkLanguage(event.document.languageId, this.config)) { return }
+		if (!checkLanguage(event.document.languageId, this.config)) { return }
 		const editor = vscode.window.activeTextEditor;
 		if (editor != null) {
 			this.addDecorations(editor);
@@ -79,7 +79,7 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 	}
 
 	private addDecorations(editor: vscode.TextEditor) {
-		if (checkLanguage(editor.document.languageId, this.config)) { return }
+		if (!checkLanguage(editor.document.languageId, this.config)) { return }
 		this.cleanDecorations(editor);
 		if (this.decorationsEnabled) {
 			this.decorations = this.createDecorations(editor.document);
@@ -92,7 +92,7 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 	}
 
 	private toggleDebug(editor: vscode.TextEditor) {
-		if (checkLanguage(editor.document.languageId, this.config)) { return }
+		if (!checkLanguage(editor.document.languageId, this.config)) { return }
 		this.decorationsEnabled = !this.decorationsEnabled;
 		this.reporter?.sendTelemetryEvent("command", {
 			name: "toggleDebug",

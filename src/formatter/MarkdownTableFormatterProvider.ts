@@ -33,13 +33,13 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			})
 
 			this.disposables.push(vscode.workspace.onDidOpenTextDocument(document => {
-				if (checkLanguage(document.languageId, this.config)) { return }
+				if (!checkLanguage(document.languageId, this.config)) { return }
 				const fullDocumentRange = new vscode.Range(0, 0, document.lineCount + 1, 0);
 				setExtensionTables(tablesIn(document, fullDocumentRange));
 			}));
 
 			this.disposables.push(vscode.workspace.onDidChangeTextDocument(change => {
-				if (checkLanguage(change.document.languageId, this.config)) { return }
+				if (!checkLanguage(change.document.languageId, this.config)) { return }
 				const fullDocumentRange = new vscode.Range(0, 0, change.document.lineCount + 1, 0);
 				setExtensionTables(tablesIn(change.document, fullDocumentRange));
 			}));
@@ -240,7 +240,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	// vscode.Commands
 	private moveColumnRightCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
 		const startDate = new Date().getTime();
-		if (checkLanguage(editor.document.languageId, this.config)) { return }
+		if (!checkLanguage(editor.document.languageId, this.config)) { return }
 		const tables = getExtensionTables(editor.selection);
 		const header = this.getColumnIndexFromRange(tables[0], editor.selection);
 		if (header < 0) {
@@ -264,7 +264,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	// vscode.Commands
 	private moveColumnLeftCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
 		const startDate = new Date().getTime();
-		if (checkLanguage(editor.document.languageId, this.config)) { return }
+		if (!checkLanguage(editor.document.languageId, this.config)) { return }
 		const tables = getExtensionTables(editor.selection);
 		const header = this.getColumnIndexFromRange(tables[0], editor.selection);
 		if (header < 0) {

@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+
+import os
+import json
+
+package = json.load(open("package.json"))
+
+options = {"M": "major", "I": "minor", "P": "patch", "G": "git push", "C": "cancel"}
+
+print("Current", package["name"], "package version:", package["version"],"\n")
+while (True):
+    option = input('Publish [M]ajor, m[I]nor, [P]atch, just push to [G]it, [C]ancel? ').upper()
+    if option in options.keys():
+        break
+
+if option == "C":
+    exit()
+
+if option != "G":
+    os.system(f'vsce publish {options[option]}')
+os.system(f'git push')
+os.system(f'git push --tags')

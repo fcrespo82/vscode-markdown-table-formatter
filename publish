@@ -1,22 +1,51 @@
 #!/usr/bin/env python3
+"""
+usage:
+    ./publish [options]
 
+options:
+    --run
+"""
 import os
 import json
+import sys
+from docopt import docopt
+
+opts = docopt(__doc__)
 
 package = json.load(open("package.json"))
 
-options = {"M": "major", "I": "minor", "P": "patch", "G": "git push", "C": "cancel"}
+options = {"M": "major", "I": "minor",
+           "P": "patch", "G": "git push", "C": "cancel"}
 
-print("Current", package["name"], "package version:", package["version"],"\n")
+
+def parse_version(version):
+    return version.split(".")
+
+
+print("Current", package["name"], "package version:", package["version"], "\n")
 while (True):
-    option = input('Publish [M]ajor, m[I]nor, [P]atch, just push to [G]it, [C]ancel? ').upper()
+    option = input(
+        "Publish [m]ajor, m[i]nor, [p]atch, just push to [g]it, [C]ancel? ").upper()
+    if option == "" or option == "C":
+        exit(0)
     if option in options.keys():
         break
 
-if option == "C":
-    exit()
-
+echo = "echo " if not opts["--run"] else ""
 if option != "G":
-    os.system(f'vsce publish {options[option]}')
-os.system(f'git push')
-os.system(f'git push --tags')
+    parsed_version = parse_version(package["version"])
+    new_version = ""
+    if option == "M":
+        new_version = f"{int(parsed_version[0]) + 1}.0.0"
+    elif option == "I":
+        new_version = f"{int(parsed_version[0])}.{int(parsed_version[1]) + 1}.0"
+    elif option == "P":
+        new_version = f"{int(parsed_version[0])}.{int(parsed_version[1])}.{int(parsed_version[2]) + 1}"
+    publish = input(
+        f"New version will be: {new_version}, continue? [Y/n] ").upper()
+    if publish == "N":
+        exit(0)
+    os.system(f"{echo}vsce publish {options[option]}")
+os.system(f"{echo}git push")
+os.system(f"{echo}git push --tags")

@@ -9,6 +9,8 @@ import { addTailPipes, fixJustification, joinCells, tableJustification } from '.
 
 export class MarkdownTableFormatterProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider, vscode.Disposable {
 
+	private registered = false;
+
 	private disposables: vscode.Disposable[] = [];
 
 	private config: MarkdownTableFormatterSettings
@@ -21,6 +23,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	}
 
 	dispose(): void {
+		this.registered = false;
 		this.disposables.map(d => d.dispose());
 		this.disposables = [];
 	}
@@ -28,9 +31,12 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	public register(): void {
 		this.config = MarkdownTableFormatterSettingsImpl.shared;
 		if (this.config.enable) {
+			this.registered = true;
 			this.config.markdownGrammarScopes.forEach((scope) => {
 				this.registerFormatterForScope(scope);
 			})
+
+			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.enableForCurrentScope", this.enableForCurrentScopeCommand, this));
 
 			this.disposables.push(vscode.workspace.onDidOpenTextDocument(document => {
 				if (!checkLanguage(document.languageId, this.config)) { return }
@@ -291,6 +297,16 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	}
 
 	// vscode.Commands
+	private enableForCurrentScopeCommand = (editor: vscode.TextEditor) => {
+		const scopes = this.config.markdownGrammarScopes;
+		if (!scopes.includes(editor.document.languageId)) {
+			scopes.push(editor.document.languageId);
+			vscode.workspace.getConfiguration('markdown-table-formatter').update("markdownGrammarScopes", scopes, true);
+			this.registerFormatterForScope(editor.document.languageId);
+			vscode.window.showInformationMessage(`Markdown table formatter enabled for '${editor.document.languageId}' language!`);
+		}
+	}
+
 	private moveColumnLeftCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
 		const startDate = new Date().getTime();
 		if (!checkLanguage(editor.document.languageId, this.config)) { return }

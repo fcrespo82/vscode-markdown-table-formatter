@@ -46,8 +46,10 @@ export function activate(context: vscode.ExtensionContext): Promise<boolean> {
 	markdownTableDecorationProvider.register();
 
 	vscode.workspace.onDidChangeConfiguration(changeConfigurationEvent => {
-		if (changeConfigurationEvent.affectsConfiguration('markdown-table-formatter')) {
+		if (changeConfigurationEvent.affectsConfiguration('markdown-table-formatter.enable') ||
+			changeConfigurationEvent.affectsConfiguration('markdown-table-formatter.markdownGrammarScopes')) {
 			if (config.enable) {
+				markdownTableFormatterProvider.dispose();
 				markdownTableFormatterProvider.register();
 			} else {
 				markdownTableFormatterProvider.dispose();
@@ -55,9 +57,10 @@ export function activate(context: vscode.ExtensionContext): Promise<boolean> {
 		}
 	});
 	vscode.workspace.onDidChangeConfiguration(changeConfigurationEvent => {
-		if (changeConfigurationEvent.affectsConfiguration('markdown-table-formatter')) {
-			const config = MarkdownTableFormatterSettingsImpl.shared;
-			if (config.enable) {
+		if (changeConfigurationEvent.affectsConfiguration('markdown-table-formatter.enableSort') ||
+			changeConfigurationEvent.affectsConfiguration('markdown-table-formatter.markdownGrammarScopes')) {
+			if (config.enableSort) {
+				markdownTableCodeLensProvider.dispose();
 				markdownTableCodeLensProvider.register();
 			} else {
 				markdownTableCodeLensProvider.dispose();

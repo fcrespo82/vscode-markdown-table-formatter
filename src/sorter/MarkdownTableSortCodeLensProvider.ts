@@ -10,6 +10,8 @@ import { cleanSortIndicator, sortIndicator } from './MarkdownTableSortUtils';
 
 export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvider, vscode.Disposable {
 
+	private registered = false;
+
 	private disposables: vscode.Disposable[] = [];
 
 	private config: MarkdownTableFormatterSettings
@@ -22,18 +24,20 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 	}
 
 	dispose(): void {
+		this.registered = false;
 		this.disposables.map(d => d.dispose());
 		this.disposables = [];
 	}
 
 	public register(): void {
 		if (this.config.enableSort) {
+			this.registered = true;
 			this.config.markdownGrammarScopes.forEach((scope) => {
 				this.registerCodeLensForScope(scope);
 			});
 
 			this.disposables.push(
-				vscode.commands.registerTextEditorCommand('sortTable', this.sortCommand, this)
+				vscode.commands.registerTextEditorCommand('markdown-table-formatter.sortTable', this.sortCommand, this)
 			);
 
 			this.disposables.push(
@@ -112,7 +116,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 
 			return new vscode.CodeLens(table.range, {
 				title: `${indicator}`,
-				command: 'sortTable',
+				command: 'markdown-table-formatter.sortTable',
 				arguments: [table.id, header_index, direction]
 			});
 		});
@@ -149,7 +153,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 		}
 		const endDate = new Date().getTime();
 		this.reporter?.sendTelemetryEvent("function", {
-			name: "sortTable",
+			name: "markdown-table-formatter.sortTable",
 			table_id: table.id
 		}, {
 			timeTakenMilliseconds: endDate - startDate
@@ -203,6 +207,8 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 
 	// vscode.CodeLensProvider implementation
 	provideCodeLenses(document: vscode.TextDocument): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
+		if (!checkLanguage(document.languageId, this.config)) { return [] }
+
 		const startDate = new Date().getTime();
 		const fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
 		const tables: MarkdownTable[] = setExtensionTables(tablesIn(document, fullDocumentRange));

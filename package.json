@@ -37,9 +37,9 @@
     "contributes": {
         "commands": [
             {
-                "command": "markdown-table-formatter.sortTable",
+                "command": "markdown-table-formatter.enableForCurrentScope",
                 "category": "Markdown Table Formatter",
-                "title": "Sort table by header"
+                "title": "Enable for current language"
             },
             {
                 "command": "markdown-table-formatter.toggleDebug",

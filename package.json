@@ -26,7 +26,12 @@
         "Formatters"
     ],
     "activationEvents": [
-        "*"
+        "*",
+        "onCommand:markdown-table-formatter.enableForCurrentScope",
+        "onCommand:markdown-table-formatter.toggleDebug",
+        "onCommand:markdown-table-formatter.moveColumnRight",
+        "onCommand:markdown-table-formatter.moveColumnLeft",
+        "onCommand:markdown-table-formatter.sortTable"
     ],
     "main": "./dist/extension",
     "contributes": {

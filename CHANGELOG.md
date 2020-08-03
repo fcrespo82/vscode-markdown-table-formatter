@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+## [2.1.1] - 2020-08-02
+
+### Fixed
+- Command **Enable for current language** not found. [#30](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/30)
+- Command **Sort table by header** should not be visible in the command palette. [#30](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/30)
+
 ## [2.1.0] - 2020-07-16
 
 ### Added

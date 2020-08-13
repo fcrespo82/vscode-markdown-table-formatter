@@ -756,4 +756,15 @@ export const testTables: { id: number, input: string, expected: string, settings
 |----------|-------------------|
 | \`\` $\` \`\` | text before match |`
 	},
+	{
+		id: 30,
+		input: `\
+|a|
+|-|
+|a|`,
+		expected: `\
+| a |
+|---|
+| a |`
+	}
 ];

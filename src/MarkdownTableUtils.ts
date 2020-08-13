@@ -36,11 +36,10 @@ export const columnSizes = (header: string[], body: string[][]): number[] => {
 	// TODO: Improve settings loading
 	const config = MarkdownTableFormatterSettingsImpl.shared;
 	const preferredLineLength = <number>workspace.getConfiguration('editor').get('wordWrapColumn');
-	
 	const limitLastColumnWidth = config.limitLastColumnWidth
 	const padding = config.spacePadding
 	const keepFirstAndLast = config.keepFirstAndLastPipes
-	const otherColumnsSum = sumArray(columnSizes.slice(0, -1));
+	const otherColumnsSum = columnSizes.length === 1 ? 0 : sumArray(columnSizes.slice(0, -1));
 	const dividers = keepFirstAndLast ? columnSizes.length + 1 : columnSizes.length - 1
 	const allPadding = columnSizes.length * 2 * padding
 

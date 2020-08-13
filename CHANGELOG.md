@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+## [2.1.2] - 2020-08-13
+
+### Fixed
+- The extension was unable to format a table with one column. [#31](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/31)
+
 ## [2.1.1] - 2020-08-02
 
 ### Fixed

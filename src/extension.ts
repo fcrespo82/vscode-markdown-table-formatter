@@ -31,7 +31,8 @@ export function getTable(id: string): MarkdownTable | undefined {
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext): Promise<boolean> {
 	const config = MarkdownTableFormatterSettingsImpl.shared;
-	const reporter = new MTFReporter(context, config.telemetry);
+	// FIXME: Disabled telemetry until further test, generated 13 GB og data limit is 5GB
+	const reporter = new MTFReporter(context, false);
 
 	const markdownTableFormatterProvider = new MarkdownTableFormatterProvider(config, reporter);
 	const markdownTableCodeLensProvider = new MarkdownTableSortCodeLensProvider(config, reporter);

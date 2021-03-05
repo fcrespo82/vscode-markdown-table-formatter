@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+## [2.1.4] - 2021-03-05
+
+### Fixed
+- Correct ordering when a column only has numbers
+
 ## [2.1.3] - 2020-08-14
 
 ### Removed

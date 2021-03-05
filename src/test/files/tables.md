@@ -8,6 +8,12 @@
 |column a 1|column b 1|
 |column a 2|column b 2|
 
+|header a|numeric header|
+|------------|------------|
+|column a 1|1|
+|column a 2|10|
+|column a 3|2|
+
 ## Lorem ipsum
 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 |Topic|Status|Notes|

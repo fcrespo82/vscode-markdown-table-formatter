@@ -129,10 +129,16 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 				table.header[i] = cleanSortIndicator(header);
 			}
 		});
+
+		const canSortByNumber = table.body.every(l => parseFloat(l[headerIndex]))
+
 		switch (sortDirection) {
 			case MarkdownTableSortDirection.Asc:
 				table.body.sort((a: string[], b: string[]) => {
-					if (a[headerIndex].trim() === b[headerIndex].trim()) {
+					if (canSortByNumber) {
+						return (parseFloat(a[headerIndex]) < parseFloat(b[headerIndex])) ? -1 : 1;
+					}
+					else if (a[headerIndex].trim() === b[headerIndex].trim()) {
 						return 0;
 					}
 					else {
@@ -142,7 +148,10 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 				break;
 			case MarkdownTableSortDirection.Desc:
 				table.body.sort((a: string[], b: string[]) => {
-					if (a[headerIndex].trim() === b[headerIndex].trim()) {
+					if (canSortByNumber) {
+						return (parseFloat(a[headerIndex]) > parseFloat(b[headerIndex])) ? -1 : 1;
+					}
+					else if (a[headerIndex].trim() === b[headerIndex].trim()) {
 						return 0;
 					}
 					else {

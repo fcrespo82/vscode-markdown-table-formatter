@@ -8,7 +8,16 @@ A (not so) simple markdown plugin to format tables and other features.
 
 [Changelog](https://github.com/fcrespo82/vscode-markdown-table-formatter/blob/master/CHANGELOG.md)
 
-##  Features
+## Help needed
+First of all, thanks all users for the awesome community that was built here. I never ever imagined that this extension would be used by more than 47K users with 127K downloads.
+
+I need your help to ask the VSCode team a feature that will improve this extension. I want to be able to make more clear for users the columns to sort. To be able to do it I need some help from the community.
+
+If you would be so kind and [read this feature request](https://github.com/microsoft/vscode/issues/118391). After that, if you like it, help me up voting (+1/:thumbsup:) it for the VS Code team implement it.
+
+Thanks again for the support, bug reports and PRs!
+
+## Features
 - Format markdown tables
 - Sort tables
 - Organize columns moving it left/right

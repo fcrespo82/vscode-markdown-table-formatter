@@ -5,7 +5,7 @@ import { MarkdownTableDecorationProvider } from './decoration/MarkdownTableDecor
 import { MarkdownTableFormatterProvider } from './formatter/MarkdownTableFormatterProvider';
 import { MarkdownTable } from './MarkdownTable';
 import { MarkdownTableSortCodeLensProvider } from "./sorter/MarkdownTableSortCodeLensProvider";
-import { MTFReporter } from './telemetry/MTFReporter';
+// import { MTFReporter } from './telemetry/MTFReporter';
 import MarkdownTableFormatterSettingsImpl from './formatter/MarkdownTableFormatterSettingsImpl';
 
 let _extensionTables: MarkdownTable[];
@@ -31,12 +31,12 @@ export function getTable(id: string): MarkdownTable | undefined {
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext): Promise<boolean> {
 	const config = MarkdownTableFormatterSettingsImpl.shared;
-	// FIXME: Disabled telemetry until further test, generated 13 GB og data limit is 5GB
-	const reporter = new MTFReporter(context, false);
+	// FIXME: Disabled telemetry until further test, generated 13 GB of data limit is 5GB
+	// const reporter = new MTFReporter(context, false);
 
-	const markdownTableFormatterProvider = new MarkdownTableFormatterProvider(config, reporter);
-	const markdownTableCodeLensProvider = new MarkdownTableSortCodeLensProvider(config, reporter);
-	const markdownTableDecorationProvider = new MarkdownTableDecorationProvider(config, reporter);
+	const markdownTableFormatterProvider = new MarkdownTableFormatterProvider(config);
+	const markdownTableCodeLensProvider = new MarkdownTableSortCodeLensProvider(config);
+	const markdownTableDecorationProvider = new MarkdownTableDecorationProvider(config);
 
 	context.subscriptions.push(markdownTableFormatterProvider);
 	context.subscriptions.push(markdownTableCodeLensProvider);

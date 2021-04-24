@@ -52,7 +52,7 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 	private createDecorations(document: vscode.TextDocument): vscode.DecorationOptions[] {
 		const startDate = new Date().getTime();
 		const fullDocumentRange = document.validateRange(new vscode.Range(0, 0, document.lineCount + 1, 0));
-		const tables = tablesIn(document, fullDocumentRange);
+		const tables = tablesIn(document);
 		const fullDecoration: vscode.DecorationOptions[] = tables.map(t => {
 			return {
 				range: t.range,

@@ -40,7 +40,7 @@ suite('Extension Test Suite', () => {
 		test(`Should format correctly table ${pad(String(testTable.id), 2)} with ${testSettings}`, () => {
 			const uri = vscode.Uri.parse('test-table:' + i);
 			return vscode.workspace.openTextDocument(uri).then(doc => {
-				const tables = tablesIn(doc, doc.validateRange(new vscode.Range(0, 0, doc.lineCount + 1, 0)));
+				const tables = tablesIn(doc);
 				if (testSettings.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameColumnSize) {
 					const maxSize = discoverMaxColumnSizes(tables);
 					tables.forEach(table => {

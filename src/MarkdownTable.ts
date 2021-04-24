@@ -1,15 +1,14 @@
 import { Position, Range } from "vscode";
 import { addTailPipes, joinCells, splitCells, stripHeaderTailPipes } from "./formatter/MarkdownTableFormatterUtils";
 import { columnSizes } from "./MarkdownTableUtils";
+import { MarkdownTableSortDirection } from "./sorter/MarkdownTableSortDirection";
+import MarkdownTableSortOptions from "./sorter/MarkdownTableSortOptions";
 import md5 = require("md5");
-
-export interface XRegExpExecArray extends RegExpExecArray {
-	groups: any;
-}
+import XRegExp = require('xregexp');
+import { SortIndicator } from "./sorter/MTSortIndicator";
 
 export class MarkdownTable {
 	private _id: string;
-	private offset: number;
 	private start: Position;
 	private end: Position;
 	readonly header!: string[];
@@ -22,7 +21,6 @@ export class MarkdownTable {
 	private _columnSizes: number[] = [];
 
 	get id(): string {
-		// TODO: Improve
 		return this._id;
 	}
 
@@ -49,21 +47,23 @@ export class MarkdownTable {
 		return this.start.line;
 	}
 
-	constructor(offset: number, start: Position, end: Position, regexpArray: XRegExpExecArray) {
-		this.offset = offset;
+	constructor(start: Position, end: Position, regexpArray: XRegExp.ExecArray) {
 		this.start = start;
 		this.end = end;
 
 		this.range = new Range(this.start, this.end);
 
-		this.headerRange = new Range(this.start, new Position(this.start.line, regexpArray.groups.header.length));
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const groups = regexpArray.groups!
+
+		this.headerRange = new Range(this.start, new Position(this.start.line, groups.header.length));
 
 		let firstLine = this.start.line;
-		if (regexpArray.groups.header) {
-			this.header = splitCells(stripHeaderTailPipes(regexpArray.groups.header));
+		if (groups.header) {
+			this.header = splitCells(stripHeaderTailPipes(groups.header));
 			this.header.forEach((header, index) => {
 				const length = header.length;
-				const start = regexpArray.groups.header.indexOf(header);
+				const start = groups.header.indexOf(header);
 				if (!this.ranges.has(index)) {
 					this.ranges.set(index, []);
 				}
@@ -72,24 +72,16 @@ export class MarkdownTable {
 			firstLine += 1;
 		}
 
-		this.format = splitCells(stripHeaderTailPipes(regexpArray.groups.format));
-		// this.format.forEach((format, index) => {
-		// 	var length = format.length;
-		// 	var start = regexpArray.groups.format.indexOf(format);
-		// 	if (!this.ranges.has(index)) {
-		// 		this.ranges.set(index, []);
-		// 	}
-		// 	this.ranges.get(index)!.push(new Range(new Position(firstLine, start), new Position(firstLine, start + length)));
-		// });
+		this.format = splitCells(stripHeaderTailPipes(groups.format));
 		firstLine += 1;
 
-		this.body = regexpArray.groups.body.replace(/^\r?\n+|\r?\n+$/g, '').split(/\r?\n/).map((lineBody: string) => {
+		this.body = groups.body.replace(/^\r?\n+|\r?\n+$/g, '').split(/\r?\n/).map((lineBody: string) => {
 			return splitCells(stripHeaderTailPipes(lineBody));
 		});
 		this.body.forEach((line: string[], line_index) => {
 			line.forEach((h, index) => {
 				const length = h.length;
-				const start = regexpArray.groups.body.split(/\r?\n/)[line_index].indexOf(h);
+				const start = groups.body.split(/\r?\n/)[line_index].indexOf(h);
 				if (!this.ranges.has(index)) {
 					this.ranges.set(index, []);
 				}
@@ -98,16 +90,26 @@ export class MarkdownTable {
 			firstLine += 1;
 		});
 
-		if (regexpArray.groups.header) {
+		if (groups.header) {
 			this._columnSizes = columnSizes(this.header, this.body);
 		} else {
 			this._columnSizes = columnSizes(this.body[0], this.body);
 		}
 
-		const header = this.header.reduce((acc, val) => acc += val.trim(), "");
-		// FIXME: Improve
-		const body = this.body.length;//.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc += val.trim(), "");
-		this._id = md5(header + body);
+		this._id = md5(this.startLine.toString());
+	}
+
+	sortedByColumn = (): MarkdownTableSortOptions => {
+		const mapped = this.header.map((v, i) => {
+			let ind = MarkdownTableSortDirection.None
+			ind = v.indexOf(SortIndicator.ascending) >= 0 ? MarkdownTableSortDirection.Asc : ind
+			ind = v.indexOf(SortIndicator.descending) >= 0 ? MarkdownTableSortDirection.Desc : ind
+			return (ind !== MarkdownTableSortDirection.None) ? { header_index: i, sort_direction: ind } : { header_index: -1, sort_direction: ind };
+		})
+		const filtered = mapped.filter((v) => {
+			return v.header_index >= 0
+		})
+		return filtered[0];
 	}
 
 	updateSizes = (): void => {

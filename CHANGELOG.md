@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+### Changed
+- Better code structure
+
+### Fixed
+- Dependency vulnerabilities
+
 ## [2.1.4] - 2021-03-05
 
 ### Fixed
@@ -34,7 +40,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Format tables even if lines have less columns than header. [#24](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/24)
 
 ### Fixed
-- Case where backticks were not interpreted corectly if near a pipe sign '|'. [#26](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/26)
+- Case where backtick were not interpreted correctly if near a pipe sign '|'. [#26](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/26)
 - Some cases the extension got stuck when in files not related to markdown. [#27](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/27)
 
 ## [2.0.5] - 2020-07-09
@@ -43,7 +49,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Changed keybindings for "Move column left/right" to `ctrl+m left` and `ctrl+m right` the old ones conflicted with the built-in fix [#25](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/25)
 
 ### Fixed
-- Fix a case where multiple backticks were not escaped correctly [#26](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/26)
+- Fix a case where multiple backtick were not escaped correctly [#26](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/26)
 
 
 ## [2.0.4] - 2020-04-10
@@ -108,7 +114,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [1.3.2] - 2018-07-19
 
 ### Fixed
-- Don't treat \`\|\` (backticked pipes) as a table cell
+- Don't treat \`\|\` (backtick pipes) as a table cell
 
 
 ## [1.3.1] - 2018-07-19
@@ -128,7 +134,7 @@ The extensions was rewritten to take advantage of the Formatter provider VSCode 
     - Now registers a formatter provider for entire document and for selection
 
 ### Fixed
-- Sometimes, when formatting, a line was wrongly NEWed.
+- Sometimes, when formatting, a line was wrongly inserted.
 
 
 ## [1.2.1] - 2018-05-02

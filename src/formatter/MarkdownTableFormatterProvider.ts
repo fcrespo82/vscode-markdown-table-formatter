@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
-import { getExtensionTables, setExtensionTables } from '../extension';
 import { MarkdownTable } from '../MarkdownTable';
 import { checkLanguage, discoverMaxColumnSizes, discoverMaxTableSizes, padding, swidth, tablesIn } from '../MarkdownTableUtils';
+import { MarkdownTableSortDirection } from '../sorter/MarkdownTableSortDirection';
+import { getActiveSort, setActiveSort } from '../sorter/MarkdownTableSortUtils';
 import { Reporter } from '../telemetry/Reporter';
 import MarkdownTableFormatterSettings, { MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes } from './MarkdownTableFormatterSettings';
 import MarkdownTableFormatterSettingsImpl from './MarkdownTableFormatterSettingsImpl';
@@ -37,18 +38,6 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			})
 
 			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.enableForCurrentScope", this.enableForCurrentScopeCommand, this));
-
-			this.disposables.push(vscode.workspace.onDidOpenTextDocument(document => {
-				if (!checkLanguage(document.languageId, this.config)) { return }
-				const fullDocumentRange = new vscode.Range(0, 0, document.lineCount + 1, 0);
-				setExtensionTables(tablesIn(document, fullDocumentRange));
-			}));
-
-			this.disposables.push(vscode.workspace.onDidChangeTextDocument(change => {
-				if (!checkLanguage(change.document.languageId, this.config)) { return }
-				const fullDocumentRange = new vscode.Range(0, 0, change.document.lineCount + 1, 0);
-				setExtensionTables(tablesIn(change.document, fullDocumentRange));
-			}));
 
 			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnRight", this.moveColumnRightCommand, this));
 			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnLeft", this.moveColumnLeftCommand, this));
@@ -95,7 +84,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			vscode.window.showWarningMessage(`Markdown table formatter is not enabled for '${document.languageId}' language!`);
 			return edits;
 		}
-		const tables: MarkdownTable[] = setExtensionTables(tablesIn(document, range));
+		const tables: MarkdownTable[] = tablesIn(document, range);
 
 		// Fix sizes of empty row tables
 		tables.forEach(table => {
@@ -276,17 +265,27 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	private moveColumnRightCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
 		const startDate = new Date().getTime();
 		if (!checkLanguage(editor.document.languageId, this.config)) { return }
-		const tables = getExtensionTables(editor.selection);
-		const header = this.getColumnIndexFromRange(tables[0], editor.selection);
+		const tables = tablesIn(editor.document)
+		const tableSelected = tables.find(t => {
+			return t.range.contains(editor.selection);
+		})
+		if (!tableSelected) { return }
+
+		const header = this.getColumnIndexFromRange(tableSelected, editor.selection);
 		if (header < 0) {
 			return;
 		}
 		const leftHeaderIndex = header;
-		if ((leftHeaderIndex + 1) >= tables[0].columns) {
+		if ((leftHeaderIndex + 1) >= tableSelected.columns) {
 			return;
 		}
 		const rightHeaderIndex = header + 1;
-		const table = this.flipColumn(tables[0], leftHeaderIndex, rightHeaderIndex);
+		const table = this.flipColumn(tableSelected, leftHeaderIndex, rightHeaderIndex);
+
+		const active_sort = getActiveSort(editor.document, table.id)
+		const sort_direction = active_sort?.sort_direction ? active_sort?.sort_direction : MarkdownTableSortDirection.None
+		setActiveSort(editor.document, table.id, active_sort?.header_index === header ? rightHeaderIndex : leftHeaderIndex, sort_direction)
+
 		edit.replace(table.range, table.notFormatted());
 		const endDate = new Date().getTime();
 		this.reporter?.sendTelemetryEvent("command", {
@@ -310,8 +309,13 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	private moveColumnLeftCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
 		const startDate = new Date().getTime();
 		if (!checkLanguage(editor.document.languageId, this.config)) { return }
-		const tables = getExtensionTables(editor.selection);
-		const header = this.getColumnIndexFromRange(tables[0], editor.selection);
+		const tables = tablesIn(editor.document)
+		const tableSelected = tables.find(t => {
+			return t.range.contains(editor.selection);
+		})
+		if (!tableSelected) { return }
+
+		const header = this.getColumnIndexFromRange(tableSelected, editor.selection);
 		if (header < 0) {
 			return;
 		}
@@ -320,7 +324,12 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			return;
 		}
 		const rightHeaderIndex = header;
-		const table = this.flipColumn(tables[0], leftHeaderIndex, rightHeaderIndex);
+		const table = this.flipColumn(tableSelected, leftHeaderIndex, rightHeaderIndex);
+
+		const active_sort = getActiveSort(editor.document, table.id)
+		const sort_direction = active_sort?.sort_direction ? active_sort?.sort_direction : MarkdownTableSortDirection.None
+		setActiveSort(editor.document, table.id, active_sort?.header_index === header ? leftHeaderIndex : rightHeaderIndex, sort_direction)
+
 		edit.replace(table.range, table.notFormatted());
 		const endDate = new Date().getTime();
 		this.reporter?.sendTelemetryEvent("command", {

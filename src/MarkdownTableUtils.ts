@@ -1,6 +1,6 @@
 import { Range, TextDocument, workspace } from 'vscode';
 import MarkdownTableFormatterSettingsImpl from './formatter/MarkdownTableFormatterSettingsImpl';
-import { MarkdownTable, XRegExpExecArray } from './MarkdownTable';
+import { MarkdownTable } from './MarkdownTable';
 import { tableRegex } from './MarkdownTableRegex';
 import wcswidth = require('wcwidth');
 import XRegExp = require('xregexp');
@@ -116,7 +116,10 @@ export const pad = (text: string, columns: number): string => {
 	return (' '.repeat(columns) + text).slice(-columns);
 };
 
-export const tablesIn = (document: TextDocument, range: Range): MarkdownTable[] => {
+export const tablesIn = (document: TextDocument, range?: Range): MarkdownTable[] => {
+	if (!range) {
+		range = new Range(0, 0, document.lineCount + 1, 0);
+	}
 	range = document.validateRange(range);
 	const items: MarkdownTable[] = [];
 
@@ -129,7 +132,7 @@ export const tablesIn = (document: TextDocument, range: Range): MarkdownTable[] 
 		const start = document.positionAt(offset + match.index);
 		const text = match[0].replace(/^\n+|\n+$/g, '');
 		const end = document.positionAt(offset + match.index + text.length);
-		const table = new MarkdownTable(offset, start, end, match as XRegExpExecArray);
+		const table = new MarkdownTable(start, end, match);
 		items.push(table);
 	}
 	return items;

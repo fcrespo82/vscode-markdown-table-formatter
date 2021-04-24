@@ -26,12 +26,12 @@
         "Formatters"
     ],
     "activationEvents": [
-        "*",
         "onCommand:markdown-table-formatter.enableForCurrentScope",
         "onCommand:markdown-table-formatter.toggleDebug",
         "onCommand:markdown-table-formatter.moveColumnRight",
         "onCommand:markdown-table-formatter.moveColumnLeft",
-        "onCommand:markdown-table-formatter.sortTable"
+        "onCommand:markdown-table-formatter.sortTable",
+        "onStartupFinished"
     ],
     "main": "./dist/extension",
     "contributes": {
@@ -198,7 +198,7 @@
         "@types/xregexp": "^4.3.0",
         "@typescript-eslint/eslint-plugin": "^3.6.1",
         "@typescript-eslint/parser": "^3.6.1",
-        "eslint": "^7.4.0",
+        "eslint": "^7.15.0",
         "mocha": "^8.0.1",
         "ts-loader": "^6.2.1",
         "typescript": "^3.7.2",

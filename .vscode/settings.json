@@ -15,5 +15,8 @@
         "statusBar.foreground": "#15202b",
         "activityBar.activeBackground": "#5afd81"
     },
-    "peacock.color": "#27fd5b"
+    "peacock.color": "#27fd5b",
+    "cSpell.words": [
+        "wcwidth"
+    ]
 }

@@ -10,6 +10,5 @@ tslint.json
 node_modules
 out/
 src/
-tsconfig.json
 webpack.config.js
 resources/*.gvdesign

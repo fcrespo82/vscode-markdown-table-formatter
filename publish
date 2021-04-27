@@ -17,7 +17,7 @@ options = {"M": "major", "I": "minor",
            "P": "patch", "G": "git push", "C": "cancel"}
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--run")
+parser.add_argument("--run", action="store_true")
 
 args = parser.parse_args()
 
@@ -48,6 +48,6 @@ if option != "G":
         f"New version will be: {new_version}, continue? [Y/n] ").upper()
     if publish == "N":
         exit(0)
-    os.system(f"{echo}vsce publish {options[option]}")
+    os.system(f"{echo}vsce publish --yarn {options[option]}")
 os.system(f"{echo}git push")
 os.system(f"{echo}git push --tags")

@@ -16,9 +16,9 @@
                 "${workspaceFolder}/src/test/files/tables3.md"
             ],
             "outFiles": [
-                "${workspaceFolder}/dist/**/*.js"
+                "${workspaceFolder}/out/**/*.js"
             ],
-            "preLaunchTask": "npm: webpack"
+            "preLaunchTask": "npm: watch"
         },
         {
             "name": "Extension Tests",

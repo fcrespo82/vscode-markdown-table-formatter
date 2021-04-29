@@ -8,7 +8,9 @@ tsconfig.json
 vsc-extension-quickstart.md
 tslint.json
 node_modules
-out/
 src/
 webpack.config.js
 resources/*.gvdesign
+.github
+publish
+.eslintignore

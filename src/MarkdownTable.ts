@@ -117,17 +117,17 @@ export class MarkdownTable {
 	}
 
 	notFormatted = (): string => {
-		let joined = [this.format, ...this.body].map(joinCells).map(addTailPipes);
+		let joined = [this.format, ...this.body].map(joinCells);
 		if (this.header) {
-			joined = [this.header, this.format, ...this.body].map(joinCells).map(addTailPipes);
+			joined = [this.header, this.format, ...this.body].map(joinCells);
 		}
 		return joined.join('\n');
 	};
 
 	notFormattedDefault = (): string => {
-		let joined = [this.format, ...this.defaultBody].map(joinCells).map(addTailPipes);
+		let joined = [this.format, ...this.defaultBody].map(joinCells);
 		if (this.header) {
-			joined = [this.header, this.format, ...this.defaultBody].map(joinCells).map(addTailPipes);
+			joined = [this.header, this.format, ...this.defaultBody].map(joinCells);
 		}
 		return joined.join('\n');
 	};

@@ -98,7 +98,7 @@
                 },
                 "markdown-table-formatter.keepFirstAndLastPipes": {
                     "title": "Keep first and last pipes",
-                    "description": "Keep first and last pipes \"|\" in table formatting. Tables are easier to format when pipes are kept",
+                    "description": "Keep first and last pipes \"|\" in table formatting.",
                     "type": "boolean",
                     "default": true
                 },
@@ -142,8 +142,8 @@
                     "default": "Disabled"
                 },
                 "markdown-table-formatter.delimiterRowPadding": {
-                    "title": "Keep columns sizes the same",
-                    "description": "Calculates the column sizes based on all tables on the document.",
+                    "title": "Delimiter row padding",
+                    "description": "Changes how the delimiter row is presented.",
                     "type": "string",
                     "enum": [
                         "None",
@@ -162,12 +162,6 @@
                 "markdown-table-formatter.allowEmptyLines": {
                     "title": "Allow empty lines",
                     "description": "Format tables even if lines have less columns than header.",
-                    "type": "boolean",
-                    "default": true
-                },
-                "markdown-table-formatter.telemetry": {
-                    "title": "Send usage statistics",
-                    "description": "Send usage statistics.",
                     "type": "boolean",
                     "default": true
                 }

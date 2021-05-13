@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
-## [2.1.7] - 2021-05-13
+## [2.1.8] - 2021-05-13
 
 ### Fixed
 - Pipes missing after formatting (Issue #40)

@@ -8,19 +8,6 @@ A (not so) simple markdown plugin to format tables and other table related featu
 
 [Changelog](https://github.com/fcrespo82/vscode-markdown-table-formatter/blob/master/CHANGELOG.md)
 
-## Help needed
-First of all, thanks all users for the awesome community that was built here. I never imagined that this extension would be used by more than 48K users with 160K downloads.
-
-I need your help to ask the VSCode team a feature that will improve this extension. I want to be able to make more clear for users the columns to sort. To be able to do it I need some help from the community.
-
-If you would be so kind and [read this feature request](https://github.com/microsoft/vscode/issues/118391). After that, if you like it, help me up voting (+1/:thumbsup:) it for the VS Code team implement it.
-
-Thanks again for the support, bug reports and PRs!
-
-### Donating
-
-If you like this extension, please consider [donating](https://www.paypal.com/donate?hosted_button_id=73E3UAJNR2VM4) and/or take a moment to [write a review](https://marketplace.visualstudio.com/items?itemName=fcrespo82.markdown-table-formatter&ssr=false#review-details) and share on [Facebook](https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fmarketplace.visualstudio.com%2Fitems%3FitemName%3Dfcrespo82.markdown-table-formatter%23overview) or [Twitter](https://twitter.com/intent/tweet?text=Just%20discovered%20this%20extension%20on%20the%20%23VSMarketplace&url=https%3A%2F%2Fmarketplace.visualstudio.com%2Fitems%3FitemName%3Dfcrespo82.markdown-table-formatter%23overview)
-
 ## Features
 - Format markdown tables
 - Sort tables
@@ -48,3 +35,13 @@ Uses VSCode `Format Document` and `Format Selection`
 ### Enable Markdown Table Formatter for the current file type
 
 To enable Markdown Table Formatter for your current file type: put your cursor in the file, open the Command Palette <kbd>^ (CONTROL)</kbd>+<kbd>⇧ (SHIFT)</kbd>+<kbd>P</kbd> (<kbd>⌘ (CMD)</kbd>+<kbd>⇧ (SHIFT)</kbd>+<kbd>P</kbd> for mac), and run the `Markdown Table Formatter: Enable for current language` command. This will add language grammar from current editor to the list of languages in the settings for the Markdown Table Formatter package. You can edit this setting manually later if you want to.
+
+## Thanks
+
+Thanks all users for the awesome community that was built here. I never imagined that this extension would be used by more than 48K users with 160K downloads.
+
+Thanks for the support, bug reports and PRs!
+
+## Donating
+
+If you like this extension, please consider [donating](https://www.paypal.com/donate?hosted_button_id=73E3UAJNR2VM4) and/or take a moment to [write a review](https://marketplace.visualstudio.com/items?itemName=fcrespo82.markdown-table-formatter&ssr=false#review-details) and share on [Facebook](https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fmarketplace.visualstudio.com%2Fitems%3FitemName%3Dfcrespo82.markdown-table-formatter%23overview) or [Twitter](https://twitter.com/intent/tweet?text=Just%20discovered%20this%20extension%20on%20the%20%23VSMarketplace&url=https%3A%2F%2Fmarketplace.visualstudio.com%2Fitems%3FitemName%3Dfcrespo82.markdown-table-formatter%23overview)

@@ -19,6 +19,7 @@ export class MarkdownTable {
 	readonly range: Range;
 	readonly headerRange: Range;
 	private _columnSizes: number[] = [];
+	private rawContainPipes = false
 
 	get id(): string {
 		return this._id;
@@ -55,12 +56,17 @@ export class MarkdownTable {
 
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const groups = regexpArray.groups!
+		this.rawContainPipes = [groups.header, groups.format, ...groups.body.split('\n').filter(x=>{return x.trim().length > 0})].every(v => { 
+			return v.search("^\\s*\\|") >= 0 && v.search("\\|\\s*\\r?\\n?$") > 0;
+		});
 
 		this.headerRange = new Range(this.start, new Position(this.start.line, groups.header.length));
 
 		let firstLine = this.start.line;
 		if (groups.header) {
 			this.header = splitCells(stripHeaderTailPipes(groups.header));
+			this.header = this.header.map(x => { return x.replace('\n', '') });
+			// this.header = this.header.filter(x => { return x.trim().length > 0 })
 			this.header.forEach((header, index) => {
 				const length = header.length;
 				const start = groups.header.indexOf(header);
@@ -73,10 +79,16 @@ export class MarkdownTable {
 		}
 
 		this.format = splitCells(stripHeaderTailPipes(groups.format));
+		this.format = this.format.map(x => { return x.replace('\n', '') });
+		// this.format = this.format.filter(x => { return x.trim().length > 0 })
+
 		firstLine += 1;
 
 		this.body = groups.body.replace(/^\r?\n+|\r?\n+$/g, '').split(/\r?\n/).map((lineBody: string) => {
-			return splitCells(stripHeaderTailPipes(lineBody));
+			let result = splitCells(stripHeaderTailPipes(lineBody));
+			result = result.map(x => { return x.replace('\n', '') });
+			// result = result.filter(x => { return x.trim().length > 0 })
+			return result
 		});
 		this.body.forEach((line: string[], line_index) => {
 			line.forEach((h, index) => {
@@ -117,17 +129,10 @@ export class MarkdownTable {
 	}
 
 	notFormatted = (): string => {
-		let joined = [this.format, ...this.body].map(joinCells);
+		const addTailPipesIfNeeded = this.rawContainPipes ? addTailPipes : (x: string) => x;
+		let joined = [this.format, ...this.body].map(joinCells).map(addTailPipesIfNeeded);
 		if (this.header) {
-			joined = [this.header, this.format, ...this.body].map(joinCells);
-		}
-		return joined.join('\n');
-	};
-
-	notFormattedDefault = (): string => {
-		let joined = [this.format, ...this.defaultBody].map(joinCells);
-		if (this.header) {
-			joined = [this.header, this.format, ...this.defaultBody].map(joinCells);
+			joined = [this.header, this.format, ...this.body].map(joinCells).map(addTailPipesIfNeeded);
 		}
 		return joined.join('\n');
 	};

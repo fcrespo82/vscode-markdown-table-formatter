@@ -198,6 +198,7 @@
         "mocha": "^8.0.1",
         "ts-loader": "^6.2.1",
         "typescript": "^3.7.2",
+        "vsce": "^1.93.0",
         "vscode-test": "^1.4.0"
     }
 }

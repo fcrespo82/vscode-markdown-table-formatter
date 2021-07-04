@@ -426,12 +426,12 @@ export const testTables: { id: number, input: string, expected: string, settings
 		input: `\
 | a        | b | c |
 |:---------|:--|:--|
-| fdasdfas | x \`|\` y | z |`
+| fdasdfas | x \`\\|\` y | z |`
 		,
 		expected: `\
-| a        | b       | c |
-|:---------|:--------|:--|
-| fdasdfas | x \`|\` y | z |`
+| a        | b        | c |
+|:---------|:---------|:--|
+| fdasdfas | x \`\\|\` y | z |`
 	},
 	{
 		id: 20,
@@ -469,7 +469,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 |Equal|\`aisb\`|\`a==b\`|
 |NotEqual|\`anotb\`|\`a!=b\`|
 |And|\`a&&b\`|\`a&&b\`|
-|Or|\`a||b\`|\`a|b\`|
+|Or|\`a\\|\\|b\`|\`a\\|b\`|
 |Exponentiate|\`apowb\`|\`pow(a,b)\`|
 |Modulo|\`a%b\`|\`mod(a,b)\`|
 |Minimum|\`aminb\`|\`min(a,b)\`|
@@ -513,7 +513,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 | Equal             | \`aisb\`           | \`a==b\`              |
 | NotEqual          | \`anotb\`          | \`a!=b\`              |
 | And               | \`a&&b\`           | \`a&&b\`              |
-| Or                | \`a||b\`           | \`a|b\`               |
+| Or                | \`a\\|\\|b\`         | \`a\\|b\`              |
 | Exponentiate      | \`apowb\`          | \`pow(a,b)\`          |
 | Modulo            | \`a%b\`            | \`mod(a,b)\`          |
 | Minimum           | \`aminb\`          | \`min(a,b)\`          |
@@ -761,6 +761,6 @@ export const testTables: { id: number, input: string, expected: string, settings
 |--------|----------------------------------|
 | "      | quote                            |
 | «      | left-pointing double angle quote |
-| \`     | backtick                         |`
+| \`      | backtick                         |`
 	}
 ];

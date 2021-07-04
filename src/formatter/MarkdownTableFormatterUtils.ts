@@ -18,50 +18,13 @@ export const stripHeaderTailPipes = (line: string | undefined): string => {
 
 export const splitCells = (str: string): string[] => {
     const items: string[] = [];
-    let nested = false;
-    let buffer = '';
-    let nestedDepth = 0;
+    let buffer = "";
     for (let i = 0; i <= str.length; i++) {
-        if ((str[i] === '|' && !nested) || i === str.length) {
+        if (((str[i] === "|") && (str[i-1] !== "\\")) || i === str.length) {
             if (buffer.length >= 0) {
                 items.push(buffer);
-                buffer = '';
+                buffer = "";
                 continue;
-            }
-        } else if (nested && str[i] === '`') {
-            buffer += str[i];
-            let nestedCount = 1
-            for (let j = i + 1; j <= str.length - i; j++) {
-                if (str[j] === '`') {
-                    nestedCount += 1;
-                    i++
-                    buffer += str[i]
-                } else {
-                    break
-                }
-            }
-            if (nestedDepth === nestedCount) {
-                nestedDepth = 0
-                nested = false
-            }
-        } else if (!nested && str[i] === '`') {
-            buffer += str[i];
-
-            let nestedCount = 1
-            for (let j = i + 1; j <= str.length - i; j++) {
-                if (str[j] === '`') {
-                    nestedCount += 1;
-                    i++
-                    buffer += str[i]
-                } else {
-                    break
-                }
-            }
-            if (nestedCount > nestedDepth) {
-                nestedDepth = nestedCount
-            }
-            if (str[i + 1] !== '`') {
-                nested = true;
             }
         } else {
             buffer += str[i];
@@ -77,6 +40,5 @@ export const fixJustification = (cell: string): string => {
     }
     const first = trimmed[0];
     const last = trimmed[trimmed.length - 1];
-    const ends = (first || ':') + (last || '-');
-    return ends;
+    return (first || ':') + (last || '-');
 };

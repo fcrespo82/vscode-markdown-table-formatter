@@ -40,7 +40,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			})
 
 			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.enableForCurrentScope", this.enableForCurrentScopeCommand, this));
-
+			
 			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnRight", this.moveColumnRightCommand, this));
 			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnLeft", this.moveColumnLeftCommand, this));
 
@@ -85,26 +85,30 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			vscode.window.showWarningMessage(`Markdown table formatter is not enabled for '${document.languageId}' language!`);
 			return edits;
 		}
-		const tables: MarkdownTable[] = tablesIn(document, range);
+		let tables: MarkdownTable[] = tablesIn(document, range);
+
+		tables = tables.filter(table => this.checkColumnsPerLine(table))
 
 		// Fix sizes of empty row tables
 		tables.forEach(table => {
-			table.body.forEach((line, i) => {
-				if (table.header.length !== line.length) {
+			if (this.checkColumnsPerLine(table)) {
+				table.body.forEach((line, i) => {
+					if (table.header.length !== line.length) {
+						if (this.config.allowEmptyRows) {
+							const lineFixed = line.concat(Array(table.header.length - line.length).fill(""))
+							table.body[i] = lineFixed
+						}
+					}
+				});
+
+				if (table.header.length !== table.format.length) {
 					if (this.config.allowEmptyRows) {
-						const lineFixed = line.concat(Array(table.header.length - line.length).fill(""))
-						table.body[i] = lineFixed
+						table.format = table.format.concat(Array(table.header.length - table.format.length).fill("-"))
 					}
 				}
-			});
 
-			if (table.header.length !== table.format.length) {
-				if (this.config.allowEmptyRows) {
-					table.format = table.format.concat(Array(table.header.length - table.format.length).fill("-"))
-				}
+				table.updateSizes();
 			}
-
-			table.updateSizes();
 		});
 
 		if (this.config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameColumnSize) {
@@ -112,7 +116,8 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			tables.forEach(table => {
 				table.columnSizes = maxSize;
 			});
-		} if (this.config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameTableSize) {
+		}
+		if (this.config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameTableSize) {
 			const tableSizes = discoverMaxTableSizes(tables, this.config.spacePadding!);
 			tables.forEach((table, i) => {
 				table.columnSizes = tableSizes[i];
@@ -167,19 +172,6 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 	private formatTable(table: MarkdownTable, settings: MarkdownTableFormatterSettings): string {
 		const startDate = new Date().getTime();
-		table.body.forEach((line, i) => {
-			if (table.header.length !== line.length) {
-				vscode.window.showErrorMessage(`Table at line ${table.startLine + 1} has a line with different column number as the header. | Header columns: ${table.header.length} | Body at line ${table.startLine + i + 3} columns: ${line.length}`)
-				return table.notFormatted()
-
-			}
-		});
-
-		if (table.header.length !== table.format.length) {
-			vscode.window.showErrorMessage(`Table at line ${table.startLine + 1} has a line with different column number as the header. | Header columns: ${table.header.length} | Format line columns: ${table.format.length}`)
-			return table.notFormatted()
-
-		}
 
 		const addTailPipesIfNeeded = settings.keepFirstAndLastPipes
 			? addTailPipes
@@ -261,7 +253,38 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		return formatted.join('\n');
 	}
 
-	// vscode.Commands
+	private checkColumnsPerLine(table: MarkdownTable): boolean {
+		if (table.header.length !== table.format.length) {
+			vscode.window.showErrorMessage(`Table at line ${table.startLine + 1} has a line with different column number as the header.`, // - Header columns: ${table.header.length} - Format line columns: ${table.format.length}`,
+				"Focus"
+			).then(choice => {
+				if (choice === "Focus") {
+					vscode.window.activeTextEditor?.revealRange(table.range)
+					const s = new vscode.Selection(table.startLine + 1, 0, table.startLine + 2, 0)
+					vscode.window.activeTextEditor!.selection = s
+				}
+			})
+			return false
+		}
+
+		table.body.forEach((line, i) => {
+			if (table.header.length !== line.length) {
+				vscode.window.showErrorMessage(`Table at line ${table.startLine + 1} has a line with different column number as the header, please check for unescaped pipes '|'.`, // - Header columns: ${table.header.length} - Body at line ${table.startLine + i + 3} columns: ${line.length}`,
+					"Focus"
+				).then(choice => {
+					if (choice === "Focus") {
+						vscode.window.activeTextEditor?.revealRange(table.range)
+						const s = new vscode.Selection(table.startLine + i + 2, 0, table.startLine + i + 3, 0)
+						vscode.window.activeTextEditor!.selection = s
+					}
+				})
+				return false
+			}
+		});
+
+		return true
+	}
+
 	// vscode.Commands
 	private moveColumnRightCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
 		const startDate = new Date().getTime();

@@ -18,7 +18,8 @@
             "outFiles": [
                 "${workspaceFolder}/out/**/*.js"
             ],
-            "preLaunchTask": "npm: esbuild"
+            "preLaunchTask": "npm: esbuild",
+            "smartStep": true
         },
         {
             "name": "Extension Tests",

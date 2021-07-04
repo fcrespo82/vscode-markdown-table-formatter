@@ -25,15 +25,17 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 	dispose(): void {
 		this.registered = false;
-		this.disposables.map(d => d.dispose());
+		this.disposables.forEach(d => d.dispose());
 		this.disposables = [];
 	}
 
 	public register(): void {
-		this.config = MarkdownTableFormatterSettingsImpl.shared;
+		if (!this.config) {
+			this.config = MarkdownTableFormatterSettingsImpl.shared;
+		}
 		if (this.config.enable) {
 			this.registered = true;
-			this.config.markdownGrammarScopes.forEach((scope) => {
+			this.config.markdownGrammarScopes?.forEach((scope) => {
 				this.registerFormatterForScope(scope);
 			})
 
@@ -76,8 +78,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		return response;
 	}
 
-	private formatDocument(document: vscode.TextDocument, range: vscode.Range): vscode.TextEdit[] {
-		const config = MarkdownTableFormatterSettingsImpl.shared;
+	public formatDocument(document: vscode.TextDocument, range: vscode.Range): vscode.TextEdit[] {
 		const edits: vscode.TextEdit[] = [];
 		// This check is in case some grammar is removed and VSCode is not reloaded yet
 		if (!checkLanguage(document.languageId, this.config)) {
@@ -90,7 +91,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		tables.forEach(table => {
 			table.body.forEach((line, i) => {
 				if (table.header.length !== line.length) {
-					if (config.allowEmptyRows) {
+					if (this.config.allowEmptyRows) {
 						const lineFixed = line.concat(Array(table.header.length - line.length).fill(""))
 						table.body[i] = lineFixed
 					}
@@ -98,7 +99,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			});
 
 			if (table.header.length !== table.format.length) {
-				if (config.allowEmptyRows) {
+				if (this.config.allowEmptyRows) {
 					table.format = table.format.concat(Array(table.header.length - table.format.length).fill("-"))
 				}
 			}
@@ -106,19 +107,19 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			table.updateSizes();
 		});
 
-		if (config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameColumnSize) {
+		if (this.config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameColumnSize) {
 			const maxSize = discoverMaxColumnSizes(tables);
 			tables.forEach(table => {
 				table.columnSizes = maxSize;
 			});
-		} if (config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameTableSize) {
-			const tableSizes = discoverMaxTableSizes(tables, config.spacePadding);
+		} if (this.config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameTableSize) {
+			const tableSizes = discoverMaxTableSizes(tables, this.config.spacePadding!);
 			tables.forEach((table, i) => {
 				table.columnSizes = tableSizes[i];
 			});
 		}
 		tables.forEach(table => {
-			edits.push(new vscode.TextEdit(table.range, this.formatTable(table, config)));
+			edits.push(new vscode.TextEdit(table.range, this.formatTable(table, this.config)));
 		});
 		return edits;
 	}
@@ -150,7 +151,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		length = Math.max(length - swidth(text), 0);
 		let justifySwitch = fixJustification(justification);
 		if (justifySwitch === "--") {
-			justifySwitch = tableJustification[settings.defaultTableJustification];
+			justifySwitch = tableJustification[settings.defaultTableJustification!];
 		}
 		switch (justifySwitch) {
 			case '::':
@@ -164,7 +165,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		}
 	}
 
-	public formatTable(table: MarkdownTable, settings: MarkdownTableFormatterSettings): string {
+	private formatTable(table: MarkdownTable, settings: MarkdownTableFormatterSettings): string {
 		const startDate = new Date().getTime();
 		table.body.forEach((line, i) => {
 			if (table.header.length !== line.length) {
@@ -187,7 +188,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		let header: string[] = [];
 		if (table.header) {
 			header = this.formatLines([table.header], table.format, table.columnSizes, settings).map(line => {
-				const cellPadding = padding(settings.spacePadding);
+				const cellPadding = padding(settings.spacePadding!);
 				return line.map((cell) => {
 					return `${cellPadding}${cell}${cellPadding}`;
 				});
@@ -198,35 +199,35 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			return line.map((cell, i) => {
 				let line = "";
 				let [front, back] = fixJustification(cell);
-				if (settings.removeColonsIfSameAsDefault && (fixJustification(cell) === tableJustification[settings.defaultTableJustification])) {
+				if (settings.removeColonsIfSameAsDefault && (fixJustification(cell) === tableJustification[settings.defaultTableJustification!])) {
 					front = back = '-';
 				}
 
-				const spacePadding = padding(settings.spacePadding, ' ');
+				const spacePadding = padding(settings.spacePadding!, ' ');
 				switch (settings.delimiterRowPadding) {
 					case MarkdownTableFormatterDelimiterRowPadding.None:
-						line = front + padding(table.columnSizes[i] + (settings.spacePadding * 2) - 2, '-') + back;
+						line = front + padding(table.columnSizes[i] + (settings.spacePadding! * 2) - 2, '-') + back;
 						break;
 					case MarkdownTableFormatterDelimiterRowPadding.FollowSpacePadding:
 						line = `${spacePadding}${front}${padding(table.columnSizes[i] - 2, '-')}${table.columnSizes[i] === 1 ? '' : back}${spacePadding}`;
 						break;
 					case MarkdownTableFormatterDelimiterRowPadding.SingleApaceAlways:
-						line = ` ${front}${padding(table.columnSizes[i] + (settings.spacePadding * 2) - 4, '-')}${back} `;
+						line = ` ${front}${padding(table.columnSizes[i] + (settings.spacePadding! * 2) - 4, '-')}${back} `;
 						break;
 					case MarkdownTableFormatterDelimiterRowPadding.AlignmentMarker: {
 						let justifySwitch = fixJustification(cell);
 						if (justifySwitch === "--") {
-							justifySwitch = tableJustification[settings.defaultTableJustification];
+							justifySwitch = tableJustification[settings.defaultTableJustification!];
 						}
 						switch (justifySwitch) {
 							case '::':
 								line = `${spacePadding}${front}${padding(table.columnSizes[i] - 2, '-')}${back}${spacePadding}`;
 								break;
 							case '-:':
-								line = `${spacePadding}${front}${padding(table.columnSizes[i] - 2 + settings.spacePadding, '-')}${back}`;
+								line = `${spacePadding}${front}${padding(table.columnSizes[i] - 2 + settings.spacePadding!, '-')}${back}`;
 								break;
 							case ':-':
-								line = `${front}${padding(table.columnSizes[i] - 2 + settings.spacePadding, '-')}${back}${spacePadding}`;
+								line = `${front}${padding(table.columnSizes[i] - 2 + settings.spacePadding!, '-')}${back}${spacePadding}`;
 								break;
 						}
 						break;
@@ -238,7 +239,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		}).map(joinCells).map(addTailPipesIfNeeded);
 
 		const body = this.formatLines(table.body, table.format, table.columnSizes, settings).map(line => {
-			const cellPadding = padding(settings.spacePadding);
+			const cellPadding = padding(settings.spacePadding!);
 			return line.map((cell) => {
 				return `${cellPadding}${cell}${cellPadding}`;
 			});
@@ -298,8 +299,8 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	// vscode.Commands
 	private enableForCurrentScopeCommand = (editor: vscode.TextEditor) => {
 		const scopes = this.config.markdownGrammarScopes;
-		if (!scopes.includes(editor.document.languageId)) {
-			scopes.push(editor.document.languageId);
+		if (!scopes?.includes(editor.document.languageId)) {
+			scopes?.push(editor.document.languageId);
 			vscode.workspace.getConfiguration('markdown-table-formatter').update("markdownGrammarScopes", scopes, true);
 			this.registerFormatterForScope(editor.document.languageId);
 			vscode.window.showInformationMessage(`Markdown table formatter enabled for '${editor.document.languageId}' language!`);

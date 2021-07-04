@@ -10,18 +10,23 @@ export enum MarkdownTableFormatterGlobalColumnSizes {
 	SameTableSize = "Same Table Size"
 }
 
+export enum MarkdownTableFormatterDefaultTableJustification {
+	Left = "Left",
+	Right = "Right",
+	Center = "Center"
+}
+
 export default interface MarkdownTableFormatterSettings {
-	enable: boolean;
-	enableSort: boolean;
-	spacePadding: number;
-	keepFirstAndLastPipes: boolean;
-	defaultTableJustification: string;
-	removeColonsIfSameAsDefault: boolean;
-	markdownGrammarScopes: string[];
-	globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes;
-	delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding;
-	limitLastColumnWidth: boolean;
-	allowEmptyRows: boolean;
-	telemetry: boolean;
-	toString(): string;
+	enable?: boolean;
+	enableSort?: boolean;
+	spacePadding?: number;
+	keepFirstAndLastPipes?: boolean;
+	defaultTableJustification?: MarkdownTableFormatterDefaultTableJustification;
+	removeColonsIfSameAsDefault?: boolean;
+	markdownGrammarScopes?: string[];
+	globalColumnSizes?: MarkdownTableFormatterGlobalColumnSizes;
+	delimiterRowPadding?: MarkdownTableFormatterDelimiterRowPadding;
+	limitLastColumnWidth?: boolean;
+	allowEmptyRows?: boolean;
+	telemetry?: boolean;
 }

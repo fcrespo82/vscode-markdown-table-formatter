@@ -1,4 +1,4 @@
-import MarkdownTableFormatterSettings, { MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes } from "../../formatter/MarkdownTableFormatterSettings";
+import MarkdownTableFormatterSettings, { MarkdownTableFormatterDefaultTableJustification, MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes } from "../../formatter/MarkdownTableFormatterSettings";
 
 export const testTables: { id: number, input: string, expected: string, settings?: MarkdownTableFormatterSettings }[] = [
 	{
@@ -12,34 +12,26 @@ export const testTables: { id: number, input: string, expected: string, settings
 | --- | --- |
 | Baz | Qux |`,
 		settings: {
-			enable: true,
-			enableSort: true,
-			spacePadding: 1,
-			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Center',
-			markdownGrammarScopes: ['markdown'],
-			limitLastColumnWidth: false,
-			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.FollowSpacePadding,
-			allowEmptyRows: true,
-			telemetry: false
+			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.SingleApaceAlways
 		}
 	},
 	{
 		id: 1,
 		input: `\
 |Left header|Center header |Right header|Default header|
-|||||
+|:-|::|-:||
 |Line:1 Column:A|Line:1 Column:B|Line:1 Column:C|Line:1 Column:D|
 |Line:2 Col:A|Line:2 Col:B|Line:2 Col:C|Line:2 Col:D|
 |L:3 C:A|L:3 C:B|L:3 C:C|L:3 C:D|`,
 		expected: `\
-| Left header     | Center header   | Right header    | Default header  |
-|-----------------|-----------------|-----------------|-----------------|
+| Left header     |  Center header  |    Right header | Default header  |
+|:----------------|:---------------:|----------------:|-----------------|
 | Line:1 Column:A | Line:1 Column:B | Line:1 Column:C | Line:1 Column:D |
-| Line:2 Col:A    | Line:2 Col:B    | Line:2 Col:C    | Line:2 Col:D    |
-| L:3 C:A         | L:3 C:B         | L:3 C:C         | L:3 C:D         |`
+| Line:2 Col:A    |  Line:2 Col:B   |    Line:2 Col:C |  Line:2 Col:D   |
+| L:3 C:A         |     L:3 C:B     |         L:3 C:C |     L:3 C:D     |`,
+		settings: {
+			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Center
+		}
 	},
 	{
 		id: 2,
@@ -71,18 +63,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 | Line:2 Col:A    |  Line:2 Col:B   |    Line:2 Col:C |  Line:2 Col:D   |
 | L:3 C:A         |     L:3 C:B     |         L:3 C:C |     L:3 C:D     |`,
 		settings: {
-			enable: true,
-			enableSort: true,
-			spacePadding: 1,
-			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Center',
-			markdownGrammarScopes: ['markdown'],
-			limitLastColumnWidth: false,
-			removeColonsIfSameAsDefault: false,
-			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
-			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
-			allowEmptyRows: true,
-			telemetry: false
+			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Center,
 		}
 	},
 	{
@@ -104,7 +85,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Right',
+			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Right,
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
@@ -133,7 +114,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
+			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Left,
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: true,
@@ -162,7 +143,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Center',
+			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Center,
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: true,
@@ -191,7 +172,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Right',
+			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Right,
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: true,
@@ -220,7 +201,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			enableSort: true,
 			spacePadding: 2,
 			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
+			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Left,
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
@@ -249,7 +230,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			enableSort: true,
 			spacePadding: 2,
 			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Center',
+			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Center,
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
@@ -278,7 +259,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			enableSort: true,
 			spacePadding: 2,
 			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Right',
+			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Right,
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
@@ -307,7 +288,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: false,
-			defaultTableJustification: 'Left',
+			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Left,
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
@@ -336,7 +317,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: false,
-			defaultTableJustification: 'Center',
+			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Center,
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
@@ -365,7 +346,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: false,
-			defaultTableJustification: 'Right',
+			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Right,
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
@@ -604,7 +585,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
+			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Left,
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
@@ -639,7 +620,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
+			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Left,
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
@@ -674,7 +655,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			enableSort: true,
 			spacePadding: 2,
 			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
+			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Left,
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
@@ -713,7 +694,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			enableSort: true,
 			spacePadding: 1,
 			keepFirstAndLastPipes: true,
-			defaultTableJustification: 'Left',
+			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Left,
 			markdownGrammarScopes: ['markdown'],
 			limitLastColumnWidth: false,
 			removeColonsIfSameAsDefault: false,
@@ -766,5 +747,20 @@ export const testTables: { id: number, input: string, expected: string, settings
 | a |
 |---|
 | a |`
+	},
+	{
+		id: 31,
+		input: `\
+| symbol | name
+|-|-
+| " | quote
+| « | left-pointing double angle quote
+| \` | backtick`,
+		expected: `\
+| symbol | name                             |
+|--------|----------------------------------|
+| "      | quote                            |
+| «      | left-pointing double angle quote |
+| \`     | backtick                         |`
 	}
 ];

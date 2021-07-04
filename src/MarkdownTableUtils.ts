@@ -41,7 +41,7 @@ export const columnSizes = (header: string[], body: string[][]): number[] => {
 	const keepFirstAndLast = config.keepFirstAndLastPipes
 	const otherColumnsSum = columnSizes.length === 1 ? 0 : sumArray(columnSizes.slice(0, -1));
 	const dividers = keepFirstAndLast ? columnSizes.length + 1 : columnSizes.length - 1
-	const allPadding = columnSizes.length * 2 * padding
+	const allPadding = columnSizes.length * 2 * padding!
 
 	if (limitLastColumnWidth && (columnSizes.reduce((x, y) => x + y) + dividers + allPadding) > preferredLineLength) {
 		columnSizes[columnSizes.length - 1] = Math.max(
@@ -144,5 +144,5 @@ export const tablesIn = (document: TextDocument, range?: Range): MarkdownTable[]
  * @param config The config to check.
  */
 export const checkLanguage = (languageId: string, config: MarkdownTableFormatterSettings): boolean => {
-	return config.markdownGrammarScopes.includes(languageId)
+	return config.markdownGrammarScopes!.includes(languageId)
 }

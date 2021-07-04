@@ -1,5 +1,5 @@
 import { workspace, WorkspaceConfiguration } from "vscode";
-import MarkdownTableFormatterSettings, { MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes } from "./MarkdownTableFormatterSettings";
+import MarkdownTableFormatterSettings, { MarkdownTableFormatterDefaultTableJustification, MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes } from "./MarkdownTableFormatterSettings";
 
 export default class MarkdownTableFormatterSettingsImpl implements MarkdownTableFormatterSettings {
 
@@ -44,8 +44,8 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 	get keepFirstAndLastPipes(): boolean {
 		return this.config.get<boolean>('keepFirstAndLastPipes', true);
 	}
-	get defaultTableJustification(): string {
-		return this.config.get<string>('defaultTableJustification', 'Left');
+	get defaultTableJustification(): MarkdownTableFormatterDefaultTableJustification {
+		return this.config.get<MarkdownTableFormatterDefaultTableJustification>('defaultTableJustification', MarkdownTableFormatterDefaultTableJustification.Left);
 	}
 	get removeColonsIfSameAsDefault(): boolean {
 		return this.config.get<boolean>('removeColonsIfSameAsDefault', false);

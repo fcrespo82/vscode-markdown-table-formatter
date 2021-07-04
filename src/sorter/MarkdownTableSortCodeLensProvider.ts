@@ -24,14 +24,14 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 
 	dispose(): void {
 		this.registered = false;
-		this.disposables.map(d => d.dispose());
+		this.disposables.forEach(d => d.dispose());
 		this.disposables = [];
 	}
 
 	public register(): void {
 		if (this.config.enableSort) {
 			this.registered = true;
-			this.config.markdownGrammarScopes.forEach((scope) => {
+			this.config.markdownGrammarScopes?.forEach((scope) => {
 				this.registerCodeLensForScope(scope);
 			});
 

@@ -29,6 +29,10 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		this.disposables = [];
 	}
 
+	public setConfig(config: MarkdownTableFormatterSettings): void {
+		this.config = config
+	}
+
 	public register(): void {
 		if (!this.config) {
 			this.config = MarkdownTableFormatterSettingsImpl.shared;
@@ -40,7 +44,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			})
 
 			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.enableForCurrentScope", this.enableForCurrentScopeCommand, this));
-			
+
 			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnRight", this.moveColumnRightCommand, this));
 			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnLeft", this.moveColumnLeftCommand, this));
 
@@ -58,10 +62,10 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		table.format[rightIndex] = table.format[leftIndex];
 		table.format[leftIndex] = format;
 
-		table.body.forEach((_, i) => {
-			const body = table.body[i][rightIndex];
-			table.body[i][rightIndex] = table.body[i][leftIndex];
-			table.body[i][leftIndex] = body;
+		table.body?.forEach((_, i) => {
+			const body = table.body![i][rightIndex];
+			table.body![i][rightIndex] = table.body![i][leftIndex];
+			table.body![i][leftIndex] = body;
 		});
 		return table;
 	}
@@ -78,6 +82,12 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		return response;
 	}
 
+	/**
+	 * Extract `edits` from the `range` of the `document` to format the tables
+	 * @param document Document to format
+	 * @param range Range of the document do format
+	 * @returns `TextEdit[]` of edits ({@link vscode.TextEdit})
+	 */
 	public formatDocument(document: vscode.TextDocument, range: vscode.Range): vscode.TextEdit[] {
 		const edits: vscode.TextEdit[] = [];
 		// This check is in case some grammar is removed and VSCode is not reloaded yet
@@ -91,31 +101,37 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 		// Fix sizes of empty row tables
 		tables.forEach(table => {
-			if (this.checkColumnsPerLine(table)) {
-				table.body.forEach((line, i) => {
+			if (table.body) {
+				table.body?.forEach((line, i) => {
 					if (table.header.length !== line.length) {
 						if (this.config.allowEmptyRows) {
-							const lineFixed = line.concat(Array(table.header.length - line.length).fill(""))
-							table.body[i] = lineFixed
+							if (table.header.length > line.length) {
+								const lineFixed = line.concat(Array(table.header.length - line.length).fill(""))
+								table.body![i] = lineFixed
+							} else if (line.length > table.header.length) {
+								const lineFixed = line.slice(0, table.header.length)
+								table.body![i] = lineFixed
+							}
 						}
 					}
 				});
-
-				if (table.header.length !== table.format.length) {
-					if (this.config.allowEmptyRows) {
-						table.format = table.format.concat(Array(table.header.length - table.format.length).fill("-"))
-					}
-				}
-
-				table.updateSizes();
 			}
+			if (table.header.length !== table.format.length) {
+				if (this.config.allowEmptyRows) {
+					table.format = table.format.concat(Array(table.header.length - table.format.length).fill("-"))
+				}
+			}
+
+			table.updateSizes();
 		});
 
 		if (this.config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameColumnSize) {
-			const maxSize = discoverMaxColumnSizes(tables);
-			tables.forEach(table => {
-				table.columnSizes = maxSize;
-			});
+			if (tables.length > 0) {
+				const maxSize = discoverMaxColumnSizes(tables);
+				tables.forEach(table => {
+					table.columnSizes = maxSize;
+				});
+			}
 		}
 		if (this.config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameTableSize) {
 			const tableSizes = discoverMaxTableSizes(tables, this.config.spacePadding!);
@@ -124,7 +140,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			});
 		}
 		tables.forEach(table => {
-			edits.push(new vscode.TextEdit(table.range, this.formatTable(table, this.config)));
+			edits.push(vscode.TextEdit.replace(table.range, this.formatTable(table, this.config)));
 		});
 		return edits;
 	}
@@ -177,15 +193,13 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			? addTailPipes
 			: (x: string) => x;
 
-		let header: string[] = [];
-		if (table.header) {
-			header = this.formatLines([table.header], table.format, table.columnSizes, settings).map(line => {
-				const cellPadding = padding(settings.spacePadding!);
-				return line.map((cell) => {
-					return `${cellPadding}${cell}${cellPadding}`;
-				});
-			}).map(joinCells).map(addTailPipesIfNeeded);
-		}
+		const header = this.formatLines([table.header], table.format, table.columnSizes, settings).map(line => {
+			const cellPadding = padding(settings.spacePadding!);
+			return line.map((cell) => {
+				return `${cellPadding}${cell}${cellPadding}`;
+			});
+		}).map(joinCells).map(addTailPipesIfNeeded);
+
 
 		const formatLine = this.formatLines([table.format], table.format, table.columnSizes, settings).map(line => {
 			return line.map((cell, i) => {
@@ -230,17 +244,15 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			});
 		}).map(joinCells).map(addTailPipesIfNeeded);
 
-		const body = this.formatLines(table.body, table.format, table.columnSizes, settings).map(line => {
+		const body = this.formatLines(table.body || [[]], table.format, table.columnSizes, settings).map(line => {
 			const cellPadding = padding(settings.spacePadding!);
 			return line.map((cell) => {
 				return `${cellPadding}${cell}${cellPadding}`;
 			});
 		}).map(joinCells).map(addTailPipesIfNeeded);
 
-		let formatted = [formatLine, ...body];
-		if (table.header) {
-			formatted = [header, formatLine, ...body];
-		}
+		const formatted = [header, formatLine, ...body]
+
 		const endDate = new Date().getTime();
 		this.reporter?.sendTelemetryEvent("function", {
 			name: "formatTable",
@@ -250,6 +262,13 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			timeTakenMilliseconds: endDate - startDate,
 			table_lineCount: table.totalLines
 		});
+
+		if (table.isInList) {
+			for (let index = 0; index < formatted.length; index++) {
+				formatted[index] = table.listIndentation[index] + formatted[index]
+			}
+		}
+
 		return formatted.join('\n');
 	}
 
@@ -266,22 +285,6 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			})
 			return false
 		}
-
-		table.body.forEach((line, i) => {
-			if (table.header.length !== line.length) {
-				vscode.window.showErrorMessage(`Table at line ${table.startLine + 1} has a line with different column number as the header, please check for unescaped pipes '|'.`, // - Header columns: ${table.header.length} - Body at line ${table.startLine + i + 3} columns: ${line.length}`,
-					"Focus"
-				).then(choice => {
-					if (choice === "Focus") {
-						vscode.window.activeTextEditor?.revealRange(table.range)
-						const s = new vscode.Selection(table.startLine + i + 2, 0, table.startLine + i + 3, 0)
-						vscode.window.activeTextEditor!.selection = s
-					}
-				})
-				return false
-			}
-		});
-
 		return true
 	}
 

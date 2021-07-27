@@ -33,7 +33,6 @@ suite('Extension Test Suite', () => {
 	};
 
 	testTables.forEach((testTable, i) => {
-
 		const testSettings: MarkdownTableFormatterSettings = MarkdownTableFormatterSettingsImpl.create({ ...defaultTestSettings, ...testTable.settings });
 
 		test(`Should format correctly table ${pad(String(testTable.id), 2)} with ${testSettings}`, async () => {
@@ -41,18 +40,19 @@ suite('Extension Test Suite', () => {
 			const formatterProvider = new MarkdownTableFormatterProvider(testSettings)
 
 			const uri = vscode.Uri.parse('test-table:' + i);
-
 			const textEditor = await vscode.window.showTextDocument(uri);
 			await vscode.languages.setTextDocumentLanguage(textEditor.document, "markdown")
 
 			const fullDocumentRange = textEditor.document.validateRange(new vscode.Range(0, 0, textEditor.document.lineCount + 1, 0));
 			const textEdits = formatterProvider.formatDocument(textEditor.document, fullDocumentRange)
 			const edit = new vscode.WorkspaceEdit();
+
 			for (const textEdit of textEdits) {
 				edit.replace(uri, textEdit.range, textEdit.newText);
 			}
-			await vscode.workspace.applyEdit(edit);
-			return assert.equal(textEditor.document.getText(), testTable.expected)
+			const ok = await vscode.workspace.applyEdit(edit);
+			assert.ok(ok)
+			assert.equal(textEditor.document.getText(), testTable.expected)
 		});
 	});
 });

@@ -16,6 +16,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Simplified parser to better support the markdown syntax used by **Visual Studio Code**, this means that pipes (`|`) inside cells _SHOULD_ be escaped with a backslash (`\`) otherwise they will be interpreted as column dividers. (Issue [#42](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/42))
 
+### Fixed
+
+- Formatting of tables that are in lists or indented.
+
 ## [2.1.8] - 2021-05-13
 
 ### Fixed

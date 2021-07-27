@@ -1,13 +1,14 @@
 | Text     | Result            |
 |----------|-------------------|
 | `` $` `` | text before match |
-| `` $|` `` | text before match |
+| `` $\|` `` | text before match |
 
 |header a|header b|
 |------------|------------|
 |column a 1|column b 1|
 |column a 2|column b 2|
 
+|DOuble header
 |header a|numeric header|
 |------------|------------|
 |column a 1|1|
@@ -163,7 +164,7 @@ Sed lacinia tortor et ultrices semper.
 
 |a|b|c|
 |:---------|:----------|:--|
-|fdasdfas|x \`|\` y|z|
+|fdasdfas|x \`\|\` y|z|
 
 
 
@@ -200,7 +201,7 @@ Sed lacinia tortor et ultrices semper.
 |Equal|\`aisb\`|\`a==b\`|
 |NotEqual|\`anotb\`|\`a!=b\`|
 |And|\`a&&b\`|\`a&&b\`|
-|Or|\`a||b\`|\`a|b\`|
+|Or|\`a\|\|b\`|\`a\|b\`|
 |Exponentiate|\`apowb\`|\`pow(a,b)\`|
 |Modulo|\`a%b\`|\`mod(a,b)\`|
 |Minimum|\`aminb\`|\`min(a,b)\`|
@@ -269,3 +270,32 @@ Sed lacinia tortor et ultrices semper.
 |----------------------------|---------|-------|
 |Is source control used?|NO||
 |Are changes peer reviewed?|PARTIAL||
+
+* |One|Two|Three|
+  |---|---|-----|
+  |'1'|'2'|'3'|
+
+|abc|def|
+|---|---|
+|bar|baz|
+> bar
+
+  | f\|oo  |
+  | ------ |
+  | b `\|` az |
+  | b **\|** im |
+
+
+|abc|def|
+|---|---|
+|bar|baz|
+> bar
+
+1. One | Two | Three
+   --- | --- | -----
+   '1' | '2' | '3'
+
+* Stuff:
+  |One|Two|Three|
+  |---|---|-----|
+  |'1'|'2'|'3'|

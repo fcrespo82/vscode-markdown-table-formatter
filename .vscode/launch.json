@@ -4,7 +4,7 @@
     "configurations": [
         {
             "name": "Launch Extension",
-            "type": "extensionHost",
+            "type": "pwa-extensionHost",
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "args": [
@@ -23,7 +23,7 @@
         },
         {
             "name": "Extension Tests",
-            "type": "extensionHost",
+            "type": "pwa-extensionHost",
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "args": [

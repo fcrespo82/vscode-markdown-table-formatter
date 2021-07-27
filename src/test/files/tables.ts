@@ -6,11 +6,11 @@ export const testTables: { id: number, input: string, expected: string, settings
 		input: `\
 | Foo | Bar |
 | - | - |
-|Baz|Qux|`,
+|'Baz'|Qux|`,
 		expected: `\
-| Foo | Bar |
-| --- | --- |
-| Baz | Qux |`,
+| Foo   | Bar |
+| ----- | --- |
+| 'Baz' | Qux |`,
 		settings: {
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.SingleApaceAlways
 		}
@@ -762,5 +762,101 @@ export const testTables: { id: number, input: string, expected: string, settings
 | "      | quote                            |
 | «      | left-pointing double angle quote |
 | \`      | backtick                         |`
+	},
+	{
+		id: 32,
+		input: `\
+* Stuff:
+  |One|Two|Three|
+  |---|---|-----|
+  |'1'|'2'|'3'|`,
+		expected: `\
+* Stuff:
+  | One | Two | Three |
+  |-----|-----|-------|
+  | '1' | '2' | '3'   |`
+	},
+	{
+		id: 33,
+		input: `\
+1. One | Two | Three
+   --- | --- | -----
+   '1' | '2' | '3'`,
+		expected: `\
+1. | One | Two | Three |
+   |-----|-----|-------|
+   | '1' | '2' | '3'   |`
+	},
+	{
+		id: 34,
+		input: `\
+* |One|Two|Three|
+  |---|---|-----|
+  |'1'|'2'|'3'|`,
+		expected: `\
+* | One | Two | Three |
+  |-----|-----|-------|
+  | '1' | '2' | '3'   |`
+	},
+	{
+		id: 35,
+		input: `\
+|abc|def|
+|---|---|
+|bar|baz|
+> bar`,
+		expected: `\
+| abc | def |
+|-----|-----|
+| bar | baz |
+> bar`
+	},
+	{
+		id: 36,
+		input: `\
+| abc | def |
+| ------ | -------- |`,
+		expected: `\
+| abc | def |
+|-----|-----|`
+	},
+	{
+		id: 37,
+		input: `\
+  | f\\|oo  |
+  | ------ |
+  | b \`\\|\` az |
+  | b **\\|** im |`,
+		expected: `\
+  | f\\|oo       |
+  |-------------|
+  | b \`\\|\` az   |
+  | b **\\|** im |`
+	},
+	{
+		id: 38,
+		input: `\
+// Not a table
+| abc | def |
+| --- |
+| bar |`,
+		expected: `\
+// Not a table
+| abc | def |
+| --- |
+| bar |`
+	},
+	{
+		id: 39,
+		input: `\
+| abc | def |
+| --- | --- |
+| bar |
+| bar | baz | boo |`,
+		expected: `\
+| abc | def |
+|-----|-----|
+| bar |     |
+| bar | baz |`
 	}
 ];

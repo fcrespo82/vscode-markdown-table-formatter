@@ -18,30 +18,28 @@ export const padding = (len: number, str = ' '): string => {
 	return r;
 };
 
-export const columnSizes = (header: string[], body: string[][]): number[] => {
+export const columnSizes = (header: string[], body: string[][] = [[]]): number[] => {
 	const columnSizes = [header, ...body].map((line) => {
 		return line.map((column) => {
 			return swidth(column.trim());
 		});
 	}).reduce((previous, current) => {
 		return previous.map((column, index) => {
-			if (column > current[index]) {
-				return column;
-			} else {
+			if (column <= current[index]) {
 				return current[index];
 			}
+			return column;
 		});
 	});
 
-	// TODO: Improve settings loading
 	const config = MarkdownTableFormatterSettingsImpl.shared;
 	const preferredLineLength = <number>workspace.getConfiguration('editor').get('wordWrapColumn');
 	const limitLastColumnWidth = config.limitLastColumnWidth
-	const padding = config.spacePadding
+	const paddingC = config.spacePadding
 	const keepFirstAndLast = config.keepFirstAndLastPipes
 	const otherColumnsSum = columnSizes.length === 1 ? 0 : sumArray(columnSizes.slice(0, -1));
 	const dividers = keepFirstAndLast ? columnSizes.length + 1 : columnSizes.length - 1
-	const allPadding = columnSizes.length * 2 * padding!
+	const allPadding = columnSizes.length * 2 * paddingC!
 
 	if (limitLastColumnWidth && (columnSizes.reduce((x, y) => x + y) + dividers + allPadding) > preferredLineLength) {
 		columnSizes[columnSizes.length - 1] = Math.max(

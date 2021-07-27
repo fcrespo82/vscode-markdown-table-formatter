@@ -77,11 +77,11 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 			}
 		});
 
-		const canSortByNumber = table.body.every(l => parseFloat(l[headerIndex]))
+		const canSortByNumber = table.body?.every(l => parseFloat(l[headerIndex]))
 
 		switch (sortDirection) {
 			case MarkdownTableSortDirection.Asc:
-				table.body.sort((a: string[], b: string[]) => {
+				table.body?.sort((a: string[], b: string[]) => {
 					if (canSortByNumber) {
 						return (parseFloat(a[headerIndex]) < parseFloat(b[headerIndex])) ? -1 : 1;
 					}
@@ -94,7 +94,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 				});
 				break;
 			case MarkdownTableSortDirection.Desc:
-				table.body.sort((a: string[], b: string[]) => {
+				table.body?.sort((a: string[], b: string[]) => {
 					if (canSortByNumber) {
 						return (parseFloat(a[headerIndex]) > parseFloat(b[headerIndex])) ? -1 : 1;
 					}

@@ -1,7 +1,7 @@
 #!/bin/sh -l
 
 # Install dependencies from your project
-npm i
+npm ci
 
 # Packages the Visual Studio Code extension
 vsce package

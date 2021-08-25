@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+## [2.2.1] - 2021-08-25
+
+### Fixed
+
+- High CPU load on big files Issue (Issue [#35](https://github.com/fcrespo82/vscode-markdown-table-formatter/issues/35))
+
 ## [2.2.0] - 2021-07-04
 
 ### Added

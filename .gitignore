@@ -1,5 +1,5 @@
 out
-*.vsix
+*.vsix*
 
 # Created by https://www.toptal.com/developers/gitignore/api/vscode,macos,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=vscode,macos,node

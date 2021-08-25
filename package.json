@@ -11,7 +11,8 @@
         "url": "https://github.com/fcrespo82/vscode-markdown-table-formatter/issues"
     },
     "license": "MIT",
-    "version": "2.2.0",
+    "version": "2.2.1",
+    "preview": true,
     "publisher": "fcrespo82",
     "icon": "resources/icon.png",
     "keywords": [
@@ -193,12 +194,12 @@
         "@types/xregexp": "^4.3.0",
         "@typescript-eslint/eslint-plugin": "^3.6.1",
         "@typescript-eslint/parser": "^3.6.1",
+        "@vscode/test-electron": "^1.6.2",
         "esbuild": "^0.11.15",
         "eslint": "^7.15.0",
         "mocha": "^8.0.1",
         "ts-loader": "^6.2.1",
         "typescript": "^3.7.2",
-        "vsce": "^1.93.0",
-        "vscode-test": "^1.4.0"
+        "vsce": "^1.93.0"
     }
 }

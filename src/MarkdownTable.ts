@@ -128,9 +128,9 @@ export class MarkdownTable {
 
 		if (groups.inlist !== undefined) {
 			this._isInList = true
-			this._listIndentation[0] = groups.inlist + " "
+			this._listIndentation[0] = groups.inlist
 			for (let index = 1; index < this.totalLines; index++) {
-				this._listIndentation.push(" ".repeat(groups.inlist.length + 1))
+				this._listIndentation.push(" ".repeat(groups.inlist.length))
 			}
 		} else if (groups.indentation !== undefined) {
 			this._isInList = true

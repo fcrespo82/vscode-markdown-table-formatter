@@ -31,8 +31,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<boolea
 				markdownTableFormatterProvider.dispose();
 			}
 		}
-	});
-	vscode.workspace.onDidChangeConfiguration(changeConfigurationEvent => {
 		if (changeConfigurationEvent.affectsConfiguration('markdown-table-formatter.enableSort') ||
 			changeConfigurationEvent.affectsConfiguration('markdown-table-formatter.markdownGrammarScopes')) {
 			if (config.enableSort) {

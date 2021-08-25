@@ -3,24 +3,25 @@ XRegExp.install("namespacing");
 
 export const tableRegex = XRegExp(String.raw`
 (?:
-  (?<inlist>[-+*]|[0-9]+\.)                  # Table is inside list
+  (?<inlist>(?:[-+*\.]+|[0-9]+\.)[ ]*)                  # Table is inside list
   |                                          # or
   (?<indentation>[ ]+)                       # Table is indented
 )?
-(?<header>                                   # Header capture
-  (?:[^\r\n]*?\|[^\r\n]*)+                   # Line w/ at least one pipe
-  \r?\n                                      # Newline
-)
-(?<format>                                   # Format capture
-  (?:[ :-]*?\|[ :-]*)+                       # Line w/ separators containing at least one pipe
-  (?:\r?\n|$)                              # Newline
-)
+(?<header>
+  (?:[^\n]*\|[^\n]*)
+)\n
+(?:[ ]*?
+  (?<format>
+    (?:[ -:]*\|[ -:]*)+
+  )\n?
+)$\n?
 (?<body>
-  (?:                                        # Body capture
-    (?:[^\r\n]*?\|[^\r\n]*)+                 # Line w/ at least one pipe
-    (?:\r?\n|$)                              # Newline
-  )+
-)*
+  (?:
+    (?:^[ ]*
+      (?:[^\n]*\|[^\n]*)+
+    )[\n|$]?
+  )*
+)
 `,
-    'gmx',
+	'gmx',
 );

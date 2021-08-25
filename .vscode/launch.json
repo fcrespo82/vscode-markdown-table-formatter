@@ -4,7 +4,7 @@
     "configurations": [
         {
             "name": "Launch Extension",
-            "type": "pwa-extensionHost",
+            "type": "extensionHost",
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "args": [
@@ -23,7 +23,7 @@
         },
         {
             "name": "Extension Tests",
-            "type": "pwa-extensionHost",
+            "type": "extensionHost",
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "args": [
@@ -34,6 +34,7 @@
             "outFiles": [
                 "${workspaceFolder}/out/test/**/*.js"
             ],
+            "internalConsoleOptions": "openOnSessionStart",
             "preLaunchTask": "npm: test-compile"
         }
     ]

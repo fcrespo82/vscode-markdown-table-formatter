@@ -1,7 +1,7 @@
 {
     "name": "markdown-table-formatter",
     "displayName": "Markdown Table Formatter",
-    "description": "A simple markdown plugin to format tables.",
+    "description": "A (not so) simple markdown plugin to format tables and other table related features.",
     "homepage": "https://github.com/fcrespo82/vscode-markdown-table-formatter",
     "repository": {
         "type": "git",

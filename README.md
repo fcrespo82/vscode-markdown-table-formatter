@@ -1,8 +1,8 @@
 # Markdown table formatter
 
-![Installs](https://vsmarketplacebadge.apphb.com/installs-short/fcrespo82.markdown-table-formatter.svg)
-![Downloads](https://vsmarketplacebadge.apphb.com/downloads-short/fcrespo82.markdown-table-formatter.svg)
-![Rating](https://vsmarketplacebadge.apphb.com/rating-star/fcrespo82.markdown-table-formatter.svg)
+![Installs](https://img.shields.io/visual-studio-marketplace/i/fcrespo82.markdown-table-formatter)
+![Downloads](https://img.shields.io/visual-studio-marketplace/d/fcrespo82.markdown-table-formatter)
+![Rating](https://img.shields.io/visual-studio-marketplace/stars/fcrespo82.markdown-table-formatter)
 
 A (not so) simple markdown plugin to format tables and other table related features.
 
@@ -38,7 +38,7 @@ To enable Markdown Table Formatter for your current file type: put your cursor i
 
 ## Thanks
 
-Thanks all users for the awesome community that was built here. I never imagined that this extension would be used by more than 48K users with 160K downloads.
+Thanks all users for the awesome community that was built here. I never imagined that this extension would be used by more than ![installs](https://img.shields.io/visual-studio-marketplace/i/fcrespo82.markdown-table-formatter?label=%20) users with ![installs](https://img.shields.io/visual-studio-marketplace/d/fcrespo82.markdown-table-formatter?label=%20) downloads.
 
 Thanks for the support, bug reports and PRs!
 

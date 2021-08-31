@@ -163,6 +163,13 @@ export class MarkdownTable {
 		if (this.header) {
 			joined = [this.header, this.format, ...this.body!].map(joinCells).map(addTailPipesIfNeeded);
 		}
+
+		if (this.isInList) {
+			for (let index = 0; index < joined.length; index++) {
+				joined[index] = this.listIndentation[index] + joined[index]
+			}
+		}
+
 		return joined.join('\n');
 	};
 

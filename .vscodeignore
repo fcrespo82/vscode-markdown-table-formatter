@@ -10,8 +10,9 @@ tslint.json
 node_modules
 src/
 webpack.config.js
-resources/*.gvdesign
+resources/**
+!resources/icon.png
 .github
 publish
 .eslintignore
-*.vsix
+**/*.vsix

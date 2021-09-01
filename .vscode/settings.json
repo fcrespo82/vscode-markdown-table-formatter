@@ -18,5 +18,6 @@
     "peacock.color": "#27fd5b",
     "cSpell.words": [
         "wcwidth"
-    ]
+    ],
+    "python.pythonPath": "c:\\Users\\fernando\\Projetos\\vscode-markdown-table-formatter\\.venv\\Scripts\\python.exe"
 }

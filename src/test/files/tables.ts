@@ -858,5 +858,28 @@ export const testTables: { id: number, input: string, expected: string, settings
 |-----|-----|
 | bar |     |
 | bar | baz |`
+	},
+	{
+		id: 40,
+		input: `\
+	(Paragraph omitted) blah blah blah:
+
+	with mask:
+		# x y and out are all 16-bit so are subdivided at:
+		# |      mask[0]     mask[1]     mask[3]         |
+		# |  0-3    |    4-7    |   8-11    |   12-15    |
+		x = PartitionedSignal(16)    # identical except for mask
+		y = PartitionedSignal(16)    # identical except for mask
+		out = PartitionedSignal(16)  # identical except for mask`,
+		expected: `\
+	(Paragraph omitted) blah blah blah:
+
+	with mask:
+		# x y and out are all 16-bit so are subdivided at:
+		# |      mask[0]     mask[1]     mask[3]         |
+		# |  0-3    |    4-7    |   8-11    |   12-15    |
+		x = PartitionedSignal(16)    # identical except for mask
+		y = PartitionedSignal(16)    # identical except for mask
+		out = PartitionedSignal(16)  # identical except for mask`,
 	}
 ];

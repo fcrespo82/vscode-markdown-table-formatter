@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+## [2.2.4] - 2021-10-24
+
+### Fixed
+
+- Fixed a regex error where the extension wrongly detect a row with numbers as a format row
+
 ## [2.2.3] - 2021-08-31
 
 ### Fixed

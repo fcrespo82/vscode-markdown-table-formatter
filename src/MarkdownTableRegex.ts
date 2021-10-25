@@ -12,7 +12,7 @@ export const tableRegex = XRegExp(String.raw`
 )\n
 (?:[ ]*?
   (?<format>
-    (?:[ -:]*\|[ -:]*)+
+    (?:[ :-]*\|[ :-]*)+
   )\r?\n?
 )$\r?\n?
 (?<body>

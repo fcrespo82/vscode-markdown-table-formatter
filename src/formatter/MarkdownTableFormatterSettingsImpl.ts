@@ -1,5 +1,5 @@
-import { workspace, WorkspaceConfiguration } from "vscode";
-import MarkdownTableFormatterSettings, { MarkdownTableFormatterDefaultTableJustification, MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes } from "./MarkdownTableFormatterSettings";
+import {workspace, WorkspaceConfiguration} from "vscode";
+import MarkdownTableFormatterSettings, {MarkdownTableFormatterDefaultTableJustification, MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes} from "./MarkdownTableFormatterSettings";
 
 export default class MarkdownTableFormatterSettingsImpl implements MarkdownTableFormatterSettings {
 
@@ -65,11 +65,8 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 	get allowEmptyRows(): boolean {
 		return this.config.get<boolean>('allowEmptyRows', true);
 	}
-	get telemetry(): boolean {
-		return this.config.get<boolean>('telemetry', true);
-	}
 
 	public toString(): string {
-		return `{ enable: ${this.enable}, enableSort: ${this.enableSort}, spacePadding: ${this.spacePadding}, keepFirstAndLastPipes: ${this.keepFirstAndLastPipes}, defaultTableJustification: ${this.defaultTableJustification}, removeColonsIfSameAsDefault: ${this.removeColonsIfSameAsDefault}, globalColumnSizes: ${this.globalColumnSizes}, delimiterRowPadding: ${this.delimiterRowPadding}, limitLastColumnWidth: ${this.limitLastColumnWidth},  telemetry: ${this.telemetry} }`;
+		return `{ enable: ${this.enable}, enableSort: ${this.enableSort}, spacePadding: ${this.spacePadding}, keepFirstAndLastPipes: ${this.keepFirstAndLastPipes}, defaultTableJustification: ${this.defaultTableJustification}, removeColonsIfSameAsDefault: ${this.removeColonsIfSameAsDefault}, globalColumnSizes: ${this.globalColumnSizes}, delimiterRowPadding: ${this.delimiterRowPadding}, limitLastColumnWidth: ${this.limitLastColumnWidth} }`;
 	}
 }

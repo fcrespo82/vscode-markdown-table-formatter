@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import MarkdownTableFormatterSettings from '../formatter/MarkdownTableFormatterSettings';
-import { checkLanguage, tablesIn } from '../MarkdownTableUtils';
-import { Reporter } from '../telemetry/Reporter';
+import {checkLanguage, tablesIn} from '../MarkdownTableUtils';
 
 export class MarkdownTableDecorationProvider implements vscode.Disposable {
 
@@ -20,10 +19,7 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 
 	private config: MarkdownTableFormatterSettings
 
-	private reporter?: Reporter
-
-	constructor(config: MarkdownTableFormatterSettings, reporter?: Reporter) {
-		this.reporter = reporter;
+	constructor(config: MarkdownTableFormatterSettings) {
 		this.config = config;
 	}
 
@@ -68,12 +64,6 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 			};
 		});
 		const endDate = new Date().getTime();
-		this.reporter?.sendTelemetryEvent("function", {
-			name: "createDecorations",
-			languageId: document.languageId
-		}, {
-			timeTakenMilliseconds: endDate - startDate
-		})
 		return fullDecoration.concat(headerDecoration);
 	}
 
@@ -93,11 +83,6 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 	private toggleDebug(editor: vscode.TextEditor) {
 		if (!checkLanguage(editor.document.languageId, this.config)) { return }
 		this.decorationsEnabled = !this.decorationsEnabled;
-		this.reporter?.sendTelemetryEvent("command", {
-			name: "toggleDebug",
-			languageId: editor.document.languageId,
-			enabled: this.decorationsEnabled.toString()
-		}, {})
 		this.addDecorations(editor);
 	}
 }

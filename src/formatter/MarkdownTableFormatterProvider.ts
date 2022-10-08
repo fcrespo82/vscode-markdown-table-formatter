@@ -1,12 +1,11 @@
 import * as vscode from 'vscode';
-import { MarkdownTable } from '../MarkdownTable';
-import { checkLanguage, discoverMaxColumnSizes, discoverMaxTableSizes, padding, swidth, tablesIn } from '../MarkdownTableUtils';
-import { MarkdownTableSortDirection } from '../sorter/MarkdownTableSortDirection';
-import { getActiveSort, setActiveSort } from '../sorter/MarkdownTableSortUtils';
-import { Reporter } from '../telemetry/Reporter';
-import MarkdownTableFormatterSettings, { MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes } from './MarkdownTableFormatterSettings';
+import {MarkdownTable} from '../MarkdownTable';
+import {checkLanguage, discoverMaxColumnSizes, discoverMaxTableSizes, padding, swidth, tablesIn} from '../MarkdownTableUtils';
+import {MarkdownTableSortDirection} from '../sorter/MarkdownTableSortDirection';
+import {getActiveSort, setActiveSort} from '../sorter/MarkdownTableSortUtils';
+import MarkdownTableFormatterSettings, {MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes} from './MarkdownTableFormatterSettings';
 import MarkdownTableFormatterSettingsImpl from './MarkdownTableFormatterSettingsImpl';
-import { addTailPipes, fixJustification, joinCells, tableJustification } from './MarkdownTableFormatterUtils';
+import {addTailPipes, fixJustification, joinCells, tableJustification} from './MarkdownTableFormatterUtils';
 
 export class MarkdownTableFormatterProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider, vscode.Disposable {
 
@@ -16,10 +15,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 	private config: MarkdownTableFormatterSettings
 
-	private reporter?: Reporter
-
-	constructor(config: MarkdownTableFormatterSettings, reporter?: Reporter) {
-		this.reporter = reporter;
+	constructor(config: MarkdownTableFormatterSettings) {
 		this.config = config;
 	}
 
@@ -254,14 +250,6 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		const formatted = [header, formatLine, ...body]
 
 		const endDate = new Date().getTime();
-		this.reporter?.sendTelemetryEvent("function", {
-			name: "formatTable",
-			tableId: table.id,
-			settings: settings.toString()
-		}, {
-			timeTakenMilliseconds: endDate - startDate,
-			table_lineCount: table.totalLines
-		});
 
 		if (table.isInList) {
 			for (let index = 0; index < formatted.length; index++) {
@@ -315,11 +303,6 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 		edit.replace(table.range, table.notFormatted());
 		const endDate = new Date().getTime();
-		this.reporter?.sendTelemetryEvent("command", {
-			name: "moveColumnRightCommand",
-		}, {
-			timeTakenMilliseconds: endDate - startDate
-		});
 	}
 
 	// vscode.Commands
@@ -334,7 +317,6 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	}
 
 	private moveColumnLeftCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
-		const startDate = new Date().getTime();
 		if (!checkLanguage(editor.document.languageId, this.config)) { return }
 		const tables = tablesIn(editor.document)
 		const tableSelected = tables.find(t => {
@@ -358,40 +340,18 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		setActiveSort(editor.document, table.id, active_sort?.header_index === header ? leftHeaderIndex : rightHeaderIndex, sort_direction)
 
 		edit.replace(table.range, table.notFormatted());
-		const endDate = new Date().getTime();
-		this.reporter?.sendTelemetryEvent("command", {
-			name: "moveColumnLeftCommand",
-		}, {
-			timeTakenMilliseconds: endDate - startDate
-		});
 	}
 
 	// vscode.DocumentFormattingEditProvider implementation
 	provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.ProviderResult<vscode.TextEdit[]> {
-		const startDate = new Date().getTime();
 		const fullDocumentRange = new vscode.Range(0, 0, document.lineCount + 1, 0);
 		const edits = this.formatDocument(document, fullDocumentRange);
-		const endDate = new Date().getTime();
-		this.reporter?.sendTelemetryEvent("formatter", {
-			type: "full",
-		}, {
-			timeTakenMilliseconds: endDate - startDate,
-			file_lineCount: document.lineCount
-		});
 		return edits;
 	}
 
 	// vscode.DocumentRangeFormattingEditProvider implementation
 	provideDocumentRangeFormattingEdits(document: vscode.TextDocument, range: vscode.Range): vscode.ProviderResult<vscode.TextEdit[]> {
-		const startDate = new Date().getTime();
 		const edits = this.formatDocument(document, range);
-		const endDate = new Date().getTime();
-		this.reporter?.sendTelemetryEvent("formatter", {
-			type: "range"
-		}, {
-			timeTakenMilliseconds: endDate - startDate,
-			range_lineCount: range.end.line - range.start.line
-		});
 		return edits;
 	}
 }

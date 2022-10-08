@@ -1,13 +1,11 @@
 import * as vscode from 'vscode';
-import { MarkdownTableDecorationProvider } from './decoration/MarkdownTableDecorationProvider';
-import { MarkdownTableFormatterProvider } from './formatter/MarkdownTableFormatterProvider';
+import {MarkdownTableDecorationProvider} from './decoration/MarkdownTableDecorationProvider';
+import {MarkdownTableFormatterProvider} from './formatter/MarkdownTableFormatterProvider';
 import MarkdownTableFormatterSettingsImpl from './formatter/MarkdownTableFormatterSettingsImpl';
-import { MarkdownTableSortCodeLensProvider } from "./sorter/MarkdownTableSortCodeLensProvider";
+import {MarkdownTableSortCodeLensProvider} from "./sorter/MarkdownTableSortCodeLensProvider";
 
 export async function activate(context: vscode.ExtensionContext): Promise<boolean> {
 	const config = MarkdownTableFormatterSettingsImpl.shared;
-	// FIXME: Disabled telemetry until further test, generated 13 GB of data limit is 5GB
-	// const reporter = new MTFReporter(context, false);
 
 	const markdownTableFormatterProvider = new MarkdownTableFormatterProvider(config);
 	const markdownTableCodeLensProvider = new MarkdownTableSortCodeLensProvider(config);

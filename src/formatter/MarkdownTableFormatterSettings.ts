@@ -28,5 +28,4 @@ export default interface MarkdownTableFormatterSettings {
 	delimiterRowPadding?: MarkdownTableFormatterDelimiterRowPadding;
 	limitLastColumnWidth?: boolean;
 	allowEmptyRows?: boolean;
-	telemetry?: boolean;
 }

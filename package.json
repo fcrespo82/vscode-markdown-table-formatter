@@ -178,27 +178,25 @@
         "test": "node ./out/test/runTest.js"
     },
     "dependencies": {
-        "md5": "^2.2.1",
-        "vscode-extension-telemetry": "^0.1.6",
+        "md5": "^2.3.0",
         "wcwidth": "^1.0.1",
-        "xregexp": "^4.4.1"
+        "xregexp": "^5.1.1"
     },
     "devDependencies": {
-        "@types/glob": "7.1.1",
-        "@types/md5": "^2.2.0",
-        "@types/mocha": "^7.0.2",
-        "@types/node": "^7.10.9",
-        "@types/vscode": "^1.34.0",
+        "@types/glob": "^8.0.0",
+        "@types/md5": "^2.3.2",
+        "@types/mocha": "^10.0.0",
+        "@types/node": "^16.11.64",
+        "@types/vscode": "^1.72.0",
         "@types/wcwidth": "^1.0.0",
-        "@types/xregexp": "^4.3.0",
-        "@typescript-eslint/eslint-plugin": "^3.6.1",
-        "@typescript-eslint/parser": "^3.6.1",
-        "@vscode/test-electron": "^1.6.2",
-        "esbuild": "^0.11.15",
-        "eslint": "^7.15.0",
-        "mocha": "^8.0.1",
-        "ts-loader": "^6.2.1",
-        "typescript": "^3.7.2",
-        "vsce": "^1.93.0"
+        "@typescript-eslint/eslint-plugin": "^5.39.0",
+        "@typescript-eslint/parser": "^5.39.0",
+        "@vscode/test-electron": "^2.1.5",
+        "esbuild": "^0.15.10",
+        "eslint": "^8.25.0",
+        "mocha": "^10.0.0",
+        "ts-loader": "^9.4.1",
+        "typescript": "^4.8.4",
+        "vsce": "^2.11.0"
     }
 }

@@ -1,11 +1,10 @@
 import * as vscode from 'vscode';
 import MarkdownTableFormatterSettings from '../formatter/MarkdownTableFormatterSettings';
-import { MarkdownTable } from '../MarkdownTable';
-import { checkLanguage, tablesIn } from '../MarkdownTableUtils';
-import { Reporter } from '../telemetry/Reporter';
+import {MarkdownTable} from '../MarkdownTable';
+import {checkLanguage, tablesIn} from '../MarkdownTableUtils';
 import MarkdownTableSortCommandArguments from './MarkdownTableSortCommandArguments';
-import { MarkdownTableSortDirection } from './MarkdownTableSortDirection';
-import { cleanSortIndicator, getActiveSort, getSortIndicator, setActiveSort } from './MarkdownTableSortUtils';
+import {MarkdownTableSortDirection} from './MarkdownTableSortDirection';
+import {cleanSortIndicator, getActiveSort, getSortIndicator, setActiveSort} from './MarkdownTableSortUtils';
 
 export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvider, vscode.Disposable {
 
@@ -15,10 +14,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 
 	private config: MarkdownTableFormatterSettings
 
-	private reporter?: Reporter
-
-	constructor(config: MarkdownTableFormatterSettings, reporter?: Reporter) {
-		this.reporter = reporter;
+	constructor(config: MarkdownTableFormatterSettings) {
 		this.config = config;
 	}
 
@@ -70,7 +66,6 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 	}
 
 	public sortTable(table: MarkdownTable, headerIndex: number, sortDirection: MarkdownTableSortDirection): string {
-		const startDate = new Date().getTime();
 		table.header.forEach((header, i) => {
 			if (i !== headerIndex) {
 				table.header[i] = cleanSortIndicator(header);
@@ -107,13 +102,6 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 				});
 				break;
 		}
-		const endDate = new Date().getTime();
-		this.reporter?.sendTelemetryEvent("function", {
-			name: "markdown-table-formatter.sortTable",
-			table_id: table.id
-		}, {
-			timeTakenMilliseconds: endDate - startDate
-		})
 		return table.notFormatted();
 	}
 
@@ -147,7 +135,6 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 	provideCodeLenses(document: vscode.TextDocument): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
 		if (!checkLanguage(document.languageId, this.config)) { return [] }
 
-		const startDate = new Date().getTime();
 		const tables = tablesIn(document);
 
 		const lenses = tables.filter(table => {
@@ -157,14 +144,6 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 				return [];
 			}
 			return this.codeLensForTable(table, document);
-		});
-		const endDate = new Date().getTime();
-		this.reporter?.sendTelemetryEvent("provider", {
-			name: "CodeLensProvider",
-			method: "provideCodeLenses",
-		}, {
-			timeTakenMilliseconds: endDate - startDate,
-			file_lineCount: document.lineCount
 		});
 		return lenses.reduce((acc, val) => acc.concat(val), []);
 	}

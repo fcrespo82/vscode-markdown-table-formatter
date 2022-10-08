@@ -28,7 +28,6 @@ Uses VSCode `Format Document` and `Format Selection`
 - **globalColumnSizes**: Format tables locally, with same column sizes or same table size;
 - **delimiterRowPadding**: Calculates the column sizes based on all tables on the document;
 - **limitLastColumnWidth**: Do not extend last column to more than your editor's wordWrapColumn setting;
-- **telemetry**: Send usage statistics.
 
 ## Tips
 

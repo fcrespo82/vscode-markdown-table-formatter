@@ -1,4 +1,4 @@
-import MarkdownTableFormatterSettings, { MarkdownTableFormatterDefaultTableJustification, MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes } from "../../formatter/MarkdownTableFormatterSettings";
+import MarkdownTableFormatterSettings, {MarkdownTableFormatterDefaultTableJustification, MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes} from "../../formatter/MarkdownTableFormatterSettings";
 
 export const testTables: { id: number, input: string, expected: string, settings?: MarkdownTableFormatterSettings }[] = [
 	{
@@ -91,8 +91,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
-			allowEmptyRows: true,
-			telemetry: false
+			allowEmptyRows: true
 		}
 	},
 	{
@@ -120,8 +119,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			removeColonsIfSameAsDefault: true,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
-			allowEmptyRows: true,
-			telemetry: false
+			allowEmptyRows: true
 		}
 	},
 	{
@@ -149,8 +147,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			removeColonsIfSameAsDefault: true,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
-			allowEmptyRows: true,
-			telemetry: false
+			allowEmptyRows: true
 		}
 	},
 	{
@@ -178,8 +175,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			removeColonsIfSameAsDefault: true,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
-			allowEmptyRows: true,
-			telemetry: false
+			allowEmptyRows: true
 		}
 	},
 	{
@@ -207,8 +203,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
-			allowEmptyRows: true,
-			telemetry: false
+			allowEmptyRows: true
 		}
 	},
 	{
@@ -236,8 +231,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
-			allowEmptyRows: true,
-			telemetry: false
+			allowEmptyRows: true
 		}
 	},
 	{
@@ -265,8 +259,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
-			allowEmptyRows: true,
-			telemetry: false
+			allowEmptyRows: true
 		}
 	},
 	{
@@ -294,8 +287,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
-			allowEmptyRows: true,
-			telemetry: false
+			allowEmptyRows: true
 		}
 	},
 	{
@@ -323,8 +315,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
-			allowEmptyRows: true,
-			telemetry: false
+			allowEmptyRows: true
 		}
 	},
 	{
@@ -352,8 +343,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
-			allowEmptyRows: true,
-			telemetry: false
+			allowEmptyRows: true
 		}
 	},
 	{
@@ -591,8 +581,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
-			allowEmptyRows: true,
-			telemetry: false
+			allowEmptyRows: true
 		}
 	},
 	{
@@ -626,8 +615,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
-			allowEmptyRows: true,
-			telemetry: false
+			allowEmptyRows: true
 		}
 	},
 	{
@@ -661,8 +649,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
-			allowEmptyRows: true,
-			telemetry: false
+			allowEmptyRows: true
 		}
 	},
 	{
@@ -700,8 +687,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
-			allowEmptyRows: true,
-			telemetry: false
+			allowEmptyRows: true
 		}
 	},
 	{

@@ -1,10 +1,10 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { MarkdownTableFormatterProvider } from '../../formatter/MarkdownTableFormatterProvider';
-import MarkdownTableFormatterSettings, { MarkdownTableFormatterDefaultTableJustification, MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes } from '../../formatter/MarkdownTableFormatterSettings';
+import {MarkdownTableFormatterProvider} from '../../formatter/MarkdownTableFormatterProvider';
+import MarkdownTableFormatterSettings, {MarkdownTableFormatterDefaultTableJustification, MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes} from '../../formatter/MarkdownTableFormatterSettings';
 import MarkdownTableFormatterSettingsImpl from '../../formatter/MarkdownTableFormatterSettingsImpl';
-import { pad } from '../../MarkdownTableUtils';
-import { testTables } from '../files/tables';
+import {pad} from '../../MarkdownTableUtils';
+import {testTables} from '../files/tables';
 
 suite('Extension Test Suite', () => {
 
@@ -28,8 +28,7 @@ suite('Extension Test Suite', () => {
 		removeColonsIfSameAsDefault: false,
 		globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 		delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
-		allowEmptyRows: true,
-		telemetry: false
+		allowEmptyRows: true
 	};
 
 	testTables.forEach((testTable, i) => {

@@ -9,7 +9,6 @@ vsc-extension-quickstart.md
 tslint.json
 node_modules
 src/
-webpack.config.js
 resources/**
 !resources/icon.png
 .github

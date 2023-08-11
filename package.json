@@ -90,6 +90,12 @@
                     "type": "boolean",
                     "default": true
                 },
+                "markdown-table-formatter.sortCaseInsensitive": {
+                    "title": "Sort table without considering text case",
+                    "description": "Sort table without considering text case",
+                    "type": "boolean",
+                    "default": true
+                },
                 "markdown-table-formatter.spacePadding": {
                     "title": "Space padding",
                     "description": "How many spaces between left and right of each column content",

@@ -80,25 +80,30 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 
 			let respA = -1
 			let respB = 1
-		switch (sortDirection) {
-			case MarkdownTableSortDirection.Asc:
-				break;
-			case MarkdownTableSortDirection.Desc:
+			switch (sortDirection) {
+				case MarkdownTableSortDirection.Asc:
+					break;
+				case MarkdownTableSortDirection.Desc:
 					respA = 1;
 					respB = -1;
 					break;
 			}
 
-					if (canSortByNumber) {
+			if (this.config.sortCaseInsensitive) {
+				textA = textA.toLocaleLowerCase();
+				textB = textB.toLocaleLowerCase();
+			}
+
+			if (canSortByNumber) {
 				return (parseFloat(textA) < parseFloat(textB)) ? respA : respB;
-					}
+			}
 			else if (textA === textB) {
-						return 0;
-					}
-					else {
+				return 0;
+			}
+			else {
 				return (textA < textB) ? respA : respB;
-					}
-				});
+			}
+		});
 
 		return table.notFormatted();
 	}

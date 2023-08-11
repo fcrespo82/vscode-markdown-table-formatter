@@ -32,6 +32,7 @@
         "onCommand:markdown-table-formatter.toggleDebug",
         "onCommand:markdown-table-formatter.moveColumnRight",
         "onCommand:markdown-table-formatter.moveColumnLeft",
+        "workspaceContains:**/*.md",
         "workspaceContains:README.md"
     ],
     "main": "./out/extension.js",

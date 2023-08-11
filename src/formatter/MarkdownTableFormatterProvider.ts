@@ -272,7 +272,6 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 	// vscode.Commands
 	private moveColumnRightCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
-		const startDate = new Date().getTime();
 		if (!checkLanguage(editor.document.languageId, this.config)) { return }
 		const tables = tablesIn(editor.document)
 		const tableSelected = tables.find(t => {
@@ -292,11 +291,9 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		const table = this.flipColumn(tableSelected, leftHeaderIndex, rightHeaderIndex);
 
 		const active_sort = getActiveSort(editor.document, table.id)
-		const sort_direction = active_sort?.sort_direction ? active_sort?.sort_direction : MarkdownTableSortDirection.None
-		setActiveSort(editor.document, table.id, active_sort?.header_index === header ? rightHeaderIndex : leftHeaderIndex, sort_direction)
+		setActiveSort(editor.document, table.id, active_sort?.header_index === header ? rightHeaderIndex : leftHeaderIndex, active_sort?.sort_direction)
 
 		edit.replace(table.range, table.notFormatted());
-		const endDate = new Date().getTime();
 	}
 
 	// vscode.Commands
@@ -330,8 +327,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		const table = this.flipColumn(tableSelected, leftHeaderIndex, rightHeaderIndex);
 
 		const active_sort = getActiveSort(editor.document, table.id)
-		const sort_direction = active_sort?.sort_direction ? active_sort?.sort_direction : MarkdownTableSortDirection.None
-		setActiveSort(editor.document, table.id, active_sort?.header_index === header ? leftHeaderIndex : rightHeaderIndex, sort_direction)
+		setActiveSort(editor.document, table.id, active_sort?.header_index === header ? leftHeaderIndex : rightHeaderIndex, active_sort?.sort_direction)
 
 		edit.replace(table.range, table.notFormatted());
 	}

@@ -1,7 +1,7 @@
 | f\|oo  |
 | ------ |
-| Apple |
 | apple |
+| Apple |
 | Blueberry |
 | Cherry |
 | Dewberry |

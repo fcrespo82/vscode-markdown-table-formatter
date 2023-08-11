@@ -18,6 +18,17 @@ const hasAnyIndicator = (text: string): boolean => {
 	return hasAscendingSortIndicator(text) || hasDescendingSortIndicator(text);
 };
 
+export const invertSort = (direction?: MarkdownTableSortDirection): MarkdownTableSortDirection => {
+	switch (direction) {
+		case MarkdownTableSortDirection.Asc:
+			return MarkdownTableSortDirection.Desc
+		case MarkdownTableSortDirection.Desc:
+			return MarkdownTableSortDirection.Asc
+		default:
+			return MarkdownTableSortDirection.Asc
+	}
+}
+
 export const setSortIndicator = (text: string, direction: MarkdownTableSortDirection): string => {
 	let indicator = ''
 	let oldIndicator = ''
@@ -40,7 +51,7 @@ export const setSortIndicator = (text: string, direction: MarkdownTableSortDirec
 
 const _activeSort: MTSortInfo = {};
 
-export function setActiveSort(document: vscode.TextDocument, table_id: string, header_index: number | undefined, sort_direction: MarkdownTableSortDirection): void {
+export function setActiveSort(document: vscode.TextDocument, table_id: string, header_index: number | undefined, sort_direction?: MarkdownTableSortDirection): void {
 	if (!_activeSort[document.uri.path]) {
 		_activeSort[document.uri.path] = {};
 	}
@@ -60,7 +71,7 @@ export function getActiveSort(document: vscode.TextDocument, table_id: string): 
 	return undefined;
 }
 
-export function getSortIndicator(direction: MarkdownTableSortDirection): string {
+export function getSortIndicator(direction?: MarkdownTableSortDirection): string {
 	switch (direction) {
 		case MarkdownTableSortDirection.Asc:
 			return SortIndicator.separator + SortIndicator.ascending;

@@ -142,10 +142,10 @@ export class MarkdownTable {
 
 	sortedByColumn = (): MarkdownTableSortOptions => {
 		const mapped = this.header.map((v, i) => {
-			let ind = MarkdownTableSortDirection.None
+			let ind = undefined
 			ind = v.indexOf(SortIndicator.ascending) >= 0 ? MarkdownTableSortDirection.Asc : ind
 			ind = v.indexOf(SortIndicator.descending) >= 0 ? MarkdownTableSortDirection.Desc : ind
-			return (ind !== MarkdownTableSortDirection.None) ? { header_index: i, sort_direction: ind } : { header_index: -1, sort_direction: ind };
+			return (ind !== undefined) ? { header_index: i, sort_direction: ind } : { header_index: -1, sort_direction: ind };
 		})
 		const filtered = mapped.filter((v) => {
 			return v.header_index >= 0

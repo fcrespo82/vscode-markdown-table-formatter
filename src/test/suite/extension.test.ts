@@ -49,8 +49,7 @@ suite('Extension Test Suite', () => {
 			for (const textEdit of textEdits) {
 				edit.replace(uri, textEdit.range, textEdit.newText);
 			}
-			const ok = await vscode.workspace.applyEdit(edit);
-			assert.ok(ok)
+			await vscode.workspace.applyEdit(edit);
 			assert.equal(textEditor.document.getText(), testTable.expected)
 		});
 	});

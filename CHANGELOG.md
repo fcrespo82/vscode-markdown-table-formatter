@@ -11,10 +11,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 
 - Suport for case insensitive sorting
+- Context menus for moving columns
 
 ### Changed
 
 - Improve internal sorting algorithm
+- Improve activation events
 
 ## [2.2.4] - 2021-10-24
 

@@ -58,6 +58,20 @@
                 "title": "Move column left"
             }
         ],
+        "menus": {
+            "editor/context": [
+                {
+                    "command": "markdown-table-formatter.moveColumnLeft",
+                    "group": "markdown-table-formatter",
+                    "when": "config.markdown-table-formatter.enableSort === true"
+                },
+                {
+                    "command": "markdown-table-formatter.moveColumnRight",
+                    "group": "markdown-table-formatter",
+                    "when": "config.markdown-table-formatter.enableSort === true"
+                }
+            ]
+        },
         "keybindings": [
             {
                 "command": "markdown-table-formatter.enableForCurrentScope",
@@ -77,40 +91,36 @@
         ],
         "configuration": {
             "type": "object",
-            "title": "Markdown Table Formatter configurations",
+            "title": "Markdown Table Formatter",
             "properties": {
                 "markdown-table-formatter.enable": {
-                    "title": "Enable Markdown Table Formatter",
+                    "order": 0,
                     "description": "Enable or disable Markdown Table Formatter",
                     "type": "boolean",
                     "default": true
                 },
                 "markdown-table-formatter.enableSort": {
-                    "title": "Enable Markdown Table Formatter Sort Lenses",
-                    "description": "Enable or disable Markdown Table Formatter Sort Lenses",
+                    "order": 1,
+                    "description": "Enable or disable Markdown Table Formatter Code Lenses for sorting tables",
                     "type": "boolean",
                     "default": true
                 },
                 "markdown-table-formatter.sortCaseInsensitive": {
-                    "title": "Sort table without considering text case",
-                    "description": "Sort table without considering text case",
+                    "description": "Sort table columns without considering text case",
                     "type": "boolean",
                     "default": true
                 },
                 "markdown-table-formatter.spacePadding": {
-                    "title": "Space padding",
                     "description": "How many spaces between left and right of each column content",
                     "type": "integer",
                     "default": 1
                 },
                 "markdown-table-formatter.keepFirstAndLastPipes": {
-                    "title": "Keep first and last pipes",
                     "description": "Keep first and last pipes \"|\" in table formatting.",
                     "type": "boolean",
                     "default": true
                 },
                 "markdown-table-formatter.defaultTableJustification": {
-                    "title": "Default table justification",
                     "description": "Defines the default justification for tables that have only a \"-\" or no colon on the formatting line",
                     "type": "string",
                     "enum": [
@@ -121,13 +131,11 @@
                     "default": "Left"
                 },
                 "markdown-table-formatter.removeColonsIfSameAsDefault": {
-                    "title": "Remove colons if Justification is the same as default",
                     "description": "Remove colons from the format line if the justification is the same as default",
                     "type": "boolean",
                     "default": false
                 },
                 "markdown-table-formatter.markdownGrammarScopes": {
-                    "title": "Grammar scopes to enable Markdown Table Formatter",
                     "description": "File language grammar that will be considered Markdown by this package (comma-separated). \nRun \"Markdown Table Formatter: Enable For Current Scope\" command to add current editor grammar to this setting.",
                     "type": "array",
                     "items": {
@@ -138,7 +146,6 @@
                     ]
                 },
                 "markdown-table-formatter.globalColumnSizes": {
-                    "title": "Keep columns sizes the same",
                     "description": "Calculates the column sizes based on all tables on the document.",
                     "type": "string",
                     "enum": [
@@ -149,7 +156,6 @@
                     "default": "Disabled"
                 },
                 "markdown-table-formatter.delimiterRowPadding": {
-                    "title": "Delimiter row padding",
                     "description": "Changes how the delimiter row is presented.",
                     "type": "string",
                     "enum": [
@@ -161,13 +167,11 @@
                     "default": "None"
                 },
                 "markdown-table-formatter.limitLastColumnWidth": {
-                    "title": "Limit last column width",
                     "description": "Do not extend last column to more than your editor's wordWrapColumn setting.",
                     "type": "boolean",
                     "default": false
                 },
                 "markdown-table-formatter.allowEmptyLines": {
-                    "title": "Allow empty lines",
                     "description": "Format tables even if lines have less columns than header.",
                     "type": "boolean",
                     "default": true

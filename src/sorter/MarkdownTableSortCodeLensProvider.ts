@@ -59,6 +59,12 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 			});
 		});
 
+		lenses.push(new vscode.CodeLens(table.range, {
+			command: "markdown-table-formatter.sortTable",
+			title: "Re-sort",
+			arguments: [{ table: table, options: activeSort }]
+		}))
+
 		return lenses;
 	}
 

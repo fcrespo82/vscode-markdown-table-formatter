@@ -26,12 +26,13 @@
         "Formatters"
     ],
     "activationEvents": [
+        "onLanguage:markdown",
+        "onLanguage:rmd",
         "onCommand:markdown-table-formatter.enableForCurrentScope",
         "onCommand:markdown-table-formatter.toggleDebug",
         "onCommand:markdown-table-formatter.moveColumnRight",
         "onCommand:markdown-table-formatter.moveColumnLeft",
-        "onCommand:markdown-table-formatter.sortTable",
-        "onStartupFinished"
+        "workspaceContains:README.md"
     ],
     "main": "./out/extension.js",
     "contributes": {

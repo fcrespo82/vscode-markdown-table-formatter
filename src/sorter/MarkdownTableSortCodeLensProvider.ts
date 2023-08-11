@@ -74,34 +74,32 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 
 		const canSortByNumber = table.body?.every(l => parseFloat(l[headerIndex]))
 
+		table.body?.sort((a: string[], b: string[]) => {
+			let textA = a[headerIndex].trim();
+			let textB = b[headerIndex].trim();
+
+			let respA = -1
+			let respB = 1
 		switch (sortDirection) {
 			case MarkdownTableSortDirection.Asc:
-				table.body?.sort((a: string[], b: string[]) => {
-					if (canSortByNumber) {
-						return (parseFloat(a[headerIndex]) < parseFloat(b[headerIndex])) ? -1 : 1;
-					}
-					else if (a[headerIndex].trim() === b[headerIndex].trim()) {
-						return 0;
-					}
-					else {
-						return (a[headerIndex].trim() < b[headerIndex].trim()) ? -1 : 1;
-					}
-				});
 				break;
 			case MarkdownTableSortDirection.Desc:
-				table.body?.sort((a: string[], b: string[]) => {
+					respA = 1;
+					respB = -1;
+					break;
+			}
+
 					if (canSortByNumber) {
-						return (parseFloat(a[headerIndex]) > parseFloat(b[headerIndex])) ? -1 : 1;
+				return (parseFloat(textA) < parseFloat(textB)) ? respA : respB;
 					}
-					else if (a[headerIndex].trim() === b[headerIndex].trim()) {
+			else if (textA === textB) {
 						return 0;
 					}
 					else {
-						return (a[headerIndex].trim() > b[headerIndex].trim()) ? -1 : 1;
+				return (textA < textB) ? respA : respB;
 					}
 				});
-				break;
-		}
+
 		return table.notFormatted();
 	}
 

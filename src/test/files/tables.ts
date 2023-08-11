@@ -867,5 +867,16 @@ export const testTables: { id: number, input: string, expected: string, settings
 		x = PartitionedSignal(16)    # identical except for mask
 		y = PartitionedSignal(16)    # identical except for mask
 		out = PartitionedSignal(16)  # identical except for mask`,
+	},
+	{
+		id: 41,
+		input: `\
+| <<name>>	| <<name>>	| <<name>>
+| ---		| ---		| ---
+| <<value>>	| <<value>>	| <<value>>`,
+		expected: `\
+| <<name>>  | <<name>>  | <<name>>  |
+|-----------|-----------|-----------|
+| <<value>> | <<value>> | <<value>> |`,
 	}
 ];

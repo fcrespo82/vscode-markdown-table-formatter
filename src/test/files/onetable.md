@@ -19,3 +19,9 @@
 | Tomato |
 | Watermelon |
 | Zucchini |
+
+
+| <<name>>	| <<name>>	| <<name>>
+| ---		| ---		| ---
+| <<value>>	| <<value>>	| <<value>>
+| <<value>>	| <<value>>	| <<value>>

@@ -1,3 +1,6 @@
+import { Range } from "vscode";
+import { MarkdownTable } from "../MarkdownTable";
+
 export const tableJustification: { [key: string]: string } = {
     Left: ':-',
     Center: '::',
@@ -15,6 +18,18 @@ export const joinCells = (arr: string[]): string => {
 export const stripHeaderTailPipes = (line: string | undefined): string => {
     return line?.trim().replace(/(^\||\|$)/g, '') ?? "";
 };
+
+export const getColumnIndexFromRange = (table: MarkdownTable, range: Range): number => {
+    let response = -1;
+    table.ranges.forEach((rangeList, columnIndex) => {
+        rangeList.forEach(rangeItem => {
+            if (rangeItem.contains(range)) {
+                response = columnIndex;
+            }
+        });
+    });
+    return response;
+}
 
 export const splitCells = (str: string): string[] => {
     const items: string[] = [];

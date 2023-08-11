@@ -5,7 +5,7 @@ import {MarkdownTableSortDirection} from '../sorter/MarkdownTableSortDirection';
 import {getActiveSort, setActiveSort} from '../sorter/MarkdownTableSortUtils';
 import MarkdownTableFormatterSettings, {MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes} from './MarkdownTableFormatterSettings';
 import MarkdownTableFormatterSettingsImpl from './MarkdownTableFormatterSettingsImpl';
-import {addTailPipes, fixJustification, joinCells, tableJustification} from './MarkdownTableFormatterUtils';
+import {addTailPipes, fixJustification, getColumnIndexFromRange, joinCells, tableJustification} from './MarkdownTableFormatterUtils';
 
 export class MarkdownTableFormatterProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider, vscode.Disposable {
 
@@ -58,18 +58,6 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			table.body![i][leftIndex] = body;
 		});
 		return table;
-	}
-
-	private getColumnIndexFromRange(table: MarkdownTable, range: vscode.Range): number {
-		let response = -1;
-		table.ranges.forEach((rangeList, columnIndex) => {
-			rangeList.forEach(rangeItem => {
-				if (rangeItem.contains(range)) {
-					response = columnIndex;
-				}
-			});
-		});
-		return response;
 	}
 
 	/**
@@ -279,7 +267,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		})
 		if (!tableSelected) { return }
 
-		const header = this.getColumnIndexFromRange(tableSelected, editor.selection);
+		const header = getColumnIndexFromRange(tableSelected, editor.selection);
 		if (header < 0) {
 			return;
 		}
@@ -315,7 +303,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		})
 		if (!tableSelected) { return }
 
-		const header = this.getColumnIndexFromRange(tableSelected, editor.selection);
+		const header = getColumnIndexFromRange(tableSelected, editor.selection);
 		if (header < 0) {
 			return;
 		}

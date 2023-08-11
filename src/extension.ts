@@ -25,8 +25,11 @@ export async function activate(context: vscode.ExtensionContext): Promise<boolea
 			if (config.enable) {
 				markdownTableFormatterProvider.dispose();
 				markdownTableFormatterProvider.register();
+				markdownTableDecorationProvider.dispose();
+				markdownTableDecorationProvider.register();
 			} else {
 				markdownTableFormatterProvider.dispose();
+				markdownTableDecorationProvider.dispose();
 			}
 		}
 		if (changeConfigurationEvent.affectsConfiguration('markdown-table-formatter.enableSort') ||

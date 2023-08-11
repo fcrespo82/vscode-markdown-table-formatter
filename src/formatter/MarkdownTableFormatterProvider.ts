@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import {MarkdownTable} from '../MarkdownTable';
-import {checkLanguage, discoverMaxColumnSizes, discoverMaxTableSizes, padding, swidth, tablesIn} from '../MarkdownTableUtils';
+import {checkLanguage, discoverMaxColumnSizes, discoverMaxTableSizes, padding, stringWidth, tablesIn} from '../MarkdownTableUtils';
 import {MarkdownTableSortDirection} from '../sorter/MarkdownTableSortDirection';
 import {getActiveSort, setActiveSort} from '../sorter/MarkdownTableSortUtils';
 import MarkdownTableFormatterSettings, {MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes} from './MarkdownTableFormatterSettings';
@@ -8,8 +8,6 @@ import MarkdownTableFormatterSettingsImpl from './MarkdownTableFormatterSettings
 import {addTailPipes, fixJustification, joinCells, tableJustification} from './MarkdownTableFormatterUtils';
 
 export class MarkdownTableFormatterProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider, vscode.Disposable {
-
-	private registered = false;
 
 	private disposables: vscode.Disposable[] = [];
 
@@ -20,7 +18,6 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	}
 
 	dispose(): void {
-		this.registered = false;
 		this.disposables.forEach(d => d.dispose());
 		this.disposables = [];
 	}
@@ -34,16 +31,13 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			this.config = MarkdownTableFormatterSettingsImpl.shared;
 		}
 		if (this.config.enable) {
-			this.registered = true;
 			this.config.markdownGrammarScopes?.forEach((scope) => {
 				this.registerFormatterForScope(scope);
 			})
 
 			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.enableForCurrentScope", this.enableForCurrentScopeCommand, this));
-
 			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnRight", this.moveColumnRightCommand, this));
 			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnLeft", this.moveColumnLeftCommand, this));
-
 		}
 	}
 
@@ -165,7 +159,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 	private justify(text: string, justification: string, length: number, settings: MarkdownTableFormatterSettings) {
 		text = text.trim();
-		length = Math.max(length - swidth(text), 0);
+		length = Math.max(length - stringWidth(text), 0);
 		let justifySwitch = fixJustification(justification);
 		if (justifySwitch === "--") {
 			justifySwitch = tableJustification[settings.defaultTableJustification!];

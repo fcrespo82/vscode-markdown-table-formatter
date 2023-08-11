@@ -72,37 +72,26 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 			}
 		});
 
-		const canSortByNumber = table.body?.every(l => parseFloat(l[headerIndex]))
+		const isIPV4 = table.body?.every(l => /\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3}$/.test(l[headerIndex].trim()) || l[headerIndex].trim()==="" )
+
+		const canSortByNumber = table.body?.every(l => /^-?\d+$/.test(l[headerIndex].trim()))
+
+		const collator = new Intl.Collator(undefined, {
+			numeric: canSortByNumber || isIPV4,
+			sensitivity: this.config.sortCaseInsensitive ? "base" : "variant",
+			ignorePunctuation: isIPV4
+		})
 
 		table.body?.sort((a: string[], b: string[]) => {
-			let textA = a[headerIndex].trim();
-			let textB = b[headerIndex].trim();
+			let textA = a[headerIndex].trim() || "";
+			let textB = b[headerIndex].trim() || "";
 
-			let respA = -1
-			let respB = 1
-			switch (sortDirection) {
-				case MarkdownTableSortDirection.Asc:
-					break;
-				case MarkdownTableSortDirection.Desc:
-					respA = 1;
-					respB = -1;
-					break;
-			}
+			let invert = sortDirection === MarkdownTableSortDirection.Desc ? -1 : 1
 
-			if (this.config.sortCaseInsensitive) {
-				textA = textA.toLocaleLowerCase();
-				textB = textB.toLocaleLowerCase();
-			}
+			const compareResult = collator.compare(textA, textB)
 
-			if (canSortByNumber) {
-				return (parseFloat(textA) < parseFloat(textB)) ? respA : respB;
-			}
-			else if (textA === textB) {
-				return 0;
-			}
-			else {
-				return (textA < textB) ? respA : respB;
-			}
+			return invert * compareResult;
+
 		});
 
 		return table.notFormatted();
@@ -128,7 +117,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 		}
 
 		setActiveSort(editor.document, table.id, index, sort);
-
+		
 		edit.replace(table.range, this.sortTable(table, index, sort));
 	}
 

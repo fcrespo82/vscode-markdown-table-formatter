@@ -1,4 +1,21 @@
 | f\|oo  |
 | ------ |
-| b `\|` az |
-| b **\|** im |
+| Apple |
+| apple |
+| Blueberry |
+| Cherry |
+| Dewberry |
+| Eggplant |
+| Grape |
+| Horseradish |
+| Kale |
+| Lettuce |
+| Mango |
+| Nutmeg |
+| Orange |
+| Pineapple |
+| Radish |
+| Strawberry |
+| Tomato |
+| Watermelon |
+| Zucchini |

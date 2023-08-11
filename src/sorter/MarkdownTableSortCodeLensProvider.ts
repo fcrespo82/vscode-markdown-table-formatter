@@ -5,6 +5,7 @@ import {checkLanguage, tablesIn} from '../MarkdownTableUtils';
 import MarkdownTableSortCommandArguments from './MarkdownTableSortCommandArguments';
 import {MarkdownTableSortDirection} from './MarkdownTableSortDirection';
 import {cleanSortIndicator, getActiveSort, getSortIndicator, invertSort, setActiveSort} from './MarkdownTableSortUtils';
+import { getColumnIndexFromRange } from '../formatter/MarkdownTableFormatterUtils';
 
 export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvider, vscode.Disposable {
 
@@ -55,14 +56,14 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 			return new vscode.CodeLens(table.range, {
 				title: headerText,
 				command: 'markdown-table-formatter.sortTable',
-				arguments: [{ table: table, options: { header_index, sort_direction: nextSortDirection } }]
+				arguments: [{markdownTableFormatterArguments: { table: table, options: { header_index, sort_direction: nextSortDirection } }}]
 			});
 		});
 
 		lenses.push(new vscode.CodeLens(table.range, {
 			command: "markdown-table-formatter.sortTable",
 			title: "Re-sort",
-			arguments: [{ table: table, options: activeSort }]
+			arguments: [{markdownTableFormatterArguments: { table: table, options: activeSort }}]
 		}))
 
 		return lenses;
@@ -100,14 +101,25 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 
 	// vscode.Commands
 	// vscode.Command
-	private sortTableCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit, args: MarkdownTableSortCommandArguments) {
+	private sortTableCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit, args?: MarkdownTableSortCommandArguments) {
 		if (!checkLanguage(editor.document.languageId, this.config)) { return }
 
-		const table = args.table;
-		const index = args.options.header_index;
-		const direction = args.options.sort_direction ?? MarkdownTableSortDirection.Asc;
+		let table: MarkdownTable, index: number, direction: MarkdownTableSortDirection;
+		
+		if (!args?.markdownTableFormatterArguments) {
+			const tables = tablesIn(editor.document);
+			const tableFound = tables.find(t => t.range.contains(editor.selection));
+			if (!tableFound) { return };
+			table = tableFound;
+			index = getColumnIndexFromRange(table, editor.selection);
+			direction = invertSort(getActiveSort(editor.document, table.id)?.sort_direction);	
+		} else {
+			table = args?.markdownTableFormatterArguments.table;
+			index = args?.markdownTableFormatterArguments.options.header_index;
+			direction = args?.markdownTableFormatterArguments?.options.sort_direction ?? invertSort(getActiveSort(editor.document, table.id)?.sort_direction);
+		}
 
-		setActiveSort(editor.document, table.id, index, direction);
+		setActiveSort(editor.document, table?.id, index, direction);
 		
 		edit.replace(table.range, this.sortTable(table, index, direction));
 	}

@@ -57,6 +57,11 @@
                 "command": "markdown-table-formatter.moveColumnLeft",
                 "category": "Markdown Table Formatter",
                 "title": "Move column left"
+            },
+            {
+                "command": "markdown-table-formatter.sortTable",
+                "category": "Markdown Table Formatter",
+                "title": "Sort table based on cursor position"
             }
         ],
         "menus": {
@@ -68,6 +73,11 @@
                 },
                 {
                     "command": "markdown-table-formatter.moveColumnRight",
+                    "group": "markdown-table-formatter",
+                    "when": "config.markdown-table-formatter.enableSort === true"
+                },
+                {
+                    "command": "markdown-table-formatter.sortTable",
                     "group": "markdown-table-formatter",
                     "when": "config.markdown-table-formatter.enableSort === true"
                 }

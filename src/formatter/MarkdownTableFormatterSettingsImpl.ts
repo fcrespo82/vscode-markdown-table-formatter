@@ -38,6 +38,9 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 	get enableSort(): boolean {
 		return this.config.get<boolean>('enableSort', true);
 	}
+	get sortCaseInsensitive(): boolean {
+		return this.config.get<boolean>('sortCaseInsensitive', false);
+	}
 	get spacePadding(): number {
 		return this.config.get<number>('spacePadding', 1);
 	}
@@ -67,6 +70,6 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 	}
 
 	public toString(): string {
-		return `{ enable: ${this.enable}, enableSort: ${this.enableSort}, spacePadding: ${this.spacePadding}, keepFirstAndLastPipes: ${this.keepFirstAndLastPipes}, defaultTableJustification: ${this.defaultTableJustification}, removeColonsIfSameAsDefault: ${this.removeColonsIfSameAsDefault}, globalColumnSizes: ${this.globalColumnSizes}, delimiterRowPadding: ${this.delimiterRowPadding}, limitLastColumnWidth: ${this.limitLastColumnWidth} }`;
+		return `{ enable: ${this.enable}, enableSort: ${this.enableSort},  sortCaseInsensitive: ${this.sortCaseInsensitive}, spacePadding: ${this.spacePadding}, keepFirstAndLastPipes: ${this.keepFirstAndLastPipes}, defaultTableJustification: ${this.defaultTableJustification}, removeColonsIfSameAsDefault: ${this.removeColonsIfSameAsDefault}, globalColumnSizes: ${this.globalColumnSizes}, delimiterRowPadding: ${this.delimiterRowPadding}, limitLastColumnWidth: ${this.limitLastColumnWidth} }`;
 	}
 }

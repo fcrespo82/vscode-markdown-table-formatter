@@ -19,6 +19,7 @@ export enum MarkdownTableFormatterDefaultTableJustification {
 export default interface MarkdownTableFormatterSettings {
 	enable?: boolean;
 	enableSort?: boolean;
+	sortCaseInsensitive?: boolean;
 	spacePadding?: number;
 	keepFirstAndLastPipes?: boolean;
 	defaultTableJustification?: MarkdownTableFormatterDefaultTableJustification;

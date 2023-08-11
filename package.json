@@ -203,11 +203,11 @@
         "@typescript-eslint/eslint-plugin": "^5.39.0",
         "@typescript-eslint/parser": "^5.39.0",
         "@vscode/test-electron": "^2.1.5",
+        "@vscode/vsce": "^2.20.1",
         "esbuild": "^0.15.10",
         "eslint": "^8.25.0",
         "mocha": "^10.0.0",
         "ts-loader": "^9.4.1",
-        "typescript": "^4.8.4",
-        "vsce": "^2.11.0"
+        "typescript": "^4.8.4"
     }
 }

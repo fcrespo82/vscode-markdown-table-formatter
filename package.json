@@ -177,10 +177,20 @@
                     ],
                     "default": "None"
                 },
-                "markdown-table-formatter.limitLastColumnWidth": {
-                    "description": "Do not extend last column to more than your editor's wordWrapColumn setting.",
-                    "type": "boolean",
-                    "default": false
+                "markdown-table-formatter.limitLastColumnLength": {
+                    "description": "Control how the last column size is calculated.",
+                    "type": "string",
+                    "enum": [
+                        "None",
+                        "Follow editor's wordWrapColumn",
+                        "Follow header row length"
+                    ],
+                    "enumDescriptions": [
+                        "Do not limit last column",
+                        "Do not extend last column to more than your editor's wordWrapColumn setting",
+                        "Do not extend last column to more than the table's header row"
+                    ],
+                    "default": "None"
                 },
                 "markdown-table-formatter.allowEmptyLines": {
                     "description": "Format tables even if lines have less columns than header.",

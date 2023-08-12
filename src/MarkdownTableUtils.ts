@@ -3,7 +3,7 @@ import { MarkdownTable } from './MarkdownTable';
 import { tableRegex } from './MarkdownTableRegex';
 import wcswidth = require('wcwidth');
 import XRegExp = require('xregexp');
-import MarkdownTableFormatterSettings from './formatter/MarkdownTableFormatterSettings';
+import MarkdownTableFormatterSettings, { MarkdownTableFormatterLimitLastRowLength } from './formatter/MarkdownTableFormatterSettings';
 
 export const stringWidth = (str: string): number => {
 	// zero-width Unicode characters that we should ignore for purposes of computing string "display" width
@@ -31,21 +31,35 @@ export const columnSizes = (config: MarkdownTableFormatterSettings, header: stri
 		});
 	});
 
-	const config = MarkdownTableFormatterSettingsImpl.shared;
 	const preferredLineLength = <number>workspace.getConfiguration('editor').get('wordWrapColumn');
-	const limitLastColumnWidth = config.limitLastColumnWidth
+	const limitLastColumnLength = config.limitLastColumnLength
 	const padding = config.spacePadding
 	const keepFirstAndLast = config.keepFirstAndLastPipes
 	const otherColumnsSum = columnSizes.length === 1 ? 0 : sumArray(columnSizes.slice(0, -1));
 	const dividers = keepFirstAndLast ? columnSizes.length + 1 : columnSizes.length - 1
 	const allPadding = columnSizes.length * 2 * padding!
 
-	if (limitLastColumnWidth && (columnSizes.reduce((x, y) => x + y) + dividers + allPadding) > preferredLineLength) {
-		columnSizes[columnSizes.length - 1] = Math.max(
-			preferredLineLength - (otherColumnsSum + dividers + allPadding),
-			3,
-		);
+	switch (limitLastColumnLength) {
+		case MarkdownTableFormatterLimitLastRowLength.EditorWordWrap:
+			if ((columnSizes.reduce((x, y) => x + y) + dividers + allPadding) > preferredLineLength) {
+				columnSizes[columnSizes.length - 1] = Math.max(
+					preferredLineLength - (otherColumnsSum + dividers + allPadding),
+					3,
+				);
+			}
+			break;
+		case MarkdownTableFormatterLimitLastRowLength.HeaderRowLength:
+			const headerLength = header.map((column) => {
+				return stringWidth(column.trim());
+			})
+				columnSizes[columnSizes.length - 1] = headerLength[columnSizes.length - 1]
+			break;
+		case MarkdownTableFormatterLimitLastRowLength.None:
+			break;
+		default:
+			break;
 	}
+
 	return columnSizes
 };
 

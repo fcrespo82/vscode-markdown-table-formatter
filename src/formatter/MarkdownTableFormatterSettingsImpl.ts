@@ -1,5 +1,5 @@
 import {workspace, WorkspaceConfiguration} from "vscode";
-import MarkdownTableFormatterSettings, {MarkdownTableFormatterDefaultTableJustification, MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes} from "./MarkdownTableFormatterSettings";
+import MarkdownTableFormatterSettings, {MarkdownTableFormatterDefaultTableJustification, MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes, MarkdownTableFormatterLimitLastRowLength} from "./MarkdownTableFormatterSettings";
 
 export default class MarkdownTableFormatterSettingsImpl implements MarkdownTableFormatterSettings {
 
@@ -62,14 +62,14 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 	get delimiterRowPadding(): MarkdownTableFormatterDelimiterRowPadding {
 		return this.config.get<MarkdownTableFormatterDelimiterRowPadding>('delimiterRowPadding', MarkdownTableFormatterDelimiterRowPadding.None);
 	}
-	get limitLastColumnWidth(): boolean {
-		return this.config.get<boolean>('limitLastColumnWidth', false);
+	get limitLastColumnLength(): MarkdownTableFormatterLimitLastRowLength {
+		return this.config.get<MarkdownTableFormatterLimitLastRowLength>('limitLastColumnLength', MarkdownTableFormatterLimitLastRowLength.None);
 	}
 	get allowEmptyRows(): boolean {
 		return this.config.get<boolean>('allowEmptyRows', true);
 	}
 
 	public toString(): string {
-		return `{ enable: ${this.enable}, enableSort: ${this.enableSort},  sortCaseInsensitive: ${this.sortCaseInsensitive}, spacePadding: ${this.spacePadding}, keepFirstAndLastPipes: ${this.keepFirstAndLastPipes}, defaultTableJustification: ${this.defaultTableJustification}, removeColonsIfSameAsDefault: ${this.removeColonsIfSameAsDefault}, globalColumnSizes: ${this.globalColumnSizes}, delimiterRowPadding: ${this.delimiterRowPadding}, limitLastColumnWidth: ${this.limitLastColumnWidth} }`;
+		return `{ enable: ${this.enable}, enableSort: ${this.enableSort},  sortCaseInsensitive: ${this.sortCaseInsensitive}, spacePadding: ${this.spacePadding}, keepFirstAndLastPipes: ${this.keepFirstAndLastPipes}, defaultTableJustification: ${this.defaultTableJustification}, removeColonsIfSameAsDefault: ${this.removeColonsIfSameAsDefault}, globalColumnSizes: ${this.globalColumnSizes}, delimiterRowPadding: ${this.delimiterRowPadding}, limitLastColumnLength: ${this.limitLastColumnLength} }`;
 	}
 }

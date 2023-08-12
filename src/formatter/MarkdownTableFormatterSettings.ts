@@ -4,6 +4,11 @@ export enum MarkdownTableFormatterDelimiterRowPadding {
 	SingleApaceAlways = "Single Space Always",
 	AlignmentMarker = "Alignment Marker"
 }
+export enum MarkdownTableFormatterLimitLastRowLength {
+	None = "None",
+	EditorWordWrap = "Follow editor's wordWrapColumn",
+	HeaderRowLength = "Follow header row length"
+}
 export enum MarkdownTableFormatterGlobalColumnSizes {
 	Disabled = "Disabled",
 	SameColumnSize = "Same Column Size",
@@ -27,6 +32,6 @@ export default interface MarkdownTableFormatterSettings {
 	markdownGrammarScopes?: string[];
 	globalColumnSizes?: MarkdownTableFormatterGlobalColumnSizes;
 	delimiterRowPadding?: MarkdownTableFormatterDelimiterRowPadding;
-	limitLastColumnWidth?: boolean;
+	limitLastColumnLength?: MarkdownTableFormatterLimitLastRowLength;
 	allowEmptyRows?: boolean;
 }

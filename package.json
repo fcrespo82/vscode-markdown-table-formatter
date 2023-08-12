@@ -201,8 +201,8 @@
                     "description": "Control what is shown on CodeLens.",
                     "type": "array",
                     "items": {
-                        "type":"string",
-                        "enum":  [
+                        "type": "string",
+                        "enum": [
                             "Format",
                             "Sort",
                             "Re-Sort"

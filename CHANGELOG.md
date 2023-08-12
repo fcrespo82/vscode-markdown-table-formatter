@@ -6,18 +6,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
-## [2.?.?] - 2023-??-??
+## [3.0.0] - 2023-08-11
 
 ### Added
 
-- Suport for case insensitive sorting
-- Context menus for moving columns
-- Allow to chose which CodeLenses to show
-
+- You can now choose which CodeLenses to show
+- Command to Re-Sort the same table (shows on CodeLens)
+- You can now move columns from context menu
+- Support for case insensitive sorting
+- You can now sort tables from context menu or command pallete
+- Support tables with tabs in format line
+- New options for Limit Last Column Length (former Limit Last Column Width)
 ### Changed
 
 - Improve internal comparission algorithm
 - Improve activation events
+- Overall improvements to code
+
+### Fixed
+
+- Test logic (internal)
 
 ## [2.2.4] - 2021-10-24
 

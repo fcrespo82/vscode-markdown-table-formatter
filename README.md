@@ -27,7 +27,10 @@ Uses VSCode `Format Document` and `Format Selection`
 - **removeColonsIfSameAsDefault**: Remove colons from the format line if the justification is the same as default;
 - **globalColumnSizes**: Format tables locally, with same column sizes or same table size;
 - **delimiterRowPadding**: Calculates the column sizes based on all tables on the document;
-- **limitLastColumnWidth**: Do not extend last column to more than your editor's wordWrapColumn setting;
+- **limitLastColumnLength**: Control how the last column size is calculated;
+- **sortCaseInsensitive**: Sort table columns without considering text case;
+- **allowEmptyLines**: Format tables even if lines have less columns than header;
+- **markdownGrammarScopes**: File language grammar that will be considered Markdown by this packagfernando8
 
 ## Tips
 

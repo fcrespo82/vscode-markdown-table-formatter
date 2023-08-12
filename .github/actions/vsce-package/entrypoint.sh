@@ -8,4 +8,4 @@ vsce package
 
 # Exports the name to the next step
 name=`ls *.vsix`
-echo "::set-output name=package_name::$name"
+echo "package_name=$name" >> $GITHUB_OUTPUT

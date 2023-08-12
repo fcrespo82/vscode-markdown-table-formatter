@@ -17,7 +17,7 @@ A (not so) simple markdown plugin to format tables and other table related featu
 
 Uses VSCode `Format Document` and `Format Selection`
 
-### Settings & Keybindings
+### Settings
 
 - **enable**: Enable or disable the formatter;
 - **enableSort**: Enable or disable table sorter;
@@ -30,7 +30,8 @@ Uses VSCode `Format Document` and `Format Selection`
 - **limitLastColumnLength**: Control how the last column size is calculated;
 - **sortCaseInsensitive**: Sort table columns without considering text case;
 - **allowEmptyLines**: Format tables even if lines have less columns than header;
-- **markdownGrammarScopes**: File language grammar that will be considered Markdown by this packagfernando8
+- **markdownGrammarScopes**: File language grammar that will be considered Markdown by this package;
+- **whichCodeLensesToShow**: Control what is shown on CodeLens;
 
 ## Tips
 

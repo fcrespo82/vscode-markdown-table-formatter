@@ -196,6 +196,23 @@
                     "description": "Format tables even if lines have less columns than header.",
                     "type": "boolean",
                     "default": true
+                },
+                "markdown-table-formatter.whichCodeLensesToShow": {
+                    "description": "Control what is shown on CodeLens.",
+                    "type": "array",
+                    "items": {
+                        "type":"string",
+                        "enum":  [
+                            "Format",
+                            "Sort",
+                            "Re-Sort"
+                        ]
+                    },
+                    "default": [
+                        "Format",
+                        "Sort",
+                        "Re-Sort"
+                    ]
                 }
             }
         }

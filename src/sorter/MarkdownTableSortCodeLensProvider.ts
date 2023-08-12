@@ -40,32 +40,44 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 
 	private codeLensForTable(table: MarkdownTable, document: vscode.TextDocument): vscode.CodeLens[] {
 		const activeSort = getActiveSort(document, table.id);
-		let lenses = table.header.map((header, header_index) => {
+		let lenses: vscode.CodeLens[] = [];
+		if (this.config.whichCodeLensesToShow?.includes(MarkdownTableFormatterWhichCodeLensesToShow.Format)) {
+			lenses.push(new vscode.CodeLens(table.range, {
+				command: "markdown-table-formatter.formatTable",
+				title: "Format",
+				arguments: [{markdownTableFormatterArguments: { table: table }}]
+			}))
+		}
+		
+		if (this.config.whichCodeLensesToShow?.includes(MarkdownTableFormatterWhichCodeLensesToShow.Sort)) {
+			lenses.push(...table.header.map((header, header_index) => {
 
-			let nextSortDirection = invertSort(activeSort?.sort_direction);
+				let nextSortDirection = invertSort(activeSort?.sort_direction);
 
-			let headerText = `${header.trim()}`;
-			if (header.trim() === "") {
-				headerText = `Column ${header_index + 1}`;
-			}
+				let headerText = `${header.trim()}`;
+				if (header.trim() === "") {
+					headerText = `Column ${header_index + 1}`;
+				}
 
-			if (activeSort && activeSort.header_index === header_index) {
-				headerText = `${headerText + getSortIndicator(activeSort.sort_direction)}`;
-			}
+				if (activeSort && activeSort.header_index === header_index) {
+					headerText = `${headerText + getSortIndicator(activeSort.sort_direction)}`;
+				}
 
-			return new vscode.CodeLens(table.range, {
-				title: headerText,
-				command: 'markdown-table-formatter.sortTable',
-				arguments: [{markdownTableFormatterArguments: { table: table, options: { header_index, sort_direction: nextSortDirection } }}]
-			});
-		});
+				return new vscode.CodeLens(table.range, {
+					title: headerText,
+					command: 'markdown-table-formatter.sortTable',
+					arguments: [{markdownTableFormatterArguments: { table: table, options: { header_index, sort_direction: nextSortDirection } }}]
+				});
+			}));
+		}
 
-		lenses.push(new vscode.CodeLens(table.range, {
-			command: "markdown-table-formatter.sortTable",
-			title: "Re-sort",
-			arguments: [{markdownTableFormatterArguments: { table: table, options: activeSort }}]
-		}))
-
+		if (this.config.whichCodeLensesToShow?.includes(MarkdownTableFormatterWhichCodeLensesToShow.ReSort)) {
+			lenses.push(new vscode.CodeLens(table.range, {
+				command: "markdown-table-formatter.sortTable",
+				title: "Re-sort",
+				arguments: [{markdownTableFormatterArguments: { table: table, options: activeSort }}]
+			}))
+		}
 		return lenses;
 	}
 

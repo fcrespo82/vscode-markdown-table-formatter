@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Suport for case insensitive sorting
 - Context menus for moving columns
+- Allow to chose which CodeLenses to show
 
 ### Changed
 

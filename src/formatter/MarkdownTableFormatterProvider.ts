@@ -5,6 +5,7 @@ import {getActiveSort, setActiveSort} from '../sorter/MarkdownTableSortUtils';
 import MarkdownTableFormatterSettings, {MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes} from './MarkdownTableFormatter.types';
 import MarkdownTableFormatterSettingsImpl from './MarkdownTableFormatterSettingsImpl';
 import {addTailPipes, fixJustification, getColumnIndexFromRange, joinCells, tableJustification} from './MarkdownTableFormatterUtils';
+import MarkdownTableSortCommandArguments from '../sorter/MarkdownTableSortCommandArguments';
 
 export class MarkdownTableFormatterProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider, vscode.Disposable {
 
@@ -34,6 +35,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 				this.registerFormatterForScope(scope);
 			})
 
+			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.formatTable", this.formatTableCommand, this));
 			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.enableForCurrentScope", this.enableForCurrentScopeCommand, this));
 			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnRight", this.moveColumnRightCommand, this));
 			this.disposables.push(vscode.commands.registerTextEditorCommand("markdown-table-formatter.moveColumnLeft", this.moveColumnLeftCommand, this));
@@ -164,8 +166,6 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	}
 
 	private formatTable(table: MarkdownTable, settings: MarkdownTableFormatterSettings): string {
-		const startDate = new Date().getTime();
-
 		const addTailPipesIfNeeded = settings.keepFirstAndLastPipes
 			? addTailPipes
 			: (x: string) => x;
@@ -230,8 +230,6 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 		const formatted = [header, formatLine, ...body]
 
-		const endDate = new Date().getTime();
-
 		if (table.isInList) {
 			for (let index = 0; index < formatted.length; index++) {
 				formatted[index] = table.listIndentation[index] + formatted[index]
@@ -239,6 +237,13 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 		}
 
 		return formatted.join('\n');
+	}
+
+	private formatTableCommand(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit, args?: MarkdownTableSortCommandArguments): void {
+		if (args?.markdownTableFormatterArguments) {
+			const table = args?.markdownTableFormatterArguments.table;
+			edit.replace(table.range, this.formatTable(table, this.config))
+		}
 	}
 
 	private checkColumnsPerLine(table: MarkdownTable): boolean {

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import MarkdownTableFormatterSettings from '../formatter/MarkdownTableFormatterSettings';
+import MarkdownTableFormatterSettings from '../formatter/MarkdownTableFormatter.types';
 import {checkLanguage, tablesIn} from '../MarkdownTableUtils';
 
 export class MarkdownTableDecorationProvider implements vscode.Disposable {

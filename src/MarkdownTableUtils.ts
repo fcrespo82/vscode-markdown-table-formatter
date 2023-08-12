@@ -3,7 +3,7 @@ import { MarkdownTable } from './MarkdownTable';
 import { tableRegex } from './MarkdownTableRegex';
 import wcswidth = require('wcwidth');
 import XRegExp = require('xregexp');
-import MarkdownTableFormatterSettings, { MarkdownTableFormatterLimitLastRowLength } from './formatter/MarkdownTableFormatterSettings';
+import MarkdownTableFormatterSettings, { MarkdownTableFormatterLimitLastRowLength } from './formatter/MarkdownTableFormatter.types';
 
 export const stringWidth = (str: string): number => {
 	// zero-width Unicode characters that we should ignore for purposes of computing string "display" width

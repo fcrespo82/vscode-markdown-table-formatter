@@ -1,9 +1,8 @@
 import * as vscode from 'vscode';
 import {MarkdownTable} from '../MarkdownTable';
 import {checkLanguage, discoverMaxColumnSizes, discoverMaxTableSizes, padding, stringWidth, tablesIn} from '../MarkdownTableUtils';
-import {MarkdownTableSortDirection} from '../sorter/MarkdownTableSortDirection';
 import {getActiveSort, setActiveSort} from '../sorter/MarkdownTableSortUtils';
-import MarkdownTableFormatterSettings, {MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes} from './MarkdownTableFormatterSettings';
+import MarkdownTableFormatterSettings, {MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes} from './MarkdownTableFormatter.types';
 import MarkdownTableFormatterSettingsImpl from './MarkdownTableFormatterSettingsImpl';
 import {addTailPipes, fixJustification, getColumnIndexFromRange, joinCells, tableJustification} from './MarkdownTableFormatterUtils';
 

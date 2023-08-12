@@ -6,7 +6,7 @@ import MarkdownTableSortOptions from "./sorter/MarkdownTableSortOptions";
 import md5 = require("md5");
 import XRegExp = require('xregexp');
 import { SortIndicator } from "./sorter/MTSortIndicator";
-import MarkdownTableFormatterSettings from "./formatter/MarkdownTableFormatterSettings";
+import MarkdownTableFormatterSettings from "./formatter/MarkdownTableFormatter.types";
 
 export class MarkdownTable {
 	private _id: string;

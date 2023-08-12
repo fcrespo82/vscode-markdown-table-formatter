@@ -1,5 +1,5 @@
 import {workspace, WorkspaceConfiguration} from "vscode";
-import MarkdownTableFormatterSettings, {MarkdownTableFormatterDefaultTableJustification, MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes, MarkdownTableFormatterLimitLastRowLength} from "./MarkdownTableFormatterSettings";
+import MarkdownTableFormatterSettings, {MarkdownTableFormatterDefaultTableJustification, MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes, MarkdownTableFormatterLimitLastRowLength, MarkdownTableFormatterWhichCodeLensesToShow} from "./MarkdownTableFormatter.types";
 
 export default class MarkdownTableFormatterSettingsImpl implements MarkdownTableFormatterSettings {
 
@@ -64,6 +64,9 @@ export default class MarkdownTableFormatterSettingsImpl implements MarkdownTable
 	}
 	get limitLastColumnLength(): MarkdownTableFormatterLimitLastRowLength {
 		return this.config.get<MarkdownTableFormatterLimitLastRowLength>('limitLastColumnLength', MarkdownTableFormatterLimitLastRowLength.None);
+	}
+	get whichCodeLensesToShow(): MarkdownTableFormatterWhichCodeLensesToShow[] {
+		return this.config.get<MarkdownTableFormatterWhichCodeLensesToShow[]>('whichCodeLensesToShow', [MarkdownTableFormatterWhichCodeLensesToShow.Format, MarkdownTableFormatterWhichCodeLensesToShow.Sort, MarkdownTableFormatterWhichCodeLensesToShow.ReSort]);
 	}
 	get allowEmptyRows(): boolean {
 		return this.config.get<boolean>('allowEmptyRows', true);

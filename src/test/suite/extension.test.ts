@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
 import {MarkdownTableFormatterProvider} from '../../formatter/MarkdownTableFormatterProvider';
-import MarkdownTableFormatterSettings, {MarkdownTableFormatterDefaultTableJustification, MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes, MarkdownTableFormatterLimitLastRowLength} from '../../formatter/MarkdownTableFormatterSettings';
+import MarkdownTableFormatterSettings, {MarkdownTableFormatterDefaultTableJustification, MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes, MarkdownTableFormatterLimitLastRowLength} from '../../formatter/MarkdownTableFormatter.types';
 import {pad} from '../../MarkdownTableUtils';
 import {testTables} from '../files/tables';
 

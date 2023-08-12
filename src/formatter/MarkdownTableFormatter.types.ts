@@ -21,6 +21,12 @@ export enum MarkdownTableFormatterDefaultTableJustification {
 	Center = "Center"
 }
 
+export enum MarkdownTableFormatterWhichCodeLensesToShow {
+	Format = "Format",
+	Sort = "Sort",
+	ReSort = "Re-Sort"
+}
+
 export default interface MarkdownTableFormatterSettings {
 	enable?: boolean;
 	enableSort?: boolean;
@@ -34,4 +40,5 @@ export default interface MarkdownTableFormatterSettings {
 	delimiterRowPadding?: MarkdownTableFormatterDelimiterRowPadding;
 	limitLastColumnLength?: MarkdownTableFormatterLimitLastRowLength;
 	allowEmptyRows?: boolean;
+	whichCodeLensesToShow?: MarkdownTableFormatterWhichCodeLensesToShow[];
 }

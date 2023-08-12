@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import MarkdownTableFormatterSettings from '../formatter/MarkdownTableFormatterSettings';
+import MarkdownTableFormatterSettings, { MarkdownTableFormatterWhichCodeLensesToShow } from '../formatter/MarkdownTableFormatter.types';
 import {MarkdownTable} from '../MarkdownTable';
 import {checkLanguage, tablesIn} from '../MarkdownTableUtils';
 import MarkdownTableSortCommandArguments from './MarkdownTableSortCommandArguments';

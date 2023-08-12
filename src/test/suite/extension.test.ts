@@ -1,8 +1,7 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
 import {MarkdownTableFormatterProvider} from '../../formatter/MarkdownTableFormatterProvider';
-import MarkdownTableFormatterSettings, {MarkdownTableFormatterDefaultTableJustification, MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes} from '../../formatter/MarkdownTableFormatterSettings';
-import MarkdownTableFormatterSettingsImpl from '../../formatter/MarkdownTableFormatterSettingsImpl';
+import MarkdownTableFormatterSettings, {MarkdownTableFormatterDefaultTableJustification, MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes, MarkdownTableFormatterLimitLastRowLength} from '../../formatter/MarkdownTableFormatterSettings';
 import {pad} from '../../MarkdownTableUtils';
 import {testTables} from '../files/tables';
 
@@ -24,7 +23,7 @@ suite('Extension Test Suite', () => {
 		keepFirstAndLastPipes: true,
 		defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Left,
 		markdownGrammarScopes: ['markdown'],
-		limitLastColumnWidth: false,
+		limitLastColumnLength: MarkdownTableFormatterLimitLastRowLength.None,
 		removeColonsIfSameAsDefault: false,
 		globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 		delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
@@ -32,9 +31,9 @@ suite('Extension Test Suite', () => {
 	};
 
 	testTables.forEach((testTable, i) => {
-		const testSettings: MarkdownTableFormatterSettings = MarkdownTableFormatterSettingsImpl.create({ ...defaultTestSettings, ...testTable.settings });
 
-		test(`Should format correctly table ${pad(String(testTable.id), 2)} with ${testSettings}`, async () => {
+		test(`Should format correctly table ${pad(String(testTable.id), 2)}`, async () => {
+			const testSettings: MarkdownTableFormatterSettings = { ...defaultTestSettings, ...testTable.settings };
 
 			const formatterProvider = new MarkdownTableFormatterProvider(testSettings)
 

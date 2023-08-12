@@ -1,4 +1,4 @@
-import MarkdownTableFormatterSettings, {MarkdownTableFormatterDefaultTableJustification, MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes} from "../../formatter/MarkdownTableFormatterSettings";
+import MarkdownTableFormatterSettings, {MarkdownTableFormatterDefaultTableJustification, MarkdownTableFormatterDelimiterRowPadding, MarkdownTableFormatterGlobalColumnSizes, MarkdownTableFormatterLimitLastRowLength} from "../../formatter/MarkdownTableFormatterSettings";
 
 export const testTables: { id: number, input: string, expected: string, settings?: MarkdownTableFormatterSettings }[] = [
 	{
@@ -87,7 +87,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Right,
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnWidth: false,
+			limitLastColumnLength: MarkdownTableFormatterLimitLastRowLength.None,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
@@ -115,7 +115,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Left,
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnWidth: false,
+			limitLastColumnLength: MarkdownTableFormatterLimitLastRowLength.None,
 			removeColonsIfSameAsDefault: true,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
@@ -143,7 +143,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Center,
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnWidth: false,
+			limitLastColumnLength: MarkdownTableFormatterLimitLastRowLength.None,
 			removeColonsIfSameAsDefault: true,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
@@ -171,7 +171,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Right,
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnWidth: false,
+			limitLastColumnLength: MarkdownTableFormatterLimitLastRowLength.None,
 			removeColonsIfSameAsDefault: true,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
@@ -199,7 +199,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Left,
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnWidth: false,
+			limitLastColumnLength: MarkdownTableFormatterLimitLastRowLength.None,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
@@ -227,7 +227,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Center,
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnWidth: false,
+			limitLastColumnLength: MarkdownTableFormatterLimitLastRowLength.None,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
@@ -255,7 +255,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Right,
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnWidth: false,
+			limitLastColumnLength: MarkdownTableFormatterLimitLastRowLength.None,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
@@ -283,7 +283,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			keepFirstAndLastPipes: false,
 			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Left,
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnWidth: false,
+			limitLastColumnLength: MarkdownTableFormatterLimitLastRowLength.None,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
@@ -311,7 +311,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			keepFirstAndLastPipes: false,
 			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Center,
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnWidth: false,
+			limitLastColumnLength: MarkdownTableFormatterLimitLastRowLength.None,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
@@ -339,7 +339,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			keepFirstAndLastPipes: false,
 			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Right,
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnWidth: false,
+			limitLastColumnLength: MarkdownTableFormatterLimitLastRowLength.None,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameColumnSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
@@ -577,7 +577,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Left,
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnWidth: false,
+			limitLastColumnLength: MarkdownTableFormatterLimitLastRowLength.None,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
@@ -611,7 +611,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Left,
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnWidth: false,
+			limitLastColumnLength: MarkdownTableFormatterLimitLastRowLength.None,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
@@ -645,7 +645,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Left,
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnWidth: false,
+			limitLastColumnLength: MarkdownTableFormatterLimitLastRowLength.None,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
@@ -683,7 +683,7 @@ export const testTables: { id: number, input: string, expected: string, settings
 			keepFirstAndLastPipes: true,
 			defaultTableJustification: MarkdownTableFormatterDefaultTableJustification.Left,
 			markdownGrammarScopes: ['markdown'],
-			limitLastColumnWidth: false,
+			limitLastColumnLength: MarkdownTableFormatterLimitLastRowLength.None,
 			removeColonsIfSameAsDefault: false,
 			globalColumnSizes: MarkdownTableFormatterGlobalColumnSizes.SameTableSize,
 			delimiterRowPadding: MarkdownTableFormatterDelimiterRowPadding.None,
@@ -878,5 +878,59 @@ export const testTables: { id: number, input: string, expected: string, settings
 | <<name>>  | <<name>>  | <<name>>  |
 |-----------|-----------|-----------|
 | <<value>> | <<value>> | <<value>> |`,
+	},
+	{
+		id: 42,
+		settings: {
+			limitLastColumnLength: MarkdownTableFormatterLimitLastRowLength.None
+		},
+		input: `\
+| App name| Default status | Requirements |
+|---|---|----|
+| App one| Enabled| None|
+| App ten| Disabled| Use on Thursdays |
+| App twenty | Enabled| If you are going to use this application, ensure you have fulfilled the prerequisites and can no longer use any other option |`,
+		expected: `\
+| App name   | Default status | Requirements                                                                                                                 |
+|------------|----------------|------------------------------------------------------------------------------------------------------------------------------|
+| App one    | Enabled        | None                                                                                                                         |
+| App ten    | Disabled       | Use on Thursdays                                                                                                             |
+| App twenty | Enabled        | If you are going to use this application, ensure you have fulfilled the prerequisites and can no longer use any other option |`
+	},
+	{
+		id: 43,
+		settings: {
+			limitLastColumnLength: MarkdownTableFormatterLimitLastRowLength.EditorWordWrap,
+		},
+		input: `\
+| App name| Default status | Requirements |
+|---|---|----|
+| App one| Enabled| None|
+| App ten| Disabled| Use on Thursdays |
+| App twenty | Enabled| If you are going to use this application, ensure you have fulfilled the prerequisites and can no longer use any other option |`,
+		expected: `\
+| App name   | Default status | Requirements                                   |
+|------------|----------------|------------------------------------------------|
+| App one    | Enabled        | None                                           |
+| App ten    | Disabled       | Use on Thursdays                               |
+| App twenty | Enabled        | If you are going to use this application, ensure you have fulfilled the prerequisites and can no longer use any other option |`
+	},
+	{
+		id: 44,
+		settings: {
+			limitLastColumnLength: MarkdownTableFormatterLimitLastRowLength.HeaderRowLength
+		},
+		input: `\
+| App name| Default status | Requirements |
+|---|---|----|
+| App one| Enabled| None|
+| App ten| Disabled| Use on Thursdays |
+| App twenty | Enabled| If you are going to use this application, ensure you have fulfilled the prerequisites and can no longer use any other option |`,
+		expected: `\
+| App name   | Default status | Requirements |
+|------------|----------------|--------------|
+| App one    | Enabled        | None         |
+| App ten    | Disabled       | Use on Thursdays |
+| App twenty | Enabled        | If you are going to use this application, ensure you have fulfilled the prerequisites and can no longer use any other option |`
 	}
 ];

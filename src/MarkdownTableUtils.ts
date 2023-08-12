@@ -1,5 +1,4 @@
 import { Range, TextDocument, workspace } from 'vscode';
-import MarkdownTableFormatterSettingsImpl from './formatter/MarkdownTableFormatterSettingsImpl';
 import { MarkdownTable } from './MarkdownTable';
 import { tableRegex } from './MarkdownTableRegex';
 import wcswidth = require('wcwidth');
@@ -18,7 +17,7 @@ export const padding = (len: number, str = ' '): string => {
 	return r;
 };
 
-export const columnSizes = (header: string[], body: string[][] = [[]]): number[] => {
+export const columnSizes = (config: MarkdownTableFormatterSettings, header: string[], body: string[][] = [[]]): number[] => {
 	const columnSizes = [header, ...body].map((line) => {
 		return line.map((column) => {
 			return stringWidth(column.trim());
@@ -114,7 +113,7 @@ export const pad = (text: string, columns: number): string => {
 	return (' '.repeat(columns) + text).slice(-columns);
 };
 
-export const tablesIn = (document: TextDocument, range?: Range): MarkdownTable[] => {
+export const tablesIn = (config: MarkdownTableFormatterSettings, document: TextDocument, range?: Range): MarkdownTable[] => {
 	if (!range) {
 		range = new Range(0, 0, document.lineCount + 1, 0);
 	}
@@ -130,7 +129,7 @@ export const tablesIn = (document: TextDocument, range?: Range): MarkdownTable[]
 		const start = document.positionAt(offset + match.index);
 		const length = match[0].replace(/^\n+|\n+$/g, '').length;
 		const end = document.positionAt(offset + match.index + length);
-		const table = new MarkdownTable(start, end, match);
+		const table = new MarkdownTable(start, end, match, config);
 		tables.push(table);
 	}
 	return tables;

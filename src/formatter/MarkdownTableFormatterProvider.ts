@@ -73,7 +73,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 			vscode.window.showWarningMessage(`Markdown table formatter is not enabled for '${document.languageId}' language!`);
 			return edits;
 		}
-		let tables: MarkdownTable[] = tablesIn(document, range);
+		let tables: MarkdownTable[] = tablesIn(this.config, document, range);
 
 		tables = tables.filter(table => this.checkColumnsPerLine(table))
 
@@ -100,7 +100,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 				}
 			}
 
-			table.updateSizes();
+			table.updateSizes(this.config);
 		});
 
 		if (this.config.globalColumnSizes === MarkdownTableFormatterGlobalColumnSizes.SameColumnSize) {
@@ -261,7 +261,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 	// vscode.Commands
 	private moveColumnRightCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
 		if (!checkLanguage(editor.document.languageId, this.config)) { return }
-		const tables = tablesIn(editor.document)
+		const tables = tablesIn(this.config, editor.document)
 		const tableSelected = tables.find(t => {
 			return t.range.contains(editor.selection);
 		})
@@ -297,7 +297,7 @@ export class MarkdownTableFormatterProvider implements vscode.DocumentFormatting
 
 	private moveColumnLeftCommand(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
 		if (!checkLanguage(editor.document.languageId, this.config)) { return }
-		const tables = tablesIn(editor.document)
+		const tables = tablesIn(this.config, editor.document)
 		const tableSelected = tables.find(t => {
 			return t.range.contains(editor.selection);
 		})

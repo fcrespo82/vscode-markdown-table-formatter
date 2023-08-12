@@ -6,6 +6,7 @@ import MarkdownTableSortOptions from "./sorter/MarkdownTableSortOptions";
 import md5 = require("md5");
 import XRegExp = require('xregexp');
 import { SortIndicator } from "./sorter/MTSortIndicator";
+import MarkdownTableFormatterSettings from "./formatter/MarkdownTableFormatterSettings";
 
 export class MarkdownTable {
 	private _id: string;
@@ -59,7 +60,7 @@ export class MarkdownTable {
 		return this._listIndentation;
 	}
 
-	constructor(start: Position, end: Position, regexpArray: XRegExp.ExecArray) {
+	constructor(start: Position, end: Position, regexpArray: XRegExp.ExecArray, config: MarkdownTableFormatterSettings) {
 		this.start = start;
 		this.end = end;
 
@@ -119,9 +120,9 @@ export class MarkdownTable {
 				});
 				firstLine += 1;
 			});
-			this._columnSizes = columnSizes(this.header, this.body);
+			this._columnSizes = columnSizes(config, this.header, this.body);
 		} else {
-			this._columnSizes = columnSizes(this.header);
+			this._columnSizes = columnSizes(config, this.header);
 		}
 
 		this._id = md5(this.startLine.toString());
@@ -153,8 +154,8 @@ export class MarkdownTable {
 		return filtered[0];
 	}
 
-	updateSizes = (): void => {
-		this._columnSizes = columnSizes(this.header, this.body);
+	updateSizes = (config: MarkdownTableFormatterSettings): void => {
+		this._columnSizes = columnSizes(config, this.header, this.body);
 	}
 
 	notFormatted = (): string => {

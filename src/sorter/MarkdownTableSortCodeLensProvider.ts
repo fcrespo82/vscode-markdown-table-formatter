@@ -107,7 +107,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 		let table: MarkdownTable, index: number, direction: MarkdownTableSortDirection;
 		
 		if (!args?.markdownTableFormatterArguments) {
-			const tables = tablesIn(editor.document);
+			const tables = tablesIn(this.config, editor.document);
 			const tableFound = tables.find(t => t.range.contains(editor.selection));
 			if (!tableFound) { return };
 			table = tableFound;
@@ -128,7 +128,7 @@ export class MarkdownTableSortCodeLensProvider implements vscode.CodeLensProvide
 	provideCodeLenses(document: vscode.TextDocument): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
 		if (!checkLanguage(document.languageId, this.config)) { return [] }
 
-		const tables = tablesIn(document);
+		const tables = tablesIn(this.config, document);
 
 		const lenses = tables
 			.filter(table => table.bodyLines > 1)

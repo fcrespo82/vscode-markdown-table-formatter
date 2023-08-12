@@ -46,8 +46,7 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 	}
 
 	private createDecorations(document: vscode.TextDocument): vscode.DecorationOptions[] {
-		const startDate = new Date().getTime();
-		const tables = tablesIn(document);
+		const tables = tablesIn(this.config, document);
 		const fullDecoration: vscode.DecorationOptions[] = tables.map(t => {
 			return {
 				range: t.range,
@@ -63,7 +62,6 @@ export class MarkdownTableDecorationProvider implements vscode.Disposable {
 				}
 			};
 		});
-		const endDate = new Date().getTime();
 		return fullDecoration.concat(headerDecoration);
 	}
 

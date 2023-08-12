@@ -62,6 +62,6 @@ if option != "G":
         f"New version will be: {new_version}, continue? [Y/n] ").upper()
     if publish == "N":
         exit(0)
-    os.system(f"{echo}vsce publish --yarn {options[option]}")
+    os.system(f"{echo}vsce publish {options[option]}")
 os.system(f"{echo}git push")
 os.system(f"{echo}git push --tags")
